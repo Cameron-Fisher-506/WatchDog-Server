@@ -12,16 +12,20 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name = "hub")
-public class HubEntity {
+@Entity
+@Table(name = "payment")
+public class PaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long hubId;
+    private Long paymentId;
 
     @ManyToOne
-    @JoinColumn(name = "sensorId")
-    private SensorEntity sensor;
-    private String macAddress;
+    @JoinColumn(name = "invoiceId")
+    private InvoiceEntity invoice;
+
+    private Double amountPaid;
+    private Instant paymentDate;
+    private String paymentMethod;
+    private String transactionReference;
     private String status;
-    private Instant lastHeartbeat;
 }

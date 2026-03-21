@@ -6,22 +6,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name = "hub")
-public class HubEntity {
+@Entity
+@Table(name = "plan")
+public class PlanEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long hubId;
-
-    @ManyToOne
-    @JoinColumn(name = "sensorId")
-    private SensorEntity sensor;
-    private String macAddress;
-    private String status;
-    private Instant lastHeartbeat;
+    private Long planId;
+    private String planName;
+    private Double price;
+    private String currency;
+    private String billingInterval;
+    private Boolean isActive;
 }

@@ -12,16 +12,23 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name = "hub")
-public class HubEntity {
+@Entity
+@Table(name = "Invoice")
+public class InvoiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long hubId;
+    private Long invoiceId;
 
     @ManyToOne
-    @JoinColumn(name = "sensorId")
-    private SensorEntity sensor;
-    private String macAddress;
+    @JoinColumn(name = "clientId")
+    private ClientEntity client;
+
+    @ManyToOne
+    @JoinColumn(name = "subscriptionId")
+    private SubscriptionEntity subscription;
+
+    private Double amountDue;
+    private Instant issueDate;
+    private Instant dueDate;
     private String status;
-    private Instant lastHeartbeat;
 }
