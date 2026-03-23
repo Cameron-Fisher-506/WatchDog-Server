@@ -19,9 +19,9 @@ public class PaymentEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long paymentId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "invoiceId")
-    private InvoiceEntity invoice;
+    private InvoiceEntity invoiceEntity;
 
     private Double amountPaid;
     private Instant paymentDate;

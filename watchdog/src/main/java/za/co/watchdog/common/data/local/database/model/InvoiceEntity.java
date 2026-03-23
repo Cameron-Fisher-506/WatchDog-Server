@@ -19,13 +19,13 @@ public class InvoiceEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long invoiceId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "clientId")
-    private ClientEntity client;
+    private ClientEntity clientEntity;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "subscriptionId")
-    private SubscriptionEntity subscription;
+    private SubscriptionEntity subscriptionEntity;
 
     private Double amountDue;
     private Instant issueDate;

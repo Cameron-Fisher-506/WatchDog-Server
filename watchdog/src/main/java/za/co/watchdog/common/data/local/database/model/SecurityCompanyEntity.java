@@ -17,13 +17,13 @@ public class SecurityCompanyEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long securityCompanyId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "clientId")
-    private ClientEntity client;
+    private ClientEntity clientEntity;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "patrolId")
-    private PatrolEntity patrol;
+    private PatrolEntity patrolEntity;
 
     private String name;
     private String psiraLicense;

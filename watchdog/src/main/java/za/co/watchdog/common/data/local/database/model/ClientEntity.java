@@ -16,20 +16,21 @@ public class ClientEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long clientId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "hubId")
-    private HubEntity hub;
+    private HubEntity hubEntity;
     private String name;
     private String surname;
     private String contactNumber;
     private String emailAddress;
+    private String passwordHash;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "addressId")
-    private AddressEntity address;
+    private AddressEntity addressEntity;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "locationId")
-    private LocationEntity location;
+    private LocationEntity locationEntity;
 
 }

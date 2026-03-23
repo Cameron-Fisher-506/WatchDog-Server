@@ -18,9 +18,9 @@ public class HubEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long hubId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "sensorId")
-    private SensorEntity sensor;
+    private SensorEntity sensorEntity;
     private String macAddress;
     private String status;
     private Instant lastHeartbeat;

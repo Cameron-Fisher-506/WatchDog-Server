@@ -19,13 +19,13 @@ public class SubscriptionEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long subscriptionId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "clientId")
-    private ClientEntity client;
+    private ClientEntity clientEntity;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "planId")
-    private PlanEntity plan;
+    private PlanEntity planEntity;
 
     private String status;
     private Instant startDate;
