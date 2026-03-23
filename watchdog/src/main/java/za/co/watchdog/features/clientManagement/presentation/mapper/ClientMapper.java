@@ -13,7 +13,7 @@ public class ClientMapper {
                 clientDto.surname(),
                 clientDto.contactNumber(),
                 clientDto.emailAddress(),
-                clientDto.passwordHash(),
+                clientDto.password(),
                 mapToAddress(clientDto.addressDto()),
                 mapToLocation(clientDto.locationDto())
         );

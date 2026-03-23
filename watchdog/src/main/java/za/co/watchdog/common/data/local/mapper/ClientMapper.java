@@ -1,10 +1,19 @@
 package za.co.watchdog.common.data.local.mapper;
 
+import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.database.model.*;
+import za.co.watchdog.common.util.SecurityConfig;
 import za.co.watchdog.features.clientManagement.domain.model.*;
 
+@Component
 public class ClientMapper {
-    public static Client mapToClient(ClientEntity clientEntity) {
+    private final SecurityConfig securityConfig;
+
+    public ClientMapper(SecurityConfig securityConfig) {
+        this.securityConfig = securityConfig;
+    }
+
+    public Client mapToClient(ClientEntity clientEntity) {
         return new Client(
                 clientEntity.getClientId(),
                 mapToHub(clientEntity.getHubEntity()),
@@ -12,13 +21,13 @@ public class ClientMapper {
                 clientEntity.getSurname(),
                 clientEntity.getContactNumber(),
                 clientEntity.getEmailAddress(),
-                clientEntity.getPasswordHash(),
+                securityConfig.passwordEncoder().encode(clientEntity.getPasswordHash()),
                 mapToAddress(clientEntity.getAddressEntity()),
                 mapToLocation(clientEntity.getLocationEntity())
         );
     }
 
-    private static Hub mapToHub(HubEntity hubEntity) {
+    private Hub mapToHub(HubEntity hubEntity) {
         return new Hub(
                 hubEntity.getHubId(),
                 mapToSenor(hubEntity.getSensorEntity()),
@@ -28,7 +37,7 @@ public class ClientMapper {
         );
     }
 
-    private static Address mapToAddress(AddressEntity addressEntity) {
+    private Address mapToAddress(AddressEntity addressEntity) {
         return new Address(
                 addressEntity.getAddressId(),
                 addressEntity.getLatitude(),
@@ -40,7 +49,7 @@ public class ClientMapper {
         );
     }
 
-    private static Location mapToLocation(LocationEntity locationEntity) {
+    private Location mapToLocation(LocationEntity locationEntity) {
         return new Location(
                 locationEntity.getLocationId(),
                 locationEntity.getLatitude(),
@@ -48,7 +57,7 @@ public class ClientMapper {
         );
     }
 
-    private static Sensor mapToSenor(SensorEntity sensorEntity) {
+    private Sensor mapToSenor(SensorEntity sensorEntity) {
         return new Sensor(
                 sensorEntity.getSensorId(),
                 sensorEntity.getType(),
@@ -56,7 +65,7 @@ public class ClientMapper {
         );
     }
 
-    public static ClientEntity mapToClientEntity(Client client) {
+    public ClientEntity mapToClientEntity(Client client) {
         return new ClientEntity(
                 client.clientId(),
                 mapToHubEntity(client.hub()),
@@ -70,7 +79,7 @@ public class ClientMapper {
         );
     }
 
-    private static HubEntity mapToHubEntity(Hub hub) {
+    private HubEntity mapToHubEntity(Hub hub) {
         return new HubEntity(
                 hub.hubId(),
                 mapToSenorEntity(hub.sensor()),
@@ -80,7 +89,7 @@ public class ClientMapper {
         );
     }
 
-    private static AddressEntity mapToAddressEntity(Address address) {
+    private AddressEntity mapToAddressEntity(Address address) {
         return new AddressEntity(
                 address.addressId(),
                 address.latitude(),
@@ -92,7 +101,7 @@ public class ClientMapper {
         );
     }
 
-    private static LocationEntity mapToLocationEntity(Location location) {
+    private LocationEntity mapToLocationEntity(Location location) {
         return new LocationEntity(
                 location.locationId(),
                 location.latitude(),
@@ -100,7 +109,7 @@ public class ClientMapper {
         );
     }
 
-    private static SensorEntity mapToSenorEntity(Sensor sensor) {
+    private SensorEntity mapToSenorEntity(Sensor sensor) {
         return new SensorEntity(
                 sensor.sensorId(),
                 sensor.type(),

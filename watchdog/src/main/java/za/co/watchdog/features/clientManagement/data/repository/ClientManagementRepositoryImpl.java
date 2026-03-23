@@ -11,15 +11,17 @@ import za.co.watchdog.features.clientManagement.domain.repository.ClientManageme
 @Component
 public class ClientManagementRepositoryImpl implements ClientManagementRepository {
     private final ClientManagementLocalDataSource clientManagementLocalDataSource;
+    private final ClientMapper clientMapper;
 
-    public ClientManagementRepositoryImpl(ClientManagementLocalDataSource clientManagementLocalDataSource) {
+    public ClientManagementRepositoryImpl(ClientManagementLocalDataSource clientManagementLocalDataSource, ClientMapper clientMapper) {
         this.clientManagementLocalDataSource = clientManagementLocalDataSource;
+        this.clientMapper = clientMapper;
     }
 
 
     @Override
     public Result<Client> fetchClient(Client client) {
-        DatabaseResponse<Client> databaseResponse = this.clientManagementLocalDataSource.fetchClient(ClientMapper.mapToClientEntity(client));
+        DatabaseResponse<Client> databaseResponse = this.clientManagementLocalDataSource.fetchClient(clientMapper.mapToClientEntity(client));
         switch (databaseResponse) {
             case DatabaseResponse.Success<Client> success -> {
                 return Result.success(success.data());
@@ -33,7 +35,7 @@ public class ClientManagementRepositoryImpl implements ClientManagementRepositor
 
     @Override
     public Result<Client> registerClient(Client client) {
-        DatabaseResponse<Client> databaseResponse = this.clientManagementLocalDataSource.registerClient(ClientMapper.mapToClientEntity(client));
+        DatabaseResponse<Client> databaseResponse = this.clientManagementLocalDataSource.registerClient(clientMapper.mapToClientEntity(client));
         switch (databaseResponse) {
             case DatabaseResponse.Success<Client> success -> {
                 return Result.success(success.data());
