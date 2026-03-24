@@ -22,8 +22,6 @@ public class ClientEntity {
     private String name;
     private String surname;
     private String contactNumber;
-    private String emailAddress;
-    private String passwordHash;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "addressId")
@@ -33,4 +31,7 @@ public class ClientEntity {
     @JoinColumn(name = "locationId")
     private LocationEntity locationEntity;
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "userId")
+    private UserEntity userEntity;
 }

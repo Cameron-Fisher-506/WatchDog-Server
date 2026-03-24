@@ -1,11 +1,12 @@
 package za.co.watchdog.features.clientManagement.presentation.mapper;
 
-import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.features.clientManagement.domain.model.*;
-import za.co.watchdog.features.clientManagement.presentation.model.*;
+import za.co.watchdog.features.clientManagement.presentation.model.client.ClientRequestDto;
+import za.co.watchdog.features.clientManagement.presentation.model.client.ClientResponseDto;
+import za.co.watchdog.features.clientManagement.presentation.model.client.dto.*;
 
 public class ClientMapper {
-    public static Client mapToClient(ClientDto clientDto) {
+    public static Client mapToClient(ClientRequestDto clientDto) {
         return new Client(
                 clientDto.clientId(),
                 mapToHub(clientDto.hubDto()),
@@ -57,15 +58,14 @@ public class ClientMapper {
         );
     }
 
-    public static ClientDto mapToClientDto(Client client) {
-        return new ClientDto(
+    public static ClientResponseDto mapToClientResponseDto(Client client) {
+        return new ClientResponseDto(
                 client.clientId(),
                 mapToHubDto(client.hub()),
                 client.name(),
                 client.surname(),
                 client.contactNumber(),
                 client.emailAddress(),
-                client.passwordHash(),
                 mapToAddressDto(client.address()),
                 mapToLocationDto(client.location())
         );

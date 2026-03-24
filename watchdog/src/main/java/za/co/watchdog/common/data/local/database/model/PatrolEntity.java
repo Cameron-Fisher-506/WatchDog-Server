@@ -13,8 +13,16 @@ public class PatrolEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long patrolId;
+    private String officerCode;
     private String name;
     private String surname;
     private String contactNumber;
-    private String emailAddress;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "locationId")
+    private LocationEntity locationEntity;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "userId")
+    private UserEntity userEntity;
 }

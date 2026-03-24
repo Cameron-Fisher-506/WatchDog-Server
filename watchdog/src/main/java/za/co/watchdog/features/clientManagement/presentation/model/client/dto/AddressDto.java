@@ -1,4 +1,4 @@
-package za.co.watchdog.features.clientManagement.presentation.model;
+package za.co.watchdog.features.clientManagement.presentation.model.client.dto;
 
 public record AddressDto(
         Long addressId,

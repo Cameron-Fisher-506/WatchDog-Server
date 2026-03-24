@@ -10,7 +10,8 @@ import za.co.watchdog.common.domain.common.Result;
 import za.co.watchdog.features.clientManagement.domain.model.Client;
 import za.co.watchdog.features.clientManagement.domain.usecase.RegisterClientUseCase;
 import za.co.watchdog.features.clientManagement.presentation.mapper.ClientMapper;
-import za.co.watchdog.features.clientManagement.presentation.model.ClientDto;
+import za.co.watchdog.features.clientManagement.presentation.model.client.ClientRequestDto;
+import za.co.watchdog.features.clientManagement.presentation.model.client.ClientResponseDto;
 
 @RestController
 @RequestMapping("api/v1/clientmanagement")
@@ -22,12 +23,12 @@ public class ClientManagementController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ClientDto> registerClient(@RequestBody ClientDto clientDto) {
-        Result<Client> result = this.registerClientUseCase.execute(ClientMapper.mapToClient(clientDto));
+    public ResponseEntity<ClientResponseDto> registerClient(@RequestBody ClientRequestDto clientRequestDto) {
+        Result<Client> result = this.registerClientUseCase.execute(ClientMapper.mapToClient(clientRequestDto));
         switch (result) {
             case Result.Success<Client> success -> {
                 return new ResponseEntity<>(
-                        ClientMapper.mapToClientDto(success.data()),
+                        ClientMapper.mapToClientResponseDto(success.data()),
                         HttpStatus.OK
                 );
             }
