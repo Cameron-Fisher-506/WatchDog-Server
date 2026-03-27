@@ -1,5 +1,6 @@
 package za.co.watchdog.features.clientManagement.presentation.mapper;
 
+import za.co.watchdog.common.data.local.database.model.UserRole;
 import za.co.watchdog.features.clientManagement.domain.model.*;
 import za.co.watchdog.features.clientManagement.presentation.model.client.ClientRequestDto;
 import za.co.watchdog.features.clientManagement.presentation.model.client.ClientResponseDto;
@@ -13,10 +14,9 @@ public class ClientMapper {
                 clientDto.name(),
                 clientDto.surname(),
                 clientDto.contactNumber(),
-                clientDto.emailAddress(),
-                clientDto.password(),
                 mapToAddress(clientDto.addressDto()),
-                mapToLocation(clientDto.locationDto())
+                mapToLocation(clientDto.locationDto()),
+                mapToUser(clientDto.userDto())
         );
     }
 
@@ -58,54 +58,29 @@ public class ClientMapper {
         );
     }
 
-    public static ClientResponseDto mapToClientResponseDto(Client client) {
+    private static User mapToUser(UserDto userDto) {
+        return new User(
+                userDto.userId(),
+                userDto.emailAddress(),
+                userDto.password(),
+                mapToUserRole(userDto.userRole()),
+                userDto.isActive(),
+                userDto.createdAt()
+        );
+    }
+
+    private static za.co.watchdog.features.clientManagement.presentation.model.client.dto.UserRole mapToUserRole(za.co.watchdog.features.clientManagement.domain.model.UserRole userRole) {
+        return za.co.watchdog.features.clientManagement.presentation.model.client.dto.UserRole.valueOf(userRole.name());
+    }
+
+    private static  za.co.watchdog.features.clientManagement.domain.model.UserRole mapToUserRole(za.co.watchdog.features.clientManagement.presentation.model.client.dto.UserRole userRole) {
+        return za.co.watchdog.features.clientManagement.domain.model.UserRole.valueOf(userRole.name());
+    }
+
+    public static ClientResponseDto mapToClientResponseDto(Client client, String token) {
         return new ClientResponseDto(
                 client.clientId(),
-                mapToHubDto(client.hub()),
-                client.name(),
-                client.surname(),
-                client.contactNumber(),
-                client.emailAddress(),
-                mapToAddressDto(client.address()),
-                mapToLocationDto(client.location())
-        );
-    }
-
-    private static HubDto mapToHubDto(Hub hub) {
-        return new HubDto(
-                hub.hubId(),
-                mapToSenorDto(hub.sensor()),
-                hub.macAddress(),
-                hub.status(),
-                hub.lastHeartbeat()
-        );
-    }
-
-    private static AddressDto mapToAddressDto(Address address) {
-        return new AddressDto(
-                address.addressId(),
-                address.latitude(),
-                address.longitude(),
-                address.addressLineOne(),
-                address.addressLineTwo(),
-                address.suburb(),
-                address.postalCode()
-        );
-    }
-
-    private static LocationDto mapToLocationDto(Location location) {
-        return new LocationDto(
-                location.locationId(),
-                location.latitude(),
-                location.longitude()
-        );
-    }
-
-    private static SensorDto mapToSenorDto(Sensor sensor) {
-        return new SensorDto(
-                sensor.sensorId(),
-                sensor.type(),
-                sensor.zoneName()
+                token
         );
     }
 }

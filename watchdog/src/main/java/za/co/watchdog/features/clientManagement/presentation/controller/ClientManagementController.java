@@ -28,7 +28,10 @@ public class ClientManagementController {
         switch (result) {
             case Result.Success<Client> success -> {
                 return new ResponseEntity<>(
-                        ClientMapper.mapToClientResponseDto(success.data()),
+                        ClientMapper.mapToClientResponseDto(
+                                success.data(),
+                                ""
+                        ),
                         HttpStatus.OK
                 );
             }

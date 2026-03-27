@@ -6,10 +6,9 @@ public record Client(
         String name,
         String surname,
         String contactNumber,
-        String emailAddress,
-        String passwordHash,
         Address address,
-        Location location
+        Location location,
+        User user
 ) {
 
 }

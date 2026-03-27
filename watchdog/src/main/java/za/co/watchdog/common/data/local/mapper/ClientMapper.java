@@ -2,6 +2,7 @@ package za.co.watchdog.common.data.local.mapper;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.database.model.*;
+import za.co.watchdog.common.data.local.database.model.UserRole;
 import za.co.watchdog.common.util.SecurityConfig;
 import za.co.watchdog.features.clientManagement.domain.model.*;
 
@@ -20,10 +21,9 @@ public class ClientMapper {
                 clientEntity.getName(),
                 clientEntity.getSurname(),
                 clientEntity.getContactNumber(),
-                clientEntity.getEmailAddress(),
-                securityConfig.passwordEncoder().encode(clientEntity.getPasswordHash()),
                 mapToAddress(clientEntity.getAddressEntity()),
-                mapToLocation(clientEntity.getLocationEntity())
+                mapToLocation(clientEntity.getLocationEntity()),
+                mapToUser(clientEntity.getUserEntity())
         );
     }
 
@@ -72,10 +72,9 @@ public class ClientMapper {
                 client.name(),
                 client.surname(),
                 client.contactNumber(),
-                client.emailAddress(),
-                client.passwordHash(),
                 mapToAddressEntity(client.address()),
-                mapToLocationEntity(client.location())
+                mapToLocationEntity(client.location()),
+                mapToUserEntity(client.user())
         );
     }
 
@@ -114,6 +113,36 @@ public class ClientMapper {
                 sensor.sensorId(),
                 sensor.type(),
                 sensor.zoneName()
+        );
+    }
+
+    private UserRole mapToUserRole(za.co.watchdog.features.clientManagement.domain.model.UserRole userRole) {
+        return za.co.watchdog.common.data.local.database.model.UserRole.valueOf(userRole.name());
+    }
+
+    private za.co.watchdog.features.clientManagement.domain.model.UserRole mapToUserRole(UserRole userRole) {
+        return za.co.watchdog.features.clientManagement.domain.model.UserRole.valueOf(userRole.name());
+    }
+
+    private User mapToUser(UserEntity userEntity) {
+        return new User(
+                userEntity.getUserId(),
+                userEntity.getEmailAddress(),
+                userEntity.getPasswordHash(),
+                mapToUserRole(userEntity.getUserRole()),
+                userEntity.getIsActive(),
+                userEntity.getCreatedAt()
+        );
+    }
+
+    private UserEntity mapToUserEntity(User user) {
+        return new UserEntity(
+                user.userId(),
+                user.emailAddress(),
+                securityConfig.passwordEncoder().encode(user.password()),
+                mapToUserRole(user.userRole()),
+                user.isActive(),
+                user.createdAt()
         );
     }
 }
