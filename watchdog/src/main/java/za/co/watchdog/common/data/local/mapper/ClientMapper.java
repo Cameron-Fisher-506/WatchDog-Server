@@ -3,16 +3,10 @@ package za.co.watchdog.common.data.local.mapper;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.common.data.local.database.model.UserRole;
-import za.co.watchdog.common.util.SecurityConfig;
 import za.co.watchdog.features.clientManagement.domain.model.*;
 
 @Component
 public class ClientMapper {
-    private final SecurityConfig securityConfig;
-
-    public ClientMapper(SecurityConfig securityConfig) {
-        this.securityConfig = securityConfig;
-    }
 
     public Client mapToClient(ClientEntity clientEntity) {
         return new Client(
@@ -139,7 +133,7 @@ public class ClientMapper {
         return new UserEntity(
                 user.userId(),
                 user.emailAddress(),
-                securityConfig.passwordEncoder().encode(user.password()),
+                user.password(),
                 mapToUserRole(user.userRole()),
                 user.isActive(),
                 user.createdAt()

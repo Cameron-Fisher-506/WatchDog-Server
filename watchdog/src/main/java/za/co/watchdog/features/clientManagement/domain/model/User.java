@@ -14,5 +14,7 @@ public record User(
         Boolean isActive,
         Instant createdAt
 ) {
-
+        public User copyWith(String passwordHash) {
+                return new User(this.userId, this.emailAddress, passwordHash, this.userRole, this.isActive, this.createdAt);
+        }
 }

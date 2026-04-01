@@ -10,5 +10,7 @@ public record Client(
         Location location,
         User user
 ) {
-
+    public Client copyWith(String passwordHash) {
+        return new Client(this.clientId, this.hub, this.name, this.surname, this.contactNumber, this.address, this.location, this.user.copyWith(passwordHash));
+    }
 }
