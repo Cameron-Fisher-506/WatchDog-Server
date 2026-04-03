@@ -3,22 +3,26 @@ package za.co.watchdog.common.data.local.mapper;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.common.data.local.database.model.UserRole;
-import za.co.watchdog.features.clientManagement.domain.model.*;
+import za.co.watchdog.features.authManagement.domain.model.*;
 
 @Component
 public class ClientMapper {
 
     public Client mapToClient(ClientEntity clientEntity) {
-        return new Client(
-                clientEntity.getClientId(),
-                mapToHub(clientEntity.getHubEntity()),
-                clientEntity.getName(),
-                clientEntity.getSurname(),
-                clientEntity.getContactNumber(),
-                mapToAddress(clientEntity.getAddressEntity()),
-                mapToLocation(clientEntity.getLocationEntity()),
-                mapToUser(clientEntity.getUserEntity())
-        );
+        return Client.builder()
+                .userId(clientEntity.getUserId())
+                .name(clientEntity.getName())
+                .surname(clientEntity.getSurname())
+                .address(mapToAddress(clientEntity.getAddressEntity()))
+                .location(mapToLocation(clientEntity.getLocationEntity()))
+                .contactNumber(clientEntity.getContactNumber())
+                .hub(mapToHub(clientEntity.getHubEntity()))
+                .emailAddress(clientEntity.getEmailAddress())
+                .password(clientEntity.getPasswordHash())
+                .userRole(mapToUserRole(clientEntity.getUserRole()))
+                .isActive(clientEntity.getIsActive())
+                .createdAt(clientEntity.getCreatedAt())
+                .build();
     }
 
     private Hub mapToHub(HubEntity hubEntity) {
@@ -60,16 +64,20 @@ public class ClientMapper {
     }
 
     public ClientEntity mapToClientEntity(Client client) {
-        return new ClientEntity(
-                client.clientId(),
-                mapToHubEntity(client.hub()),
-                client.name(),
-                client.surname(),
-                client.contactNumber(),
-                mapToAddressEntity(client.address()),
-                mapToLocationEntity(client.location()),
-                mapToUserEntity(client.user())
-        );
+        return ClientEntity.builder()
+                .userId(client.getUserId())
+                .name(client.getName())
+                .surname(client.getSurname())
+                .addressEntity(mapToAddressEntity(client.getAddress()))
+                .locationEntity(mapToLocationEntity(client.getLocation()))
+                .contactNumber(client.getContactNumber())
+                .hubEntity(mapToHubEntity(client.getHub()))
+                .emailAddress(client.getEmailAddress())
+                .passwordHash(client.getPassword())
+                .userRole(mapToUserRole(client.getUserRole()))
+                .isActive(client.getIsActive())
+                .createdAt(client.getCreatedAt())
+                .build();
     }
 
     private HubEntity mapToHubEntity(Hub hub) {
@@ -110,33 +118,11 @@ public class ClientMapper {
         );
     }
 
-    private UserRole mapToUserRole(za.co.watchdog.features.clientManagement.domain.model.UserRole userRole) {
+    private UserRole mapToUserRole(za.co.watchdog.features.authManagement.domain.model.UserRole userRole) {
         return za.co.watchdog.common.data.local.database.model.UserRole.valueOf(userRole.name());
     }
 
-    private za.co.watchdog.features.clientManagement.domain.model.UserRole mapToUserRole(UserRole userRole) {
-        return za.co.watchdog.features.clientManagement.domain.model.UserRole.valueOf(userRole.name());
-    }
-
-    private User mapToUser(UserEntity userEntity) {
-        return new User(
-                userEntity.getUserId(),
-                userEntity.getEmailAddress(),
-                userEntity.getPasswordHash(),
-                mapToUserRole(userEntity.getUserRole()),
-                userEntity.getIsActive(),
-                userEntity.getCreatedAt()
-        );
-    }
-
-    private UserEntity mapToUserEntity(User user) {
-        return new UserEntity(
-                user.userId(),
-                user.emailAddress(),
-                user.password(),
-                mapToUserRole(user.userRole()),
-                user.isActive(),
-                user.createdAt()
-        );
+    private za.co.watchdog.features.authManagement.domain.model.UserRole mapToUserRole(UserRole userRole) {
+        return za.co.watchdog.features.authManagement.domain.model.UserRole.valueOf(userRole.name());
     }
 }

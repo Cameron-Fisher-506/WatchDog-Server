@@ -1,21 +1,16 @@
 package za.co.watchdog.common.data.local.database.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity(name = "Client")
-public class ClientEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long clientId;
-
+public class ClientEntity extends UserEntity {
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "hubId")
     private HubEntity hubEntity;
@@ -30,8 +25,4 @@ public class ClientEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "locationId")
     private LocationEntity locationEntity;
-
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "userId")
-    private UserEntity userEntity;
 }

@@ -1,27 +1,26 @@
 package za.co.watchdog.common.data.local.database.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
-@Table(name = "User")
-public class UserEntity {
+@Table(name = "user")
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long userId;
-    private String emailAddress;
-    private String passwordHash;
+    protected Long userId;
+    protected String emailAddress;
+    protected String passwordHash;
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
-    private Boolean isActive;
-    private Instant createdAt;
+    protected UserRole userRole;
+    protected Boolean isActive;
+    protected Instant createdAt;
 }

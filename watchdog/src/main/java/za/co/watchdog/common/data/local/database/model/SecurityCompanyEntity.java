@@ -1,33 +1,26 @@
 package za.co.watchdog.common.data.local.database.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "security_company")
-public class SecurityCompanyEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long securityCompanyId;
-
+public class SecurityCompanyEntity extends UserEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "clientId")
+    @JoinColumn(name = "userId")
     private ClientEntity clientEntity;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "patrolId")
+    @JoinColumn(name = "userId")
     private PatrolEntity patrolEntity;
 
     private String name;
     private String psiraLicense;
-    private String emailAddress;
     private String contactNumber;
 
 }
