@@ -13,4 +13,22 @@ public class Client extends User {
     private String contactNumber;
     private Address address;
     private Location location;
+
+    public Client copyWith(String passwordHash) {
+        return Client.builder()
+                .hub(this.hub)
+                .userId(this.userId)
+                .emailAddress(this.emailAddress)
+                .password(passwordHash)
+                .isActive(this.isActive)
+                .createdAt(this.createdAt)
+                .surname(this.surname)
+                .name(this.name)
+                .surname(this.surname)
+                .contactNumber(this.contactNumber)
+                .userRole(this.userRole)
+                .location(this.location)
+                .address(this.address)
+                .build();
+    }
 }

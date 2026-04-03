@@ -2,8 +2,8 @@ package za.co.watchdog.features.authManagement.presentation.mapper;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.features.authManagement.domain.model.*;
+import za.co.watchdog.features.authManagement.presentation.model.auth.AuthResponseDto;
 import za.co.watchdog.features.authManagement.presentation.model.client.ClientRequestDto;
-import za.co.watchdog.features.authManagement.presentation.model.client.ClientResponseDto;
 import za.co.watchdog.features.authManagement.presentation.model.client.dto.*;
 
 @Component
@@ -63,19 +63,11 @@ public class ClientMapper {
         );
     }
 
-
     private za.co.watchdog.features.authManagement.presentation.model.client.dto.UserRole mapToUserRole(za.co.watchdog.features.authManagement.domain.model.UserRole userRole) {
         return za.co.watchdog.features.authManagement.presentation.model.client.dto.UserRole.valueOf(userRole.name());
     }
 
     private za.co.watchdog.features.authManagement.domain.model.UserRole mapToUserRole(za.co.watchdog.features.authManagement.presentation.model.client.dto.UserRole userRole) {
         return za.co.watchdog.features.authManagement.domain.model.UserRole.valueOf(userRole.name());
-    }
-
-    public ClientResponseDto mapToClientResponseDto(Client client, String token) {
-        return new ClientResponseDto(
-                client.getUserId(),
-                token
-        );
     }
 }

@@ -7,39 +7,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.watchdog.common.domain.common.Result;
-import za.co.watchdog.features.authManagement.domain.model.Client;
+import za.co.watchdog.features.authManagement.domain.model.AuthenticatedUser;
 import za.co.watchdog.features.authManagement.domain.usecase.RegisterClientUseCase;
+import za.co.watchdog.features.authManagement.presentation.mapper.AuthMapper;
 import za.co.watchdog.features.authManagement.presentation.mapper.ClientMapper;
+import za.co.watchdog.features.authManagement.presentation.model.auth.AuthResponseDto;
 import za.co.watchdog.features.authManagement.presentation.model.client.ClientRequestDto;
-import za.co.watchdog.features.authManagement.presentation.model.client.ClientResponseDto;
 
 @RestController
 @RequestMapping("api/v1/authmanagement")
 public class AuthManagementController {
     private final RegisterClientUseCase registerClientUseCase;
     private final ClientMapper clientMapper;
+    private final AuthMapper authMapper;
 
-    public AuthManagementController(RegisterClientUseCase registerClientUseCase, ClientMapper clientMapper) {
+    public AuthManagementController(RegisterClientUseCase registerClientUseCase, ClientMapper clientMapper, AuthMapper authMapper) {
         this.registerClientUseCase = registerClientUseCase;
         this.clientMapper = clientMapper;
+        this.authMapper = authMapper;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ClientResponseDto> registerClient(@RequestBody ClientRequestDto clientRequestDto) {
-        Result<Client> result = this.registerClientUseCase.execute(clientMapper.mapToClient(clientRequestDto));
+    public ResponseEntity<AuthResponseDto> registerClient(@RequestBody ClientRequestDto clientRequestDto) {
+        Result<AuthenticatedUser> result = this.registerClientUseCase.execute(clientMapper.mapToClient(clientRequestDto));
         switch (result) {
-            case Result.Success<Client> success -> {
+            case Result.Success<AuthenticatedUser> success -> {
                 return new ResponseEntity<>(
 
-                        clientMapper.mapToClientResponseDto(
-                                success.data(),
-                                ""
+                        authMapper.mapToAuthtResponseDto(
+                                success.data()
                         ),
                         HttpStatus.OK
                 );
             }
 
-            case Result.Error<Client> error -> {
+            case Result.Error<AuthenticatedUser> error -> {
                 return new ResponseEntity<>(
                         HttpStatus.CONFLICT
                 );
