@@ -11,7 +11,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-@Table(name = "user")
+@Table(name = "app_user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class UserEntity {
     @Id

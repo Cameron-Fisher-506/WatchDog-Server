@@ -46,5 +46,5 @@ spring:
 #      token: /token
 security:
     jwt:
-        secret-key: mysecretkey
+        secret-key: RiR7Es0oRSt/wO47nfSyQPqdTfcIhq+Sg5Ad1RmrHmk= #TODO: Randomize this and keep it secret in production
         expiration-time: 3600000

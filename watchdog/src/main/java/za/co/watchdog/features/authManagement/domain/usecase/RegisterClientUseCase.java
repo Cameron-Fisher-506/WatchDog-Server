@@ -1,11 +1,10 @@
 package za.co.watchdog.features.authManagement.domain.usecase;
 
-import org.antlr.v4.runtime.Token;
 import org.springframework.stereotype.Component;
+import za.co.watchdog.common.data.manager.security.config.SecurityConfig;
 import za.co.watchdog.common.domain.common.Result;
 import za.co.watchdog.common.domain.manager.TokenManager;
 import za.co.watchdog.common.domain.usecase.UseCase;
-import za.co.watchdog.common.data.manager.security.config.SecurityConfig;
 import za.co.watchdog.features.authManagement.domain.model.AuthenticatedUser;
 import za.co.watchdog.features.authManagement.domain.model.Client;
 import za.co.watchdog.features.authManagement.domain.repository.ClientManagementRepository;
@@ -35,7 +34,10 @@ public class RegisterClientUseCase implements UseCase<Client, Result<Authenticat
                 Result<Client> registerClientResult = this.clientManagementRepository.registerClient(client);
                 switch (registerClientResult) {
                     case Result.Success<Client> success -> {
-                        return Result.success(new AuthenticatedUser(input.getUserId(), input.getEmailAddress(), tokenManager.generateToken(input.getEmailAddress(), input.getUserRole().name()), input.getUserRole(), input.getCreatedAt()));
+                        return Result.success(new AuthenticatedUser(success.data().getUserId(),
+                                success.data().getEmailAddress(),
+                                tokenManager.generateToken(success.data().getEmailAddress(),
+                                        success.data().getUserRole().name()), success.data().getUserRole(), success.data().getCreatedAt()));
                     }
 
                     case Result.Error<Client> resgisterClientError -> {

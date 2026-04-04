@@ -16,6 +16,12 @@ import za.co.watchdog.common.data.manager.security.filter.JwtAuthenticationFilte
 
 @Configuration
 public class SecurityConfig {
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -26,13 +32,12 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/register").permitAll()
-                        .requestMatchers("/api/v1/auth/login").authenticated()
-                        .requestMatchers("/api/v1/auth/token").authenticated()
+                        .requestMatchers("/api/v1/authmanagement/register").permitAll()
+                        .requestMatchers("/api/v1/authmanagement/login").permitAll()
+                        .requestMatchers("/api/v1/authmanagement/token").authenticated()
                                 .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
-                .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();

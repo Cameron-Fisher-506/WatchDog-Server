@@ -12,11 +12,11 @@ import lombok.*;
 @Table(name = "security_company")
 public class SecurityCompanyEntity extends UserEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "clientUserId")
     private ClientEntity clientEntity;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "patrolUserId")
     private PatrolEntity patrolEntity;
 
     private String name;

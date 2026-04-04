@@ -2,19 +2,23 @@ package za.co.watchdog.features.authManagement.presentation.model.client.dto;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
 
-@Builder
-public record UserDto(
-        Long userId,
-        String emailAddress,
-        String password,
-        @Enumerated(EnumType.STRING)
-        UserRole userRole,
-        Boolean isActive,
-        Instant createdAt
-) {
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@SuperBuilder
+public abstract class UserDto {
+    private Long userId;
+    private String emailAddress;
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+    private Boolean isActive;
+    private Instant createdAt;
 }

@@ -5,7 +5,7 @@ import za.co.watchdog.features.authManagement.domain.model.AuthenticatedUser;
 import za.co.watchdog.features.authManagement.presentation.model.auth.AuthResponseDto;
 
 @Component
-public class AuthMapper {
+public class AuthPresenterMapper {
     public AuthResponseDto mapToAuthtResponseDto(AuthenticatedUser authenticatedUser) {
         return new AuthResponseDto(
                 authenticatedUser.userId(),

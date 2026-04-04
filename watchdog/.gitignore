@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+#watchdog
+!scripts/jwt_secret_key.txt

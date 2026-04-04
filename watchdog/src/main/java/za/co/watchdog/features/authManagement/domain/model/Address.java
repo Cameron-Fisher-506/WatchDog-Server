@@ -1,5 +1,8 @@
 package za.co.watchdog.features.authManagement.domain.model;
 
+import lombok.Builder;
+
+@Builder
 public record Address(
         Long addressId,
         String latitude,
