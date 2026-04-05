@@ -4,10 +4,12 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 import java.time.Instant;
 
 @Data
+@Getter
 @Builder
 public class User {
         private Long userId;
@@ -23,9 +25,9 @@ public class User {
                         .userId(this.userId)
                         .emailAddress(this.emailAddress)
                         .password(passwordHash)
-                        .createdAt(this.createdAt)
-                        .isActive(this.isActive)
                         .userRole(this.userRole)
+                        .isActive(this.isActive)
+                        .createdAt(this.createdAt)
                         .build();
         }
 }

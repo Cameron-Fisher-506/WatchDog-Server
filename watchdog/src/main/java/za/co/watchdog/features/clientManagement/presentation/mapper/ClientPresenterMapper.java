@@ -1,27 +1,28 @@
 package za.co.watchdog.features.clientManagement.presentation.mapper;
 
 import org.springframework.stereotype.Component;
+import za.co.watchdog.common.domain.model.*;
 import za.co.watchdog.features.authManagement.domain.model.*;
-import za.co.watchdog.features.authManagement.presentation.model.clientOnboarding.ClientRequestDto;
+import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.ClientOnboardingRequestDto;
 import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.*;
 import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.UserRole;
 
 @Component
 public class ClientPresenterMapper {
-    public Client mapToClient(ClientRequestDto clientRequestDto) {
+    public Client mapToClient(ClientOnboardingRequestDto clientOnboardingRequestDto) {
         return Client.builder()
-                .userId(clientRequestDto.getUserId())
-                .hub(mapToHub(clientRequestDto.getHubDto()))
-                .address(mapToAddress(clientRequestDto.getAddressDto()))
-                .createdAt(clientRequestDto.getCreatedAt())
-                .emailAddress(clientRequestDto.getEmailAddress())
-                .password(clientRequestDto.getPassword())
-                .isActive(clientRequestDto.getIsActive())
-                .contactNumber(clientRequestDto.getContactNumber())
-                .location(mapToLocation(clientRequestDto.getLocationDto()))
-                .name(clientRequestDto.getName())
-                .surname(clientRequestDto.getSurname())
-                .userRole(mapToUserRole(clientRequestDto.getUserRole()))
+                .userId(clientOnboardingRequestDto.getUserDto().getUserId())
+                .hub(mapToHub(clientOnboardingRequestDto.getHubDto()))
+                .address(mapToAddress(clientOnboardingRequestDto.getAddressDto()))
+                .createdAt(clientOnboardingRequestDto.getUserDto().getCreatedAt())
+                .emailAddress(clientOnboardingRequestDto.getUserDto().getEmailAddress())
+                .password(clientOnboardingRequestDto.getUserDto().getPassword())
+                .isActive(clientOnboardingRequestDto.getUserDto().getIsActive())
+                .contactNumber(clientOnboardingRequestDto.getContactNumber())
+                .location(mapToLocation(clientOnboardingRequestDto.getLocationDto()))
+                .name(clientOnboardingRequestDto.getName())
+                .surname(clientOnboardingRequestDto.getSurname())
+                .userRole(mapToUserRole(clientOnboardingRequestDto.getUserDto().getUserRole()))
                 .build();
     }
 
@@ -59,11 +60,11 @@ public class ClientPresenterMapper {
                 .build();
     }
 
-    private UserRole mapToUserRole(za.co.watchdog.features.authManagement.domain.model.UserRole userRole) {
+    private UserRole mapToUserRole(za.co.watchdog.common.domain.model.UserRole userRole) {
         return UserRole.valueOf(userRole.name());
     }
 
-    private za.co.watchdog.features.authManagement.domain.model.UserRole mapToUserRole(UserRole userRole) {
-        return za.co.watchdog.features.authManagement.domain.model.UserRole.valueOf(userRole.name());
+    private za.co.watchdog.common.domain.model.UserRole mapToUserRole(UserRole userRole) {
+        return za.co.watchdog.common.domain.model.UserRole.valueOf(userRole.name());
     }
 }

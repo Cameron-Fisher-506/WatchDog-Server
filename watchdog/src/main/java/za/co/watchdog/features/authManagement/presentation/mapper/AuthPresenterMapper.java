@@ -1,6 +1,7 @@
 package za.co.watchdog.features.authManagement.presentation.mapper;
 
 import org.springframework.stereotype.Component;
+import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.features.authManagement.domain.model.AuthenticatedUser;
 import za.co.watchdog.features.authManagement.presentation.model.AuthResponseDto;
 import za.co.watchdog.features.authManagement.presentation.model.register.RegisterRequestDto;
@@ -29,11 +30,11 @@ public class AuthPresenterMapper {
                 .build();
     }
 
-    private UserRole mapToUserRole(za.co.watchdog.features.authManagement.domain.model.UserRole userRole) {
+    private UserRole mapToUserRole(za.co.watchdog.common.domain.model.UserRole userRole) {
         return UserRole.valueOf(userRole.name());
     }
 
-    private za.co.watchdog.features.authManagement.domain.model.UserRole mapToUserRole(UserRole userRole) {
-        return za.co.watchdog.features.authManagement.domain.model.UserRole.valueOf(userRole.name());
+    private za.co.watchdog.common.domain.model.UserRole mapToUserRole(UserRole userRole) {
+        return za.co.watchdog.common.domain.model.UserRole.valueOf(userRole.name());
     }
 }

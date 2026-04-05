@@ -9,10 +9,9 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@Builder
 @Entity
 @Table(name = "app_user")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

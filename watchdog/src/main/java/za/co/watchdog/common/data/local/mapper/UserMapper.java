@@ -3,6 +3,7 @@ package za.co.watchdog.common.data.local.mapper;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
 import za.co.watchdog.common.data.local.database.model.UserRole;
+import za.co.watchdog.common.domain.model.User;
 
 @Component
 public class UserMapper {
@@ -10,8 +11,8 @@ public class UserMapper {
         return User.builder()
                 .userId(userEntity.getUserId())
                 .emailAddress(userEntity.getEmailAddress())
-                .isActive(userEntity.getIsActive())
                 .createdAt(userEntity.getCreatedAt())
+                .isActive(userEntity.getIsActive())
                 .userRole(mapToUserRole(userEntity.getUserRole()))
                 .build();
     }
@@ -27,11 +28,11 @@ public class UserMapper {
                 .build();
     }
 
-    private UserRole mapToUserRole(za.co.watchdog.features.authManagement.domain.model.UserRole userRole) {
+    private UserRole mapToUserRole(za.co.watchdog.common.domain.model.UserRole userRole) {
         return za.co.watchdog.common.data.local.database.model.UserRole.valueOf(userRole.name());
     }
 
-    private za.co.watchdog.features.authManagement.domain.model.UserRole mapToUserRole(UserRole userRole) {
-        return za.co.watchdog.features.authManagement.domain.model.UserRole.valueOf(userRole.name());
+    private za.co.watchdog.common.domain.model.UserRole mapToUserRole(UserRole userRole) {
+        return za.co.watchdog.common.domain.model.UserRole.valueOf(userRole.name());
     }
 }

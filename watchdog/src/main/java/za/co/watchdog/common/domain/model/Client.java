@@ -1,34 +1,31 @@
 package za.co.watchdog.common.domain.model;
 
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
-
+@Data
 @Getter
-@SuperBuilder
-public class Client extends User {
+@Builder
+public class Client {
     private Hub hub;
     private String name;
     private String surname;
     private String contactNumber;
     private Address address;
     private Location location;
+    private User user;
 
-    public Client copyWith(String passwordHash) {
+    public Client copyWith(User user) {
         return Client.builder()
-                .hub(this.hub)
-                .userId(this.userId)
-                .emailAddress(this.emailAddress)
-                .password(passwordHash)
-                .isActive(this.isActive)
-                .createdAt(this.createdAt)
-                .surname(this.surname)
-                .name(this.name)
-                .surname(this.surname)
-                .contactNumber(this.contactNumber)
-                .userRole(this.userRole)
-                .location(this.location)
-                .address(this.address)
+                .hub(this.getHub())
+                .user(user)
+                .name(this.getName())
+                .surname(this.getSurname())
+                .contactNumber(this.getContactNumber())
+                .address(this.getAddress())
+                .location(this.getLocation())
                 .build();
     }
 }

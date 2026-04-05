@@ -7,6 +7,7 @@ import za.co.watchdog.common.data.local.database.dao.UserDao;
 import za.co.watchdog.common.data.local.database.model.ClientEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
 import za.co.watchdog.common.data.local.mapper.UserMapper;
+import za.co.watchdog.common.domain.model.User;
 
 @Component
 public class ClientManagementLocalDataSourceImpl implements ClientManagementLocalDataSource {
@@ -30,10 +31,10 @@ public class ClientManagementLocalDataSourceImpl implements ClientManagementLoca
     }
 
     @Override
-    public DatabaseResponse<User> fetchUser(UserEntity userEntity) {
+    public DatabaseResponse<UserEntity> fetchUser(UserEntity userEntity) {
         try {
             return userDao.findByEmailAddress(userEntity.getEmailAddress())
-                    .map(object -> DatabaseResponse.success(userMapper.mapToUser(object)))
+                    .map(DatabaseResponse::success)
                     .orElseGet(() -> DatabaseResponse.error("Account does not exists."));
         } catch(Exception e) {
             return new DatabaseResponse.Error<>(e.getMessage());

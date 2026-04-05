@@ -2,18 +2,16 @@ package za.co.watchdog.features.clientManagement.presentation.model.clientOnboar
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 
 import java.time.Instant;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@SuperBuilder
-public abstract class UserDto {
+@Builder
+public class UserDto {
     private Long userId;
     private String emailAddress;
     private String password;

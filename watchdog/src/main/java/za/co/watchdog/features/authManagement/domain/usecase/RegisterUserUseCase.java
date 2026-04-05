@@ -22,15 +22,15 @@ public class RegisterUserUseCase implements UseCase<User, Result<AuthenticatedUs
     }
 
     @Override
-    public Result<AuthenticatedUser> execute(User input) {
-        Result<User> result = this.authManagementRepository.fetchUser(input);
+    public Result<AuthenticatedUser> execute(User user) {
+        Result<User> result = this.authManagementRepository.fetchUser(user);
         switch (result) {
             case Result.Success<User> success -> {
                 return Result.error("Account already exists");
             }
 
             case Result.Error<User> error -> {
-                User user = input.copyWith(securityConfig.passwordEncoder().encode(input.getPassword()));
+                user.setPassword(securityConfig.passwordEncoder().encode(user.getPassword()));
                 Result<User> registerUserResult = this.authManagementRepository.register(user);
                 switch (registerUserResult) {
                     case Result.Success<User> success -> {

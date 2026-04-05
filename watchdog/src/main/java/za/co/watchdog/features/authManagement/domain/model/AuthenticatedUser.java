@@ -1,6 +1,7 @@
 package za.co.watchdog.features.authManagement.domain.model;
 
 import lombok.Builder;
+import za.co.watchdog.common.domain.model.UserRole;
 
 import java.time.Instant;
 

@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 @Entity(name = "Client")
-public class ClientEntity extends UserEntity {
+public class ClientEntity {
+    @Id
+    private Long clientId;
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "hubId")
     private HubEntity hubEntity;
@@ -25,4 +26,9 @@ public class ClientEntity extends UserEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "locationId")
     private LocationEntity locationEntity;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "userId")
+    private UserEntity userEntity;
 }

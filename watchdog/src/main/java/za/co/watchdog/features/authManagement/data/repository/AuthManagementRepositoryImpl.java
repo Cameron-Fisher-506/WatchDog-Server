@@ -1,8 +1,11 @@
 package za.co.watchdog.features.authManagement.data.repository;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
+import za.co.watchdog.common.data.local.database.model.UserEntity;
 import za.co.watchdog.common.domain.common.Result;
+import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.features.authManagement.data.local.dataSource.AuthManagementLocalDataSource;
 import za.co.watchdog.common.data.local.mapper.UserMapper;
 import za.co.watchdog.features.authManagement.domain.repository.AuthManagementRepository;
@@ -20,29 +23,18 @@ public class AuthManagementRepositoryImpl implements AuthManagementRepository {
 
     @Override
     public Result<User> fetchUser(User user) {
-        DatabaseResponse<User> databaseResponse = this.authManagementLocalDataSource.fetchUser(userMapper.mapToUserEntity(user));
-        switch (databaseResponse) {
-            case DatabaseResponse.Success<User> success -> {
-                return Result.success(success.data());
-            }
+        DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.fetchUser(userMapper.mapToUserEntity(user));
+        return getUserResult(databaseResponse);
+    }
 
-            case DatabaseResponse.Error<User> error -> {
-                return Result.error(error.message());
-            }
-        }
+    @NonNull
+    public Result<User> getUserResult(DatabaseResponse<UserEntity> databaseResponse) {
+        return getUserResult(databaseResponse, userMapper);
     }
 
     @Override
     public Result<User> register(User user) {
-        DatabaseResponse<User> databaseResponse = this.authManagementLocalDataSource.register(userMapper.mapToUserEntity(user));
-        switch (databaseResponse) {
-            case DatabaseResponse.Success<User> success -> {
-                return Result.success(success.data());
-            }
-
-            case DatabaseResponse.Error<User> error -> {
-                return Result.error(error.message());
-            }
-        }
+        DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.register(userMapper.mapToUserEntity(user));
+        return getUserResult(databaseResponse);
     }
 }

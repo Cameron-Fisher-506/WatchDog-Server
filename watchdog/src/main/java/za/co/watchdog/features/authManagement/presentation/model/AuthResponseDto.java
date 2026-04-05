@@ -1,5 +1,7 @@
 package za.co.watchdog.features.authManagement.presentation.model;
 
+import za.co.watchdog.common.domain.model.UserRole;
+
 import java.time.Instant;
 
 public record AuthResponseDto(
