@@ -13,7 +13,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "app_user")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class UserEntity {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     protected Long userId;
