@@ -61,7 +61,7 @@ public class ClientPresenterMapper {
                 .emailAddress(userDto.getEmailAddress())
                 .createdAt(userDto.getCreatedAt())
                 .isActive(userDto.getIsActive())
-                .userRole(mapToUserRole(userDto.getUserRole()))
+                .userRole(mapToUserRole(userDto.getUserRole() != null ? userDto.getUserRole() : UserRole.UNKNOWN))
                 .build();
     }
 
