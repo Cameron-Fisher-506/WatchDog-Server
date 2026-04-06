@@ -2,27 +2,22 @@ package za.co.watchdog.features.clientManagement.presentation.mapper;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.domain.model.*;
-import za.co.watchdog.features.authManagement.domain.model.*;
 import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.ClientOnboardingRequestDto;
 import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.*;
-import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.UserRole;
+import za.co.watchdog.common.presentation.model.UserRole;
 
 @Component
 public class ClientPresenterMapper {
     public Client mapToClient(ClientOnboardingRequestDto clientOnboardingRequestDto) {
         return Client.builder()
-                .userId(clientOnboardingRequestDto.getUserDto().getUserId())
+                .clientId(clientOnboardingRequestDto.getClientId())
                 .hub(mapToHub(clientOnboardingRequestDto.getHubDto()))
                 .address(mapToAddress(clientOnboardingRequestDto.getAddressDto()))
-                .createdAt(clientOnboardingRequestDto.getUserDto().getCreatedAt())
-                .emailAddress(clientOnboardingRequestDto.getUserDto().getEmailAddress())
-                .password(clientOnboardingRequestDto.getUserDto().getPassword())
-                .isActive(clientOnboardingRequestDto.getUserDto().getIsActive())
                 .contactNumber(clientOnboardingRequestDto.getContactNumber())
                 .location(mapToLocation(clientOnboardingRequestDto.getLocationDto()))
                 .name(clientOnboardingRequestDto.getName())
                 .surname(clientOnboardingRequestDto.getSurname())
-                .userRole(mapToUserRole(clientOnboardingRequestDto.getUserDto().getUserRole()))
+                .user(mapToUser(clientOnboardingRequestDto.getUserDto()))
                 .build();
     }
 
@@ -57,6 +52,16 @@ public class ClientPresenterMapper {
         return Sensor.builder()
                 .zoneName(sensorDto.zoneName())
                 .type(sensorDto.type())
+                .build();
+    }
+
+    private User mapToUser(UserDto userDto) {
+        return User.builder()
+                .userId(userDto.getUserId())
+                .emailAddress(userDto.getEmailAddress())
+                .createdAt(userDto.getCreatedAt())
+                .isActive(userDto.getIsActive())
+                .userRole(mapToUserRole(userDto.getUserRole()))
                 .build();
     }
 

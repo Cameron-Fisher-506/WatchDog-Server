@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Builder
 public class Client {
+    private Long clientId;
     private Hub hub;
     private String name;
     private String surname;
@@ -19,6 +20,7 @@ public class Client {
 
     public Client copyWith(User user) {
         return Client.builder()
+                .clientId(this.getClientId())
                 .hub(this.getHub())
                 .user(user)
                 .name(this.getName())

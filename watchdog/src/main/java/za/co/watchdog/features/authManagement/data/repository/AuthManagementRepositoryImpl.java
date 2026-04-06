@@ -1,6 +1,5 @@
 package za.co.watchdog.features.authManagement.data.repository;
 
-import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
@@ -20,21 +19,31 @@ public class AuthManagementRepositoryImpl implements AuthManagementRepository {
         this.userMapper = userMapper;
     }
 
-
     @Override
     public Result<User> fetchUser(User user) {
         DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.fetchUser(userMapper.mapToUserEntity(user));
-        return getUserResult(databaseResponse);
-    }
+        switch (databaseResponse) {
+            case DatabaseResponse.Success<UserEntity> success -> {
+                return Result.success(userMapper.mapToUser(success.data()));
+            }
 
-    @NonNull
-    public Result<User> getUserResult(DatabaseResponse<UserEntity> databaseResponse) {
-        return getUserResult(databaseResponse, userMapper);
+            case DatabaseResponse.Error<UserEntity> error -> {
+                return Result.error(error.message());
+            }
+        }
     }
 
     @Override
     public Result<User> register(User user) {
         DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.register(userMapper.mapToUserEntity(user));
-        return getUserResult(databaseResponse);
+        switch (databaseResponse) {
+            case DatabaseResponse.Success<UserEntity> success -> {
+                return Result.success(userMapper.mapToUser(success.data()));
+            }
+
+            case DatabaseResponse.Error<UserEntity> error -> {
+                return Result.error(error.message());
+            }
+        }
     }
 }

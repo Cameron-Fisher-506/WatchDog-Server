@@ -1,5 +1,6 @@
 package za.co.watchdog.features.clientManagement.data.repository;
 
+import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
 import za.co.watchdog.common.data.local.database.model.ClientEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
@@ -11,6 +12,7 @@ import za.co.watchdog.features.clientManagement.data.local.dataSource.ClientMana
 import za.co.watchdog.features.clientManagement.data.local.mapper.ClientMapper;
 import za.co.watchdog.features.clientManagement.domain.repository.ClientManagementRepository;
 
+@Component
 public class ClientManagementRepositoryImpl implements ClientManagementRepository {
     private final ClientManagementLocalDataSource clientManagementLocalDataSource;
     private final UserMapper userMapper;

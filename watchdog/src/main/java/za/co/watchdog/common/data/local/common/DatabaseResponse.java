@@ -1,7 +1,5 @@
 package za.co.watchdog.common.data.local.common;
 
-import org.hibernate.boot.model.relational.Database;
-
 public sealed interface DatabaseResponse<T> {
     record Success<T>(T data) implements DatabaseResponse<T> {}
     record Error<T>(String message) implements DatabaseResponse<T> {}

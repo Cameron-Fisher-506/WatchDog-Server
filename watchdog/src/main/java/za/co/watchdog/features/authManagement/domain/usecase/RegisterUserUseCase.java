@@ -6,23 +6,20 @@ import za.co.watchdog.common.domain.common.Result;
 import za.co.watchdog.common.domain.manager.TokenManager;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.domain.usecase.UseCase;
-import za.co.watchdog.features.authManagement.domain.model.AuthenticatedUser;
 import za.co.watchdog.features.authManagement.domain.repository.AuthManagementRepository;
 
 @Component
-public class RegisterUserUseCase implements UseCase<User, Result<AuthenticatedUser>> {
+public class RegisterUserUseCase implements UseCase<User, Result<User>> {
     private final AuthManagementRepository authManagementRepository;
     private final SecurityConfig securityConfig;
-    private final TokenManager tokenManager;
 
-    public RegisterUserUseCase(AuthManagementRepository authManagementRepository, SecurityConfig securityConfig, TokenManager tokenManager) {
+    public RegisterUserUseCase(AuthManagementRepository authManagementRepository, SecurityConfig securityConfig) {
         this.authManagementRepository = authManagementRepository;
         this.securityConfig = securityConfig;
-        this.tokenManager = tokenManager;
     }
 
     @Override
-    public Result<AuthenticatedUser> execute(User user) {
+    public Result<User> execute(User user) {
         Result<User> result = this.authManagementRepository.fetchUser(user);
         switch (result) {
             case Result.Success<User> success -> {
@@ -34,10 +31,7 @@ public class RegisterUserUseCase implements UseCase<User, Result<AuthenticatedUs
                 Result<User> registerUserResult = this.authManagementRepository.register(user);
                 switch (registerUserResult) {
                     case Result.Success<User> success -> {
-                        return Result.success(new AuthenticatedUser(success.data().getUserId(),
-                                success.data().getEmailAddress(),
-                                tokenManager.generateToken(success.data().getEmailAddress(),
-                                        success.data().getUserRole().name()), success.data().getUserRole(), success.data().getCreatedAt()));
+                        return Result.success(success.data());
                     }
 
                     case Result.Error<User> resgisterClientError -> {

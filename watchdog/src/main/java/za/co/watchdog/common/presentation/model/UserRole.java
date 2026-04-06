@@ -1,4 +1,4 @@
-package za.co.watchdog.common.domain.model;
+package za.co.watchdog.common.presentation.model;
 
 public enum UserRole {
     CLIENT,

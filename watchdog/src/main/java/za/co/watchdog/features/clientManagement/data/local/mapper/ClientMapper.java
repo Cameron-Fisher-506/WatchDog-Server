@@ -76,8 +76,7 @@ public class ClientMapper {
                 .locationEntity(mapToLocationEntity(client.getLocation()))
                 .contactNumber(client.getContactNumber())
                 .hubEntity(mapToHubEntity(client.getHub()))
-                .userEntity(mapToUserE
-                )
+                .userEntity(mapToUserEntity(client.getUser()))
                 .build();
     }
 
@@ -119,8 +118,8 @@ public class ClientMapper {
         );
     }
 
-    private User mapToUserEntity(User user) {
-        return User.builder()
+    private UserEntity mapToUserEntity(User user) {
+        return UserEntity.builder()
                 .userId(user.getUserId())
                 .emailAddress(user.getEmailAddress())
                 .createdAt(user.getCreatedAt())
@@ -133,7 +132,7 @@ public class ClientMapper {
         return UserRole.valueOf(userRole.name());
     }
 
-    private za.co.watchdog.common.domain.model.UserRole mapToDataUserRole(UserRole userRole) {
+    private za.co.watchdog.common.domain.model.UserRole mapToUserRole(UserRole userRole) {
         return za.co.watchdog.common.domain.model.UserRole.valueOf(userRole.name());
     }
 }

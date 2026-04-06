@@ -3,6 +3,7 @@ package za.co.watchdog.features.clientManagement.presentation.model.clientOnboar
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
+import za.co.watchdog.common.presentation.model.UserRole;
 
 import java.time.Instant;
 

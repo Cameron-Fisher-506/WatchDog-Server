@@ -1,9 +1,12 @@
 package za.co.watchdog.features.authManagement.data.local.dataSource;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
 import za.co.watchdog.common.data.local.database.dao.UserDao;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
+
+import javax.xml.crypto.Data;
 
 @Component
 public class AuthManagementLocalDataSourceImpl implements AuthManagementLocalDataSource {
@@ -31,10 +34,5 @@ public class AuthManagementLocalDataSourceImpl implements AuthManagementLocalDat
         } catch(Exception e) {
             return new DatabaseResponse.Error<>(e.getMessage());
         }
-    }
-
-    @Override
-    public DatabaseResponse<UserEntity> login(UserEntity userEntity) {
-        return null;
     }
 }

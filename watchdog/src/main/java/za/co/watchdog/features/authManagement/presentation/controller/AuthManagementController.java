@@ -7,38 +7,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.watchdog.common.domain.common.Result;
-import za.co.watchdog.features.authManagement.domain.model.AuthenticatedUser;
+import za.co.watchdog.common.domain.model.User;
+import za.co.watchdog.features.authManagement.domain.usecase.LoginUserUseCase;
 import za.co.watchdog.features.authManagement.domain.usecase.RegisterUserUseCase;
 import za.co.watchdog.features.authManagement.presentation.mapper.AuthPresenterMapper;
-import za.co.watchdog.features.authManagement.presentation.model.register.RegisterRequestDto;
 import za.co.watchdog.features.authManagement.presentation.model.AuthResponseDto;
 import za.co.watchdog.features.authManagement.presentation.model.login.LoginRequestDto;
+import za.co.watchdog.features.authManagement.presentation.model.register.RegisterRequestDto;
 
 @RestController
 @RequestMapping("api/v1/authmanagement")
 public class AuthManagementController {
     private final RegisterUserUseCase registerUserUseCase;
+    private final LoginUserUseCase loginUserUseCase;
     private final AuthPresenterMapper authPresenterMapper;
 
-    public AuthManagementController(RegisterUserUseCase registerUserUseCase, AuthPresenterMapper authPresenterMapper) {
+    public AuthManagementController(RegisterUserUseCase registerUserUseCase, LoginUserUseCase loginUserUseCase, AuthPresenterMapper authPresenterMapper) {
         this.registerUserUseCase = registerUserUseCase;
+        this.loginUserUseCase = loginUserUseCase;
         this.authPresenterMapper = authPresenterMapper;
     }
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDto> register(@RequestBody RegisterRequestDto registerRequestDto) {
-        Result<AuthenticatedUser> result = this.registerUserUseCase.execute(authPresenterMapper.mapToUser(registerRequestDto));
+        Result<User> result = this.registerUserUseCase.execute(authPresenterMapper.mapToUser(registerRequestDto));
         switch (result) {
-            case Result.Success<AuthenticatedUser> success -> {
+            case Result.Success<User> success -> {
                 return new ResponseEntity<>(
-                        authPresenterMapper.mapToAuthResponseDto(
-                                success.data()
-                        ),
+                        authPresenterMapper.mapToAuthResponseDto(success.data()),
                         HttpStatus.OK
                 );
             }
 
-            case Result.Error<AuthenticatedUser> error -> {
+            case Result.Error<User> error -> {
                 return new ResponseEntity<>(
                         HttpStatus.CONFLICT
                 );
@@ -48,6 +49,20 @@ public class AuthManagementController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
-        return null;
+        Result<User> result = this.loginUserUseCase.execute(authPresenterMapper.mapToUser(loginRequestDto));
+        switch (result) {
+            case Result.Success<User> success -> {
+                return new ResponseEntity<>(
+                        authPresenterMapper.mapToAuthResponseDto(success.data()),
+                        HttpStatus.OK
+                );
+            }
+
+            case Result.Error<User> error -> {
+                return new ResponseEntity<>(
+                        HttpStatus.CONFLICT
+                );
+            }
+        }
     }
 }

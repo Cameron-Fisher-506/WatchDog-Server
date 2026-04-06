@@ -8,6 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface ClientDao extends JpaRepository<ClientEntity, Long> {
-
-    Optional<ClientEntity> findByEmailAddress(String emailAddress);
 }

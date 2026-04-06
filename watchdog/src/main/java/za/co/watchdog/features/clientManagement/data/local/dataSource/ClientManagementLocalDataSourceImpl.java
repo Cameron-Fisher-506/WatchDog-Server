@@ -7,7 +7,6 @@ import za.co.watchdog.common.data.local.database.dao.UserDao;
 import za.co.watchdog.common.data.local.database.model.ClientEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
 import za.co.watchdog.common.data.local.mapper.UserMapper;
-import za.co.watchdog.common.domain.model.User;
 
 @Component
 public class ClientManagementLocalDataSourceImpl implements ClientManagementLocalDataSource {
