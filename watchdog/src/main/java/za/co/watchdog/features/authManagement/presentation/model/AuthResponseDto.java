@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import za.co.watchdog.common.domain.model.UserRole;
-
-import java.time.Instant;
+import za.co.watchdog.common.presentation.model.UserStatus;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,8 +12,8 @@ import java.time.Instant;
 @Builder
 public class AuthResponseDto {
     Long userId;
-    String emailAddress;
+    String deviceFingerprint;
+    UserStatus status;
     String token;
-    UserRole userRole;
-    Instant authenticatedAt;
+    String message;
 }

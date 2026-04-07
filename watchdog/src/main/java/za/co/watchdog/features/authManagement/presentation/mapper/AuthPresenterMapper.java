@@ -7,6 +7,7 @@ import za.co.watchdog.features.authManagement.presentation.model.AuthResponseDto
 import za.co.watchdog.features.authManagement.presentation.model.login.LoginRequestDto;
 import za.co.watchdog.features.authManagement.presentation.model.register.RegisterRequestDto;
 import za.co.watchdog.common.presentation.model.UserRole;
+import za.co.watchdog.common.presentation.model.UserStatus;
 
 @Component
 public class AuthPresenterMapper {
@@ -19,10 +20,8 @@ public class AuthPresenterMapper {
     public AuthResponseDto mapToAuthResponseDto(User user) {
         return AuthResponseDto.builder()
                 .userId(user.getUserId())
-                .emailAddress(user.getEmailAddress())
                 .token(tokenManager.generateToken(user.getEmailAddress(), user.getUserRole().name()))
-                .userRole(user.getUserRole())
-                .authenticatedAt(user.getCreatedAt())
+                .status(mapToUserStatus(user.getUserStatus()))
                 .build();
     }
 
@@ -31,7 +30,7 @@ public class AuthPresenterMapper {
                 .userId(registerRequestDto.getUserId())
                 .emailAddress(registerRequestDto.getEmailAddress())
                 .password(registerRequestDto.getPassword())
-                .isActive(registerRequestDto.getIsActive())
+                .userStatus(mapToUserStatus(registerRequestDto.getUserStatus()))
                 .createdAt(registerRequestDto.getCreatedAt())
                 .userRole(mapToUserRole(registerRequestDto.getUserRole()))
                 .build();
@@ -50,5 +49,13 @@ public class AuthPresenterMapper {
 
     private za.co.watchdog.common.domain.model.UserRole mapToUserRole(UserRole userRole) {
         return za.co.watchdog.common.domain.model.UserRole.valueOf(userRole.name());
+    }
+
+    private UserStatus mapToUserStatus(za.co.watchdog.common.domain.model.UserStatus userStatus) {
+        return UserStatus.valueOf(userStatus.name());
+    }
+
+    private za.co.watchdog.common.domain.model.UserStatus mapToUserStatus(UserStatus userStatus) {
+        return za.co.watchdog.common.domain.model.UserStatus.valueOf(userStatus.name());
     }
 }

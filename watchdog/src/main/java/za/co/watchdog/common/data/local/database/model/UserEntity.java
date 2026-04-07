@@ -15,11 +15,13 @@ import java.time.Instant;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    protected Long userId;
-    protected String emailAddress;
-    protected String passwordHash;
+    private Long userId;
+    private String emailAddress;
+    private String passwordHash;
     @Enumerated(EnumType.STRING)
-    protected UserRole userRole;
-    protected Boolean isActive;
-    protected Instant createdAt;
+    private UserRole userRole;
+    private UserStatus userStatus;
+    private Instant createdAt;
+    private String verificationCode;
+    private Instant verificationCodeExpiresAt;
 }

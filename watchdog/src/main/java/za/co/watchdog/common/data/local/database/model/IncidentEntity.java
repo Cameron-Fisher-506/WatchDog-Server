@@ -19,17 +19,21 @@ public class IncidentEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long incidentId;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "clientId")
     private ClientEntity clientEntity;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "securityCompanyId")
     private SecurityCompanyEntity securityCompanyEntity;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "patrolId")
     private PatrolEntity patrolEntity;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "addressId")
+    private AddressEntity addressEntity;
 
     private String Status;
     private Instant createdAt;

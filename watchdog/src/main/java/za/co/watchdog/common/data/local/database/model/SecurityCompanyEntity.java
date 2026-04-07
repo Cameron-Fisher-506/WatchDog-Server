@@ -14,15 +14,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "security_company")
 public class SecurityCompanyEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long securityCompanyId;
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "clientUserId")
-    private ClientEntity clientEntity;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "patrolUserId")
-    private PatrolEntity patrolEntity;
-
     private String name;
     private String psiraLicense;
     private String contactNumber;

@@ -2,9 +2,9 @@ package za.co.watchdog.features.clientManagement.presentation.mapper;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.domain.model.*;
-import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.ClientOnboardingRequestDto;
-import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.*;
+import za.co.watchdog.common.presentation.model.*;
 import za.co.watchdog.common.presentation.model.UserRole;
+import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.ClientOnboardingRequestDto;
 
 @Component
 public class ClientPresenterMapper {

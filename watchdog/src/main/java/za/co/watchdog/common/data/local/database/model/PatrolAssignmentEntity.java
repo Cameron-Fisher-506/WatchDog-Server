@@ -6,21 +6,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+import java.time.Instant;
+
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Builder
 @Entity
-@Table(name = "address")
-public class AddressEntity {
+@Table(name = "patrol_assignment")
+public class PatrolAssignmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long addressId;
-    @OneToOne
+    private Long patrolAssignmentId;
+    @ManyToOne
+    @JoinColumn(name = "patrolId")
+    private PatrolEntity patrolEntity;
+    @ManyToOne
     @JoinColumn(name = "locationId")
     private LocationEntity locationEntity;
-    private String addressLineOne;
-    private String addressLineTwo;
-    private String suburb;
-    private String postalCode;
+    private Instant assignedAt;
+    private Boolean isActive;
 }

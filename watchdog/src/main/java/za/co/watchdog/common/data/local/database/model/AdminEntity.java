@@ -12,4 +12,8 @@ public class AdminEntity {
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "userId")
     private UserEntity userEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "securityCompanyId")
+    private SecurityCompanyEntity securityCompanyEntity;
 }

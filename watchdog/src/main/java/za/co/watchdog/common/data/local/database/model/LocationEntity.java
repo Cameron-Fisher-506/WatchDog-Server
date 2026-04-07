@@ -18,4 +18,7 @@ public class LocationEntity {
     private Long locationId;
     private String latitude;
     private String longitude;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "clientId")
+    private ClientEntity clientEntity;
 }

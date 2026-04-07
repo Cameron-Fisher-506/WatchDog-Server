@@ -1,4 +1,4 @@
-package za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto;
+package za.co.watchdog.common.presentation.model;
 
 public record AddressDto(
         String latitude,

@@ -5,7 +5,6 @@ import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-
 import java.time.Instant;
 
 @Data
@@ -17,8 +16,10 @@ public class User {
         private String password;
         @Enumerated(EnumType.STRING)
         private UserRole userRole;
-        private Boolean isActive;
+        private UserStatus userStatus;
         private Instant createdAt;
+        private String verificationCode;
+        private Instant verificationCodeExpiresAt;
 
         public User copyWith(String passwordHash) {
                 return User.builder()
@@ -26,8 +27,10 @@ public class User {
                         .emailAddress(this.emailAddress)
                         .password(passwordHash)
                         .userRole(this.userRole)
-                        .isActive(this.isActive)
+                        .userStatus(this.userStatus)
                         .createdAt(this.createdAt)
+                        .verificationCode(this.verificationCode)
+                        .verificationCodeExpiresAt(this.verificationCodeExpiresAt)
                         .build();
         }
 }

@@ -23,12 +23,12 @@ public class ClientEntity {
     @JoinColumn(name = "addressId")
     private AddressEntity addressEntity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "locationId")
-    private LocationEntity locationEntity;
-
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "userId")
     private UserEntity userEntity;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "securityCompanyId")
+    private SecurityCompanyEntity securityCompanyEntity;
 }
