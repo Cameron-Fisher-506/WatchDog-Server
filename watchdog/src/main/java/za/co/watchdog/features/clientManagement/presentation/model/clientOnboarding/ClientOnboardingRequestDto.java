@@ -11,12 +11,10 @@ import za.co.watchdog.common.presentation.model.UserDto;
 @Data
 @Builder
 public class ClientOnboardingRequestDto {
-    Long clientId;
     HubDto hubDto;
     String name;
     String surname;
     String contactNumber;
-    AddressDto addressDto;
     LocationDto locationDto;
-    UserDto userDto;
+    Long userId;
 }

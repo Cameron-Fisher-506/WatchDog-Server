@@ -10,15 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "address")
+@Embeddable
 public class AddressEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long addressId;
-    @OneToOne
-    @JoinColumn(name = "locationId")
-    private LocationEntity locationEntity;
     private String addressLineOne;
     private String addressLineTwo;
     private String suburb;

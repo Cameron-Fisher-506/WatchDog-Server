@@ -18,6 +18,9 @@ public class LocationEntity {
     private Long locationId;
     private String latitude;
     private String longitude;
+
+    @Embedded
+    private AddressEntity addressEntity;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "clientId")
     private ClientEntity clientEntity;

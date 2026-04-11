@@ -3,11 +3,11 @@ package za.co.watchdog.features.authManagement.data.repository;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
-import za.co.watchdog.common.domain.common.Result;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.features.authManagement.data.local.dataSource.AuthManagementLocalDataSource;
 import za.co.watchdog.common.data.local.mapper.UserMapper;
 import za.co.watchdog.features.authManagement.domain.repository.AuthManagementRepository;
+import java.util.Optional;
 
 @Component
 public class AuthManagementRepositoryImpl implements AuthManagementRepository {
@@ -20,29 +20,58 @@ public class AuthManagementRepositoryImpl implements AuthManagementRepository {
     }
 
     @Override
-    public Result<User> fetchUser(User user) {
-        DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.fetchUser(userMapper.mapToUserEntity(user));
+    public Optional<User> fetchUserByEmailAddress(String emailAddress) {
+        DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.fetchUserByEmailAddress(emailAddress);
         switch (databaseResponse) {
             case DatabaseResponse.Success<UserEntity> success -> {
-                return Result.success(userMapper.mapToUser(success.data()));
+                return Optional.of(userMapper.mapToUser(success.data()));
             }
 
             case DatabaseResponse.Error<UserEntity> error -> {
-                return Result.error(error.message());
+                return Optional.empty();
             }
         }
     }
 
     @Override
-    public Result<User> register(User user) {
-        DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.register(userMapper.mapToUserEntity(user));
+    public Optional<User> fetchUserById(Long userId) {
+        DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.fetchUserById(userId);
         switch (databaseResponse) {
             case DatabaseResponse.Success<UserEntity> success -> {
-                return Result.success(userMapper.mapToUser(success.data()));
+                return Optional.of(userMapper.mapToUser(success.data()));
             }
 
             case DatabaseResponse.Error<UserEntity> error -> {
-                return Result.error(error.message());
+                return Optional.empty();
+            }
+        }
+    }
+
+    @Override
+    public Optional<User> register(User user) {
+        DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.upsert(userMapper.mapToUserEntity(user));
+        switch (databaseResponse) {
+            case DatabaseResponse.Success<UserEntity> success -> {
+                return Optional.of(userMapper.mapToUser(success.data()));
+            }
+
+            case DatabaseResponse.Error<UserEntity> error -> {
+                return Optional.empty();
+            }
+        }
+    }
+
+    @Override
+    public Optional<Boolean> sendOtp(User user) {
+        DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.upsert(userMapper.mapToUserEntity(user));
+        switch (databaseResponse) {
+            case DatabaseResponse.Success<UserEntity> success -> {
+                //TODO: send email to client map result based of service response
+                return Optional.of(true);
+            }
+
+            case DatabaseResponse.Error<UserEntity> error -> {
+                return Optional.empty();
             }
         }
     }

@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class LoginRequestDto {
     public String emailAddress;
     public String password;
+    public String deviceFingerprint;
 }

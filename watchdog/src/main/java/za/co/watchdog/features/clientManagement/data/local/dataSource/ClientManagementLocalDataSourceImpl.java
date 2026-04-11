@@ -12,12 +12,10 @@ import za.co.watchdog.common.data.local.mapper.UserMapper;
 public class ClientManagementLocalDataSourceImpl implements ClientManagementLocalDataSource {
     private final ClientDao clientDao;
     private final UserDao userDao;
-    private final UserMapper userMapper;
 
-    ClientManagementLocalDataSourceImpl(ClientDao clientDao, UserDao userDao, UserMapper userMapper) {
+    ClientManagementLocalDataSourceImpl(ClientDao clientDao, UserDao userDao) {
         this.clientDao = clientDao;
         this.userDao = userDao;
-        this.userMapper = userMapper;
     }
 
     @Override
@@ -30,9 +28,9 @@ public class ClientManagementLocalDataSourceImpl implements ClientManagementLoca
     }
 
     @Override
-    public DatabaseResponse<UserEntity> fetchUser(UserEntity userEntity) {
+    public DatabaseResponse<UserEntity> fetchUserById(Long userId) {
         try {
-            return userDao.findByEmailAddress(userEntity.getEmailAddress())
+            return userDao.findById(userId)
                     .map(DatabaseResponse::success)
                     .orElseGet(() -> DatabaseResponse.error("Account does not exists."));
         } catch(Exception e) {

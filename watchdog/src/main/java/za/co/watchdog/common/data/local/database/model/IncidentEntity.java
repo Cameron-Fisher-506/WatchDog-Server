@@ -32,8 +32,8 @@ public class IncidentEntity {
     private PatrolEntity patrolEntity;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "addressId")
-    private AddressEntity addressEntity;
+    @JoinColumn(name = "locationId")
+    private LocationEntity locationEntity;
 
     private String Status;
     private Instant createdAt;

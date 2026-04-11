@@ -5,12 +5,13 @@ import za.co.watchdog.common.data.local.common.DatabaseResponse;
 import za.co.watchdog.common.data.local.database.model.ClientEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
 import za.co.watchdog.common.data.local.mapper.UserMapper;
-import za.co.watchdog.common.domain.common.Result;
 import za.co.watchdog.common.domain.model.Client;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.features.clientManagement.data.local.dataSource.ClientManagementLocalDataSource;
 import za.co.watchdog.features.clientManagement.data.local.mapper.ClientMapper;
 import za.co.watchdog.features.clientManagement.domain.repository.ClientManagementRepository;
+
+import java.util.Optional;
 
 @Component
 public class ClientManagementRepositoryImpl implements ClientManagementRepository {
@@ -25,29 +26,29 @@ public class ClientManagementRepositoryImpl implements ClientManagementRepositor
     }
 
     @Override
-    public Result<Client> onboard(Client client) {
+    public Optional<Client> onboard(Client client) {
         DatabaseResponse<ClientEntity> databaseResponse = this.clientManagementLocalDataSource.onboard(clientMapper.mapToClientEntity(client));
         switch (databaseResponse) {
             case DatabaseResponse.Success<ClientEntity> success -> {
-                return Result.success(clientMapper.mapToClient(success.data()));
+                return Optional.of(clientMapper.mapToClient(success.data()));
             }
 
             case DatabaseResponse.Error<ClientEntity> error -> {
-                return Result.error(error.message());
+                return Optional.empty();
             }
         }
     }
 
     @Override
-    public Result<User> fetchUser(User user) {
-        DatabaseResponse<UserEntity> databaseResponse = clientManagementLocalDataSource.fetchUser(userMapper.mapToUserEntity(user));
+    public Optional<User> fetchUserById(Long userId) {
+        DatabaseResponse<UserEntity> databaseResponse = clientManagementLocalDataSource.fetchUserById(userId);
         switch (databaseResponse) {
             case DatabaseResponse.Success<UserEntity> success -> {
-                return Result.success(userMapper.mapToUser(success.data()));
+                return Optional.of(userMapper.mapToUser(success.data()));
             }
 
             case DatabaseResponse.Error<UserEntity> error -> {
-                return Result.error(error.message());
+                return Optional.empty();
             }
         }
     }

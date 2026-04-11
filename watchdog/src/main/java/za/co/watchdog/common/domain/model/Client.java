@@ -10,24 +10,18 @@ import lombok.experimental.SuperBuilder;
 @Builder
 public class Client {
     private Long clientId;
-    private Hub hub;
     private String name;
     private String surname;
     private String contactNumber;
-    private Address address;
-    private Location location;
-    private User user;
+    private Long userId;
 
-    public Client copyWith(User user) {
+    public Client copyWith(Long userId) {
         return Client.builder()
-                .clientId(this.getClientId())
-                .hub(this.getHub())
-                .user(user)
-                .name(this.getName())
-                .surname(this.getSurname())
-                .contactNumber(this.getContactNumber())
-                .address(this.getAddress())
-                .location(this.getLocation())
+                .clientId(getClientId())
+                .userId(userId)
+                .name(getName())
+                .surname(getSurname())
+                .contactNumber(getContactNumber())
                 .build();
     }
 }

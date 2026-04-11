@@ -22,6 +22,7 @@ public class UserEntity {
     private UserRole userRole;
     private UserStatus userStatus;
     private Instant createdAt;
+    private AccountStatus accountStatus;
     private String verificationCode;
     private Instant verificationCodeExpiresAt;
 }

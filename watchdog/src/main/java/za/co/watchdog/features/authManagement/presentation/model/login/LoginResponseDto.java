@@ -1,4 +1,4 @@
-package za.co.watchdog.features.authManagement.presentation.model;
+package za.co.watchdog.features.authManagement.presentation.model.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,9 +10,9 @@ import za.co.watchdog.common.presentation.model.UserStatus;
 @AllArgsConstructor
 @Data
 @Builder
-public class AuthResponseDto {
+public class LoginResponseDto {
     Long userId;
-    String deviceFingerprint;
+    Boolean isOtpRequired;
     UserStatus status;
     String token;
     String message;

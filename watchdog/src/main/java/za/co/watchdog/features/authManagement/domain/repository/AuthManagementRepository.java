@@ -1,9 +1,12 @@
 package za.co.watchdog.features.authManagement.domain.repository;
 
-import za.co.watchdog.common.domain.common.Result;
 import za.co.watchdog.common.domain.model.User;
 
+import java.util.Optional;
+
 public interface AuthManagementRepository {
-    public Result<User> fetchUser(User user);
-    public Result<User> register(User user);
+    public Optional<User> fetchUserByEmailAddress(String emailAddress);
+    public Optional<User> fetchUserById(Long userId);
+    public Optional<User> register(User user);
+    public Optional<Boolean> sendOtp(User user);
 }

@@ -6,6 +6,7 @@ import lombok.Builder;
 public record Sensor(
         Long sensorId,
         String type,
-        String zoneName
+        String zoneName,
+        Long hubId
 ) {
 }

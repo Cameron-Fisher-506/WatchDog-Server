@@ -20,4 +20,11 @@ public class HubEntity {
     private String macAddress;
     private String status;
     private Instant lastHeartbeat;
+    @ManyToOne
+    @JoinColumn(name = "clientId")
+    private ClientEntity clientEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "locationId")
+    private LocationEntity locationEntity;
 }

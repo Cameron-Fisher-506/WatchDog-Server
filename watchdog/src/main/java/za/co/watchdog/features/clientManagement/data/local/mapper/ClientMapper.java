@@ -1,5 +1,6 @@
 package za.co.watchdog.features.clientManagement.data.local.mapper;
 
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.common.data.local.database.model.UserRole;
@@ -7,34 +8,35 @@ import za.co.watchdog.common.domain.model.*;
 
 @Component
 public class ClientMapper {
+    private EntityManager entityManager;
+
+    ClientMapper(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     public Client mapToClient(ClientEntity clientEntity) {
         return Client.builder()
+                .clientId(clientEntity.getClientId())
                 .name(clientEntity.getName())
                 .surname(clientEntity.getSurname())
-                .address(mapToAddress(clientEntity.getAddressEntity()))
-                .location(mapToLocation(clientEntity.getLocationEntity()))
                 .contactNumber(clientEntity.getContactNumber())
-                .hub(mapToHub(clientEntity.getHubEntity()))
-                .user(mapToUser(clientEntity.getUserEntity()))
+                .userId(clientEntity.getUserEntity().getUserId())
                 .build();
     }
 
     private Hub mapToHub(HubEntity hubEntity) {
         return new Hub(
                 hubEntity.getHubId(),
-                mapToSenor(hubEntity.getSensorEntity()),
                 hubEntity.getMacAddress(),
                 hubEntity.getStatus(),
-                hubEntity.getLastHeartbeat()
+                hubEntity.getLastHeartbeat(),
+                hubEntity.getClientEntity().getClientId(),
+                hubEntity.getLocationEntity().getLocationId()
         );
     }
 
     private Address mapToAddress(AddressEntity addressEntity) {
         return new Address(
-                addressEntity.getAddressId(),
-                addressEntity.getLatitude(),
-                addressEntity.getLongitude(),
                 addressEntity.getAddressLineOne(),
                 addressEntity.getAddressLineTwo(),
                 addressEntity.getSuburb(),
@@ -46,7 +48,9 @@ public class ClientMapper {
         return new Location(
                 locationEntity.getLocationId(),
                 locationEntity.getLatitude(),
-                locationEntity.getLongitude()
+                locationEntity.getLongitude(),
+                mapToAddress(locationEntity.getAddressEntity()),
+                locationEntity.getClientEntity().getClientId()
         );
     }
 
@@ -54,7 +58,8 @@ public class ClientMapper {
         return new Sensor(
                 sensorEntity.getSensorId(),
                 sensorEntity.getType(),
-                sensorEntity.getZoneName()
+                sensorEntity.getZoneName(),
+                sensorEntity.getHubEntity().getHubId()
         );
     }
 
@@ -63,38 +68,35 @@ public class ClientMapper {
                 .userId(userEntity.getUserId())
                 .emailAddress(userEntity.getEmailAddress())
                 .createdAt(userEntity.getCreatedAt())
-                .isActive(userEntity.getIsActive())
                 .userRole(mapToUserRole(userEntity.getUserRole()))
                 .build();
     }
 
     public ClientEntity mapToClientEntity(Client client) {
+        UserEntity userEntity = entityManager.getReference(UserEntity.class, client.getUserId());
         return ClientEntity.builder()
                 .name(client.getName())
                 .surname(client.getSurname())
-                .addressEntity(mapToAddressEntity(client.getAddress()))
-                .locationEntity(mapToLocationEntity(client.getLocation()))
                 .contactNumber(client.getContactNumber())
-                .hubEntity(mapToHubEntity(client.getHub()))
-                .userEntity(mapToUserEntity(client.getUser()))
+                .userEntity(userEntity)
                 .build();
     }
 
     private HubEntity mapToHubEntity(Hub hub) {
+        ClientEntity clientEntity = entityManager.getReference(ClientEntity.class, hub.clientId());
+        LocationEntity locationEntity = entityManager.getReference(LocationEntity.class, hub.locationId());
         return new HubEntity(
                 hub.hubId(),
-                mapToSenorEntity(hub.sensor()),
                 hub.macAddress(),
                 hub.status(),
-                hub.lastHeartbeat()
+                hub.lastHeartbeat(),
+                clientEntity,
+                locationEntity
         );
     }
 
     private AddressEntity mapToAddressEntity(Address address) {
         return new AddressEntity(
-                address.addressId(),
-                address.latitude(),
-                address.longitude(),
                 address.addressLineOne(),
                 address.addressLineTwo(),
                 address.suburb(),
@@ -103,18 +105,22 @@ public class ClientMapper {
     }
 
     private LocationEntity mapToLocationEntity(Location location) {
+        ClientEntity clientEntity = entityManager.getReference(ClientEntity.class, location.clientId());
         return new LocationEntity(
                 location.locationId(),
                 location.latitude(),
-                location.longitude()
+                location.longitude(),
+                mapToAddressEntity(location.address()),
+                clientEntity
         );
     }
 
-    private SensorEntity mapToSenorEntity(Sensor sensor) {
+    private SensorEntity mapToSenorEntity(Sensor sensor, Hub hub) {
         return new SensorEntity(
                 sensor.sensorId(),
                 sensor.type(),
-                sensor.zoneName()
+                sensor.zoneName(),
+                mapToHubEntity(hub)
         );
     }
 
@@ -123,7 +129,6 @@ public class ClientMapper {
                 .userId(user.getUserId())
                 .emailAddress(user.getEmailAddress())
                 .createdAt(user.getCreatedAt())
-                .isActive(user.getIsActive())
                 .userRole(mapToUserRole(user.getUserRole()))
                 .build();
     }

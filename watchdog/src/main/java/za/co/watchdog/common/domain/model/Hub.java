@@ -7,9 +7,10 @@ import java.time.Instant;
 @Builder
 public record Hub(
         Long hubId,
-        Sensor sensor,
         String macAddress,
         String status,
-        Instant lastHeartbeat
+        Instant lastHeartbeat,
+        Long clientId,
+        Long locationId
 ) {
 }

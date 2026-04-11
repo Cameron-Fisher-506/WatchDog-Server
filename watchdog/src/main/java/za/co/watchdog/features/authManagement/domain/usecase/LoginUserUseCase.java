@@ -1,37 +1,29 @@
 package za.co.watchdog.features.authManagement.domain.usecase;
 
-import org.springframework.stereotype.Component;
-import za.co.watchdog.common.data.manager.security.config.SecurityConfig;
-import za.co.watchdog.common.domain.common.Result;
+import org.springframework.stereotype.Service;
+import za.co.watchdog.common.domain.manager.SecurityManager;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.domain.usecase.UseCase;
+import za.co.watchdog.common.domain.exception.ResourceNotFoundException;
 import za.co.watchdog.features.authManagement.domain.repository.AuthManagementRepository;
 
-@Component
-public class LoginUserUseCase implements UseCase<User, Result<User>> {
+@Service
+public class LoginUserUseCase implements UseCase<User, User> {
     private final AuthManagementRepository authManagementRepository;
-    private final SecurityConfig securityConfig;
+    private final SecurityManager securityManager;
 
-    LoginUserUseCase(AuthManagementRepository authManagementRepository, SecurityConfig securityConfig) {
+    LoginUserUseCase(AuthManagementRepository authManagementRepository, SecurityManager securityManager) {
         this.authManagementRepository = authManagementRepository;
-        this.securityConfig = securityConfig;
+        this.securityManager = securityManager;
     }
 
     @Override
-    public Result<User> execute(User input) {
-        Result<User> result = authManagementRepository.fetchUser(input);
-        switch (result) {
-            case Result.Success<User> success -> {
-                if (securityConfig.passwordEncoder().matches(input.getPassword(), success.data().getPassword())) {
-                    return Result.success(success.data());
-                } else {
-                    return Result.error("Incorrect email address or password.");
-                }
-            }
-
-            case Result.Error<User> error -> {
-                return Result.error(error.message());
-            }
+    public User execute(User input) {
+        User user = authManagementRepository.fetchUserByEmailAddress(input.getEmailAddress()).orElseThrow(() -> new ResourceNotFoundException("User", "emailAddress", input.getEmailAddress()));
+        if (securityManager.passwordMatches(input.getPassword(), user.getPassword())) {
+            return user;
+        } else {
+            throw new ResourceNotFoundException("User", "emailAddress", input);
         }
     }
 }

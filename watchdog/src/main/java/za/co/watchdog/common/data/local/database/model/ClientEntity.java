@@ -12,16 +12,9 @@ import lombok.experimental.SuperBuilder;
 public class ClientEntity {
     @Id
     private Long clientId;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "hubId")
-    private HubEntity hubEntity;
     private String name;
     private String surname;
     private String contactNumber;
-
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "addressId")
-    private AddressEntity addressEntity;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId

@@ -6,6 +6,8 @@ import lombok.Builder;
 public record Location(
         Long locationId,
         String latitude,
-        String longitude
+        String longitude,
+        Address address,
+        Long clientId
 ) {
 }

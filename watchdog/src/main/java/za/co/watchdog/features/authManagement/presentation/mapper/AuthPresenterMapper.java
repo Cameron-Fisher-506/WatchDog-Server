@@ -3,7 +3,10 @@ package za.co.watchdog.features.authManagement.presentation.mapper;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.domain.manager.TokenManager;
 import za.co.watchdog.common.domain.model.User;
-import za.co.watchdog.features.authManagement.presentation.model.AuthResponseDto;
+import za.co.watchdog.common.domain.model.oneTimePin.ValidateOneTimePin;
+import za.co.watchdog.features.authManagement.presentation.model.login.LoginResponseDto;
+import za.co.watchdog.features.authManagement.presentation.model.register.RegisterResponseDto;
+import za.co.watchdog.features.authManagement.presentation.model.otp.ValidateOneTimePinRequestDto;
 import za.co.watchdog.features.authManagement.presentation.model.login.LoginRequestDto;
 import za.co.watchdog.features.authManagement.presentation.model.register.RegisterRequestDto;
 import za.co.watchdog.common.presentation.model.UserRole;
@@ -17,10 +20,20 @@ public class AuthPresenterMapper {
         this.tokenManager = tokenManager;
     }
 
-    public AuthResponseDto mapToAuthResponseDto(User user) {
-        return AuthResponseDto.builder()
+    public RegisterResponseDto mapToRegisterResponseDto(User user, Boolean isOtpSent) {
+        return RegisterResponseDto.builder()
                 .userId(user.getUserId())
                 .token(tokenManager.generateToken(user.getEmailAddress(), user.getUserRole().name()))
+                .isOtpSent(isOtpSent)
+                .status(mapToUserStatus(user.getUserStatus()))
+                .build();
+    }
+
+    public LoginResponseDto mapToLoginResponseDto(User user, Boolean isOtpRequired) {
+        return LoginResponseDto.builder()
+                .userId(user.getUserId())
+                .token(tokenManager.generateToken(user.getEmailAddress(), user.getUserRole().name()))
+                .isOtpRequired(isOtpRequired)
                 .status(mapToUserStatus(user.getUserStatus()))
                 .build();
     }
@@ -40,6 +53,13 @@ public class AuthPresenterMapper {
         return User.builder()
                 .emailAddress(loginRequestDto.emailAddress)
                 .password(loginRequestDto.password)
+                .build();
+    }
+
+    public ValidateOneTimePin validateOneTimePin(ValidateOneTimePinRequestDto validateOneTimePinRequestDto) {
+        return ValidateOneTimePin.builder()
+                .userId(validateOneTimePinRequestDto.getUserId())
+                .oneTimePin(validateOneTimePinRequestDto.getOneTimePin())
                 .build();
     }
 

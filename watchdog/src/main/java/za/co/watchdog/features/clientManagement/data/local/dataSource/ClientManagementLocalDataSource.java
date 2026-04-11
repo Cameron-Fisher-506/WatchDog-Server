@@ -5,6 +5,6 @@ import za.co.watchdog.common.data.local.database.model.ClientEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
 
 public interface ClientManagementLocalDataSource {
-    public DatabaseResponse<UserEntity> fetchUser(UserEntity userEntity);
+    public DatabaseResponse<UserEntity> fetchUserById(Long userId);
     public DatabaseResponse<ClientEntity> onboard(ClientEntity clientEntity);
 }

@@ -10,23 +10,10 @@ import za.co.watchdog.features.clientManagement.presentation.model.clientOnboard
 public class ClientPresenterMapper {
     public Client mapToClient(ClientOnboardingRequestDto clientOnboardingRequestDto) {
         return Client.builder()
-                .clientId(clientOnboardingRequestDto.getClientId())
-                .hub(mapToHub(clientOnboardingRequestDto.getHubDto()))
-                .address(mapToAddress(clientOnboardingRequestDto.getAddressDto()))
                 .contactNumber(clientOnboardingRequestDto.getContactNumber())
-                .location(mapToLocation(clientOnboardingRequestDto.getLocationDto()))
                 .name(clientOnboardingRequestDto.getName())
                 .surname(clientOnboardingRequestDto.getSurname())
-                .user(mapToUser(clientOnboardingRequestDto.getUserDto()))
-                .build();
-    }
-
-    private Hub mapToHub(HubDto hubDto) {
-        return Hub.builder()
-                .sensor(mapToSenor(hubDto.sensorDto()))
-                .status(hubDto.status())
-                .lastHeartbeat(hubDto.lastHeartbeat())
-                .macAddress(hubDto.macAddress())
+                .userId(clientOnboardingRequestDto.getUserId())
                 .build();
     }
 
@@ -34,8 +21,6 @@ public class ClientPresenterMapper {
         return Address.builder()
                 .addressLineOne(addressDto.addressLineOne())
                 .addressLineTwo(addressDto.addressLineTwo())
-                .longitude(addressDto.longitude())
-                .latitude(addressDto.latitude())
                 .suburb(addressDto.suburb())
                 .postalCode(addressDto.postalCode())
                 .build();
@@ -45,6 +30,7 @@ public class ClientPresenterMapper {
         return Location.builder()
                 .longitude(locationDto.longitude())
                 .latitude(locationDto.latitude())
+                .address(mapToAddress(locationDto.addressDto()))
                 .build();
     }
 
@@ -60,7 +46,6 @@ public class ClientPresenterMapper {
                 .userId(userDto.getUserId())
                 .emailAddress(userDto.getEmailAddress())
                 .createdAt(userDto.getCreatedAt())
-                .isActive(userDto.getIsActive())
                 .userRole(mapToUserRole(userDto.getUserRole() != null ? userDto.getUserRole() : UserRole.UNKNOWN))
                 .build();
     }
