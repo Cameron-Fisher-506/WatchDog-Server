@@ -1,11 +1,14 @@
 package za.co.watchdog.features.authManagement.domain.usecase;
 
 import org.springframework.stereotype.Service;
+import za.co.watchdog.common.domain.exception.ResourceNotFoundException;
 import za.co.watchdog.common.domain.manager.SecurityManager;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.domain.usecase.UseCase;
-import za.co.watchdog.common.domain.exception.ResourceNotFoundException;
 import za.co.watchdog.features.authManagement.domain.repository.AuthManagementRepository;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class RegisterUserUseCase implements UseCase<User, User> {
@@ -19,15 +22,13 @@ public class RegisterUserUseCase implements UseCase<User, User> {
 
     @Override
     public User execute(User input) {
-        User user = this.authManagementRepository.fetchUserByEmailAddress(input.getEmailAddress())
-                .orElseThrow(() -> new ResourceNotFoundException("RegisterUser", "emailAddress", input.getEmailAddress()));
-
-        if (user.getUserId() != null) {
-            user.setPassword(securityManager.encode(user.getPassword()));
-            return this.authManagementRepository.register(user)
-                    .orElseThrow(() -> new ResourceNotFoundException("RegisterUser", "userId", user.getUserId()));
+        Optional<User> optionalUser = this.authManagementRepository.fetchUserByEmailAddress(input.getEmailAddress());
+        if (optionalUser.isEmpty()) {
+            input.setPassword(securityManager.encode(input.getPassword()));
+            return this.authManagementRepository.register(input)
+                    .orElseThrow(() -> new ResourceNotFoundException("RegisterUser", "userId", input.getUserId()));
         } else {
-            throw new ResourceNotFoundException("RegisterUser", "emailAddress", input.getEmailAddress());
+            throw new ResourceNotFoundException("RegisterUser", "userId", input.getUserId());
         }
     }
 }
