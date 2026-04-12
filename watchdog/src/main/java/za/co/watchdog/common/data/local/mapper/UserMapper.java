@@ -2,9 +2,11 @@ package za.co.watchdog.common.data.local.mapper;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.database.dao.UserDao;
+import za.co.watchdog.common.data.local.database.model.DeviceEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
 import za.co.watchdog.common.data.local.database.model.UserRole;
 import za.co.watchdog.common.data.local.database.model.UserStatus;
+import za.co.watchdog.common.domain.model.Device;
 import za.co.watchdog.common.domain.model.User;
 
 @Component
@@ -19,6 +21,16 @@ public class UserMapper {
                 .userRole(mapToUserRole(userEntity.getUserRole()))
                 .verificationCode(userEntity.getVerificationCode())
                 .verificationCodeExpiresAt(userEntity.getVerificationCodeExpiresAt())
+                .build();
+    }
+
+    public Device mapToDevice(DeviceEntity deviceEntity) {
+        return Device.builder()
+                .deviceId(deviceEntity.getDeviceId())
+                .deviceFingerprint(deviceEntity.getDeviceFingerprint())
+                .deviceName(deviceEntity.getDeviceName())
+                .lastLoggedIn(deviceEntity.getLastLoggedIn())
+                .isTrusted(deviceEntity.getIsTrusted())
                 .build();
     }
 
