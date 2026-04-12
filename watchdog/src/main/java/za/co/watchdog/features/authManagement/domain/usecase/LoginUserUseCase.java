@@ -1,6 +1,7 @@
 package za.co.watchdog.features.authManagement.domain.usecase;
 
 import org.springframework.stereotype.Service;
+import za.co.watchdog.common.domain.exception.AuthenticationException;
 import za.co.watchdog.common.domain.manager.SecurityManager;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.domain.usecase.UseCase;
@@ -19,11 +20,11 @@ public class LoginUserUseCase implements UseCase<User, User> {
 
     @Override
     public User execute(User input) {
-        User user = authManagementRepository.fetchUserByEmailAddress(input.getEmailAddress()).orElseThrow(() -> new ResourceNotFoundException("User", "emailAddress", input.getEmailAddress()));
+        User user = authManagementRepository.fetchUserByEmailAddress(input.getEmailAddress()).orElseThrow(AuthenticationException::new);
         if (securityManager.passwordMatches(input.getPassword(), user.getPassword())) {
             return user;
         } else {
-            throw new ResourceNotFoundException("User", "emailAddress", input);
+            throw new AuthenticationException();
         }
     }
 }

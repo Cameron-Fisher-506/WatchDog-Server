@@ -6,8 +6,6 @@ import za.co.watchdog.common.domain.manager.SecurityManager;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.domain.usecase.UseCase;
 import za.co.watchdog.features.authManagement.domain.repository.AuthManagementRepository;
-
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
