@@ -85,6 +85,7 @@ public class AuthManagementRepositoryImpl implements AuthManagementRepository {
         switch (databaseResponse) {
             case DatabaseResponse.Success<UserEntity> success -> {
                 //TODO: send email to client map result based of service response
+                authManagementLocalDataSource.upsert(userMapper.mapToUserEntity(user));
                 return Optional.of(true);
             }
 

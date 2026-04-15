@@ -42,6 +42,8 @@ public class UserMapper {
                 .userStatus(mapToUserStatus(user.getUserStatus()))
                 .createdAt(user.getCreatedAt())
                 .userRole(mapToUserRole(user.getUserRole() != null ? user.getUserRole() : za.co.watchdog.common.domain.model.UserRole.UNKNOWN))
+                .verificationCode(user.getVerificationCode())
+                .verificationCodeExpiresAt(user.getVerificationCodeExpiresAt())
                 .build();
     }
 

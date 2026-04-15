@@ -5,6 +5,7 @@ import za.co.watchdog.common.domain.manager.TokenManager;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.domain.model.oneTimePin.ValidateOneTimePin;
 import za.co.watchdog.features.authManagement.presentation.model.login.LoginResponseDto;
+import za.co.watchdog.features.authManagement.presentation.model.otp.ValidateOneTimePinResponseDto;
 import za.co.watchdog.features.authManagement.presentation.model.register.RegisterResponseDto;
 import za.co.watchdog.features.authManagement.presentation.model.otp.ValidateOneTimePinRequestDto;
 import za.co.watchdog.features.authManagement.presentation.model.login.LoginRequestDto;
@@ -56,10 +57,16 @@ public class AuthPresenterMapper {
                 .build();
     }
 
-    public ValidateOneTimePin validateOneTimePin(ValidateOneTimePinRequestDto validateOneTimePinRequestDto) {
+    public ValidateOneTimePin mapToValidateOneTimePin(ValidateOneTimePinRequestDto validateOneTimePinRequestDto) {
         return ValidateOneTimePin.builder()
                 .userId(validateOneTimePinRequestDto.getUserId())
                 .oneTimePin(validateOneTimePinRequestDto.getOneTimePin())
+                .build();
+    }
+
+    public ValidateOneTimePinResponseDto mapToValidateOneTimePinResponseDto(Boolean isOtpValid) {
+        return ValidateOneTimePinResponseDto.builder()
+                .isValid(isOtpValid)
                 .build();
     }
 

@@ -11,14 +11,14 @@ import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.presentation.common.ApiSuccessResponse;
 import za.co.watchdog.features.authManagement.domain.usecase.*;
 import za.co.watchdog.features.authManagement.presentation.mapper.AuthPresenterMapper;
-import za.co.watchdog.features.authManagement.presentation.model.login.LoginResponseDto;
-import za.co.watchdog.features.authManagement.presentation.model.register.RegisterResponseDto;
 import za.co.watchdog.features.authManagement.presentation.model.login.LoginRequestDto;
+import za.co.watchdog.features.authManagement.presentation.model.login.LoginResponseDto;
+import za.co.watchdog.features.authManagement.presentation.model.otp.ValidateOneTimePinRequestDto;
+import za.co.watchdog.features.authManagement.presentation.model.otp.ValidateOneTimePinResponseDto;
 import za.co.watchdog.features.authManagement.presentation.model.register.RegisterRequestDto;
+import za.co.watchdog.features.authManagement.presentation.model.register.RegisterResponseDto;
 import za.co.watchdog.features.authManagement.presentation.model.resendOtp.ResendOtpRequestDto;
 import za.co.watchdog.features.authManagement.presentation.model.resendOtp.ResendOtpResponseDto;
-
-import java.util.Objects;
 
 @RestController
 @RequestMapping("api/v1/authmanagement")
@@ -28,14 +28,16 @@ public class AuthManagementController {
     private final LoginUserUseCase loginUserUseCase;
     private final FetchUserByIdUseCase fetchUserByIdUseCase;
     private final ValidateDeviceFingerprintUseCase validateDeviceFingerprintUseCase;
+    private final ValidateOneTimePinUseCase validateOneTimePinUseCase;
     private final AuthPresenterMapper authPresenterMapper;
 
-    public AuthManagementController(RegisterUserUseCase registerUserUseCase, GenerateOneTimePinUseCase generateOneTimePinUseCase, LoginUserUseCase loginUserUseCase, FetchUserByIdUseCase fetchUserByIdUseCase, AuthPresenterMapper authPresenterMapper, ValidateDeviceFingerprintUseCase validateDeviceFingerprintUseCase) {
+    public AuthManagementController(RegisterUserUseCase registerUserUseCase, GenerateOneTimePinUseCase generateOneTimePinUseCase, LoginUserUseCase loginUserUseCase, FetchUserByIdUseCase fetchUserByIdUseCase, ValidateDeviceFingerprintUseCase validateDeviceFingerprintUseCase, ValidateOneTimePinUseCase validateOneTimePinUseCase, AuthPresenterMapper authPresenterMapper) {
         this.registerUserUseCase = registerUserUseCase;
         this.generateOneTimePinUseCase = generateOneTimePinUseCase;
         this.loginUserUseCase = loginUserUseCase;
         this.fetchUserByIdUseCase = fetchUserByIdUseCase;
         this.validateDeviceFingerprintUseCase = validateDeviceFingerprintUseCase;
+        this.validateOneTimePinUseCase = validateOneTimePinUseCase;
         this.authPresenterMapper = authPresenterMapper;
     }
 
@@ -58,5 +60,11 @@ public class AuthManagementController {
         User user = this.loginUserUseCase.execute(authPresenterMapper.mapToUser(loginRequestDto));
         Device device = this.validateDeviceFingerprintUseCase.execute(loginRequestDto.deviceFingerprint);
         return new ResponseEntity<>(ApiSuccessResponse.ok(authPresenterMapper.mapToLoginResponseDto(user, !device.getIsTrusted())), HttpStatus.OK);
+    }
+
+    @PostMapping("/validate/otp")
+    public ResponseEntity<ApiSuccessResponse<ValidateOneTimePinResponseDto>> validateOtp(@RequestBody ValidateOneTimePinRequestDto validateOneTimePinRequestDto) {
+        Boolean isOtpValid = this.validateOneTimePinUseCase.execute(authPresenterMapper.mapToValidateOneTimePin(validateOneTimePinRequestDto));
+        return new ResponseEntity<>(ApiSuccessResponse.ok(authPresenterMapper.mapToValidateOneTimePinResponseDto(isOtpValid)), HttpStatus.OK);
     }
 }
