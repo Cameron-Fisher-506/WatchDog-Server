@@ -50,7 +50,9 @@ public class ClientMapper {
                 locationEntity.getLatitude(),
                 locationEntity.getLongitude(),
                 mapToAddress(locationEntity.getAddressEntity()),
-                locationEntity.getClientEntity().getClientId()
+                locationEntity.getClientEntity().getClientId(),
+                locationEntity.getVehicleEntity().getVehicleId(),
+                locationEntity.getZoneEntity().getZoneId()
         );
     }
 
@@ -106,12 +108,16 @@ public class ClientMapper {
 
     private LocationEntity mapToLocationEntity(Location location) {
         ClientEntity clientEntity = entityManager.getReference(ClientEntity.class, location.clientId());
+        VehicleEntity vehicleEntity = entityManager.getReference(VehicleEntity.class, location.vehicleId());
+        ZoneEntity zoneEntity = entityManager.getReference(ZoneEntity.class, location.zoneId());
         return new LocationEntity(
                 location.locationId(),
                 location.latitude(),
                 location.longitude(),
                 mapToAddressEntity(location.address()),
-                clientEntity
+                clientEntity,
+                vehicleEntity,
+                zoneEntity
         );
     }
 

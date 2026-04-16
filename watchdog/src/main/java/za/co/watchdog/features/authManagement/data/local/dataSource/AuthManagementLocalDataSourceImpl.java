@@ -59,4 +59,13 @@ public class AuthManagementLocalDataSourceImpl implements AuthManagementLocalDat
             return new DatabaseResponse.Error<>(e.getMessage());
         }
     }
+
+    @Override
+    public DatabaseResponse<DeviceEntity> upsert(DeviceEntity deviceEntity) {
+        try {
+            return DatabaseResponse.success(this.deviceDao.save(deviceEntity));
+        } catch (Exception e) {
+            return new DatabaseResponse.Error<>(e.getMessage());
+        }
+    }
 }

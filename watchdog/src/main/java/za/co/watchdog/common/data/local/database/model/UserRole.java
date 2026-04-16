@@ -4,5 +4,6 @@ public enum UserRole {
     CLIENT,
     COMPANY,
     PATROL,
+    GUARDIAN,
     UNKNOWN
 }

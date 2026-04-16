@@ -8,6 +8,8 @@ public record Location(
         String latitude,
         String longitude,
         Address address,
-        Long clientId
+        Long clientId,
+        Long vehicleId,
+        Long zoneId
 ) {
 }

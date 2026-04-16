@@ -11,4 +11,5 @@ public interface AuthManagementRepository {
     public Optional<User> fetchUserById(Long userId);
     public Optional<User> register(User user);
     public Optional<Boolean> sendOtp(User user);
+    public Optional<Device> saveUserDevice(Device device);
 }

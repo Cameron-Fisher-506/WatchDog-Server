@@ -24,16 +24,6 @@ public class UserMapper {
                 .build();
     }
 
-    public Device mapToDevice(DeviceEntity deviceEntity) {
-        return Device.builder()
-                .deviceId(deviceEntity.getDeviceId())
-                .deviceFingerprint(deviceEntity.getDeviceFingerprint())
-                .deviceName(deviceEntity.getDeviceName())
-                .lastLoggedIn(deviceEntity.getLastLoggedIn())
-                .isTrusted(deviceEntity.getIsTrusted())
-                .build();
-    }
-
     public UserEntity mapToUserEntity(User user) {
         return UserEntity.builder()
                 .userId(user.getUserId())

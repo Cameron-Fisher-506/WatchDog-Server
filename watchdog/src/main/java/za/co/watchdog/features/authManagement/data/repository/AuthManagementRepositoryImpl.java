@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
 import za.co.watchdog.common.data.local.database.model.DeviceEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
+import za.co.watchdog.common.data.local.mapper.DeviceMapper;
 import za.co.watchdog.common.domain.model.Device;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.features.authManagement.data.local.dataSource.AuthManagementLocalDataSource;
@@ -17,10 +18,12 @@ import java.util.Optional;
 public class AuthManagementRepositoryImpl implements AuthManagementRepository {
     private final AuthManagementLocalDataSource authManagementLocalDataSource;
     private final UserMapper userMapper;
+    private final DeviceMapper deviceMapper;
 
-    public AuthManagementRepositoryImpl(AuthManagementLocalDataSource authManagementLocalDataSource, UserMapper userMapper) {
+    public AuthManagementRepositoryImpl(AuthManagementLocalDataSource authManagementLocalDataSource, UserMapper userMapper, DeviceMapper deviceMapper) {
         this.authManagementLocalDataSource = authManagementLocalDataSource;
         this.userMapper = userMapper;
+        this.deviceMapper = deviceMapper;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class AuthManagementRepositoryImpl implements AuthManagementRepository {
         DatabaseResponse<DeviceEntity> databaseResponse = this.authManagementLocalDataSource.fetchDeviceByDeviceFingerprint(deviceFingerprint);
         switch (databaseResponse) {
             case DatabaseResponse.Success<DeviceEntity> success -> {
-                return Optional.of(userMapper.mapToDevice(success.data()));
+                return Optional.of(deviceMapper.mapToDevice(success.data()));
             }
 
             case DatabaseResponse.Error<DeviceEntity> error -> {
@@ -90,6 +93,20 @@ public class AuthManagementRepositoryImpl implements AuthManagementRepository {
             }
 
             case DatabaseResponse.Error<UserEntity> error -> {
+                return Optional.empty();
+            }
+        }
+    }
+
+    @Override
+    public Optional<Device> saveUserDevice(Device device) {
+        DatabaseResponse<DeviceEntity> databaseResponse = this.authManagementLocalDataSource.upsert(deviceMapper.mapToDeviceEntity(device));
+        switch (databaseResponse) {
+            case DatabaseResponse.Success<DeviceEntity> success -> {
+                return Optional.of(deviceMapper.mapToDevice(success.data()));
+            }
+
+            case DatabaseResponse.Error<DeviceEntity> error -> {
                 return Optional.empty();
             }
         }

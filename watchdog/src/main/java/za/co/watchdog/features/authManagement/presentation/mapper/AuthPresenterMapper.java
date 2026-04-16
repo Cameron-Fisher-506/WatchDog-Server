@@ -2,6 +2,7 @@ package za.co.watchdog.features.authManagement.presentation.mapper;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.domain.manager.TokenManager;
+import za.co.watchdog.common.domain.model.Device;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.domain.model.oneTimePin.ValidateOneTimePin;
 import za.co.watchdog.features.authManagement.presentation.model.login.LoginResponseDto;
@@ -12,6 +13,7 @@ import za.co.watchdog.features.authManagement.presentation.model.login.LoginRequ
 import za.co.watchdog.features.authManagement.presentation.model.register.RegisterRequestDto;
 import za.co.watchdog.common.presentation.model.UserRole;
 import za.co.watchdog.common.presentation.model.UserStatus;
+import za.co.watchdog.features.authManagement.presentation.model.register.dto.DeviceDto;
 
 @Component
 public class AuthPresenterMapper {
@@ -21,9 +23,10 @@ public class AuthPresenterMapper {
         this.tokenManager = tokenManager;
     }
 
-    public RegisterResponseDto mapToRegisterResponseDto(User user, Boolean isOtpSent) {
+    public RegisterResponseDto mapToRegisterResponseDto(User user, Device device, Boolean isOtpSent) {
         return RegisterResponseDto.builder()
                 .userId(user.getUserId())
+                .deviceFingerprint(device.getDeviceFingerprint())
                 .token(tokenManager.generateToken(user.getEmailAddress(), user.getUserRole().name()))
                 .isOtpSent(isOtpSent)
                 .status(mapToUserStatus(user.getUserStatus()))
@@ -47,6 +50,14 @@ public class AuthPresenterMapper {
                 .userStatus(mapToUserStatus(registerRequestDto.getUserStatus()))
                 .createdAt(registerRequestDto.getCreatedAt())
                 .userRole(mapToUserRole(registerRequestDto.getUserRole()))
+                .build();
+    }
+
+    public Device mapToDevice(DeviceDto deviceDto, Long userId) {
+        return Device.builder()
+                .deviceName(deviceDto.getDeviceName())
+                .lastLoggedIn(deviceDto.getLastLoggedIn())
+                .userId(userId)
                 .build();
     }
 

@@ -6,11 +6,10 @@ import lombok.*;
 
 import java.time.Instant;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Builder
+@Data
 public class UserDto {
     private Long userId;
     private String emailAddress;

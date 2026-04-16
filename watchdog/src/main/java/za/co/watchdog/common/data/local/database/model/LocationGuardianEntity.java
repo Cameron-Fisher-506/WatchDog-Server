@@ -6,24 +6,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
 @Entity
-@Table(name = "patrol_vehicle")
-public class PatrolVehicleEntity {
+@Table(name = "location_guardian")
+public class LocationGuardianEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long patrolAssignmentId;
+    private Long locationGuardianId;
+
     @ManyToOne
-    @JoinColumn(name = "patrolId")
-    private PatrolEntity patrolEntity;
+    @JoinColumn(name = "locationId")
+    private LocationEntity locationEntity;
+
     @ManyToOne
-    @JoinColumn(name = "vehicleId")
-    private VehicleEntity vehicleEntity;
-    private Instant assignedAt;
-    private Boolean isActive;
+    @JoinColumn(name = "guardianId")
+    private GuardianEntity guardianEntity;
 }
