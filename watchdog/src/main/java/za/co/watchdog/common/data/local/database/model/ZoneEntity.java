@@ -11,25 +11,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "location")
-public class LocationEntity {
+@Table(name = "zone")
+public class ZoneEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long locationId;
-    private String latitude;
-    private String longitude;
-
-    @Embedded
-    private AddressEntity addressEntity;
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "clientId")
-    private ClientEntity clientEntity;
-
+    private Long zoneId;
+    private String name;
+    private String code;
+    private Boolean isActive;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "vehicleId")
     private VehicleEntity vehicleEntity;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "zoneId")
-    private ZoneEntity zoneEntity;
 }

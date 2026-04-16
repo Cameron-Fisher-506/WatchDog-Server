@@ -14,7 +14,7 @@ import java.time.Instant;
 @Builder
 @Entity
 @Table(name = "patrol_assignment")
-public class PatrolAssignmentEntity {
+public class PatrolVehicleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long patrolAssignmentId;
@@ -22,8 +22,8 @@ public class PatrolAssignmentEntity {
     @JoinColumn(name = "patrolId")
     private PatrolEntity patrolEntity;
     @ManyToOne
-    @JoinColumn(name = "locationId")
-    private LocationEntity locationEntity;
+    @JoinColumn(name = "vehicleId")
+    private VehicleEntity vehicleEntity;
     private Instant assignedAt;
     private Boolean isActive;
 }

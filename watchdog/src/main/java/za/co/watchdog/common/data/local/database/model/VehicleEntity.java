@@ -23,15 +23,6 @@ public class VehicleEntity {
     private String callSign;
     @Enumerated(EnumType.STRING)
     private VehicleStatus vehicleStatus;
-
-    @OneToOne
-    @JoinColumn(name = "patrolId")
-    private PatrolEntity patrolEntity;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "locationId")
-    private LocationEntity locationEntity;
-
     private Long lastServiceMileage;
     private Instant createdAt;
 }

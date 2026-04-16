@@ -2,8 +2,8 @@ package za.co.watchdog.common.data.local.database.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import za.co.watchdog.common.data.local.database.model.PatrolAssignmentEntity;
+import za.co.watchdog.common.data.local.database.model.PatrolVehicleEntity;
 
 @Repository
-public interface PatrolAssignmentDao extends JpaRepository<PatrolAssignmentEntity, Long> {
+public interface PatrolVehicleDao extends JpaRepository<PatrolVehicleEntity, Long> {
 }

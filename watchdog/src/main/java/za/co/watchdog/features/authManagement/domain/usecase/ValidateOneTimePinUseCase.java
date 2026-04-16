@@ -8,6 +8,7 @@ import za.co.watchdog.common.domain.exception.ResourceNotFoundException;
 import za.co.watchdog.features.authManagement.domain.repository.AuthManagementRepository;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class ValidateOneTimePinUseCase implements UseCase<ValidateOneTimePin, Boolean> {
@@ -18,10 +19,14 @@ public class ValidateOneTimePinUseCase implements UseCase<ValidateOneTimePin, Bo
     }
     @Override
     public Boolean execute(ValidateOneTimePin validateOneTimePin) {
-        User user = authManagementRepository.fetchUserById(validateOneTimePin.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("ValidateOneTimePin", "userId", validateOneTimePin.getUserId()));
-        if (user.getVerificationCode() != null && user.getVerificationCodeExpiresAt() != null) {
-            return user.getVerificationCode().equals(validateOneTimePin.getOneTimePin()) && user.getVerificationCodeExpiresAt().isBefore(Instant.now());
+        Optional<User> optionalUser = authManagementRepository.fetchUserById(validateOneTimePin.getUserId());
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (user.getVerificationCode() != null && user.getVerificationCodeExpiresAt() != null) {
+                return user.getVerificationCode().equals(validateOneTimePin.getOneTimePin()) && user.getVerificationCodeExpiresAt().isBefore(Instant.now());
+            } else {
+                return false;
+            }
         } else {
             throw new ResourceNotFoundException("ValidateOneTimePin", "userId", validateOneTimePin.getUserId());
         }
