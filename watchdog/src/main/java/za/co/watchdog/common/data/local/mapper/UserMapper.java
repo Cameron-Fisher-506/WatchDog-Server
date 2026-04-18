@@ -12,6 +12,7 @@ public class UserMapper {
         return User.builder()
                 .userId(userEntity.getUserId())
                 .emailAddress(userEntity.getEmailAddress())
+                .accountStatus(mapToAccountStatus(userEntity.getAccountStatus()))
                 .password(userEntity.getPasswordHash())
                 .createdAt(userEntity.getCreatedAt())
                 .userStatus(mapToUserStatus(userEntity.getUserStatus()))
