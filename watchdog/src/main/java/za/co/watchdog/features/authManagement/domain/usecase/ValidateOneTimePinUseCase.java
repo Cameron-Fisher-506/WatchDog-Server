@@ -23,7 +23,7 @@ public class ValidateOneTimePinUseCase implements UseCase<ValidateOneTimePin, Bo
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (user.getVerificationCode() != null && user.getVerificationCodeExpiresAt() != null) {
-                return user.getVerificationCode().equals(validateOneTimePin.getOneTimePin()) && user.getVerificationCodeExpiresAt().isBefore(Instant.now());
+                return user.getVerificationCode().equals(validateOneTimePin.getOneTimePin()) && Instant.now().isBefore(user.getVerificationCodeExpiresAt());
             } else {
                 return false;
             }

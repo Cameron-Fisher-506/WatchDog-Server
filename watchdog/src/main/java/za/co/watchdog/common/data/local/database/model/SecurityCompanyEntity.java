@@ -19,10 +19,4 @@ public class SecurityCompanyEntity {
     private String name;
     private String psiraLicense;
     private String contactNumber;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "userId")
-    private UserEntity userEntity;
-
 }

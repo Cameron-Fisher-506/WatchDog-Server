@@ -56,7 +56,6 @@ public class AuthPresenterMapper {
     public Device mapToDevice(DeviceDto deviceDto, Long userId) {
         return Device.builder()
                 .deviceName(deviceDto.getDeviceName())
-                .lastLoggedIn(deviceDto.getLastLoggedIn())
                 .userId(userId)
                 .build();
     }

@@ -25,4 +25,7 @@ public class VehicleEntity {
     private VehicleStatus vehicleStatus;
     private Long lastServiceMileage;
     private Instant createdAt;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "securityCompanyId")
+    private SecurityCompanyEntity securityCompanyEntity;
 }
