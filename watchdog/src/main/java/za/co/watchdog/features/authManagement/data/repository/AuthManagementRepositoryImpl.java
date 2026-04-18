@@ -2,6 +2,7 @@ package za.co.watchdog.features.authManagement.data.repository;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
+import za.co.watchdog.common.data.local.database.model.AccountStatus;
 import za.co.watchdog.common.data.local.database.model.DeviceEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
 import za.co.watchdog.common.data.local.mapper.DeviceMapper;
@@ -55,6 +56,20 @@ public class AuthManagementRepositoryImpl implements AuthManagementRepository {
     }
 
     @Override
+    public Optional<Device> fetchDeviceByUserId(Long userId) {
+        DatabaseResponse<DeviceEntity> databaseResponse = this.authManagementLocalDataSource.fetchDeviceByUserId(userId);
+        switch (databaseResponse) {
+            case DatabaseResponse.Success<DeviceEntity> success -> {
+                return Optional.of(deviceMapper.mapToDevice(success.data()));
+            }
+
+            case DatabaseResponse.Error<DeviceEntity> error -> {
+                return Optional.empty();
+            }
+        }
+    }
+
+    @Override
     public Optional<User> fetchUserById(Long userId) {
         DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.fetchUserById(userId);
         switch (databaseResponse) {
@@ -69,7 +84,7 @@ public class AuthManagementRepositoryImpl implements AuthManagementRepository {
     }
 
     @Override
-    public Optional<User> register(User user) {
+    public Optional<User> saveUser(User user) {
         DatabaseResponse<UserEntity> databaseResponse = this.authManagementLocalDataSource.upsert(userMapper.mapToUserEntity(user));
         switch (databaseResponse) {
             case DatabaseResponse.Success<UserEntity> success -> {
@@ -99,7 +114,7 @@ public class AuthManagementRepositoryImpl implements AuthManagementRepository {
     }
 
     @Override
-    public Optional<Device> saveUserDevice(Device device) {
+    public Optional<Device> saveDevice(Device device) {
         DatabaseResponse<DeviceEntity> databaseResponse = this.authManagementLocalDataSource.upsert(deviceMapper.mapToDeviceEntity(device));
         switch (databaseResponse) {
             case DatabaseResponse.Success<DeviceEntity> success -> {

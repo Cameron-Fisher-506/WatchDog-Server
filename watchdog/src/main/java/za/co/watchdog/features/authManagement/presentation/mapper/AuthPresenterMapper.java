@@ -53,10 +53,11 @@ public class AuthPresenterMapper {
                 .build();
     }
 
-    public Device mapToDevice(DeviceDto deviceDto, Long userId) {
+    public Device mapToDevice(DeviceDto deviceDto, Long userId, Boolean isTrusted) {
         return Device.builder()
                 .deviceName(deviceDto.getDeviceName())
                 .userId(userId)
+                .isTrusted(isTrusted)
                 .build();
     }
 

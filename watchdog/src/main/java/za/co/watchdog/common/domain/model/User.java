@@ -5,6 +5,8 @@ import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import za.co.watchdog.common.domain.model.AccountStatus;
+
 import java.time.Instant;
 
 @Data
@@ -18,12 +20,14 @@ public class User {
         private UserRole userRole;
         private UserStatus userStatus;
         private Instant createdAt;
+        private AccountStatus accountStatus;
         private String verificationCode;
         private Instant verificationCodeExpiresAt;
 
         public User copyWith(String passwordHash) {
                 return User.builder()
                         .userId(this.userId)
+                        .accountStatus(this.accountStatus)
                         .emailAddress(this.emailAddress)
                         .password(passwordHash)
                         .userRole(this.userRole)

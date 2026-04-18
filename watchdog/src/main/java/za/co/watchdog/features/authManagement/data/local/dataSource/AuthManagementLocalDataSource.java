@@ -9,6 +9,7 @@ public interface AuthManagementLocalDataSource {
     public DatabaseResponse<UserEntity> fetchUserByEmailAddress(String emailAddress);
     public DatabaseResponse<UserEntity> fetchUserById(Long userId);
     public DatabaseResponse<DeviceEntity> fetchDeviceByDeviceFingerprint(String deviceFingerprint);
+    public DatabaseResponse<DeviceEntity> fetchDeviceByUserId(Long userId);
     public DatabaseResponse<UserEntity> upsert(UserEntity userEntity);
     public DatabaseResponse<DeviceEntity> upsert(DeviceEntity deviceEntity);
 }

@@ -20,6 +20,6 @@ public class SaveUserDeviceUseCase implements UseCase<Device, Device> {
     @Override
     public Device execute(Device input) {
         input.setDeviceFingerprint(uniqueIdentifierGenerator.generate());
-        return this.authManagementRepository.saveUserDevice(input).orElseThrow(() -> new ResourceNotFoundException("SaveUserDevice", "device", input));
+        return this.authManagementRepository.saveDevice(input).orElseThrow(() -> new ResourceNotFoundException("SaveDevice", "device", input));
     }
 }

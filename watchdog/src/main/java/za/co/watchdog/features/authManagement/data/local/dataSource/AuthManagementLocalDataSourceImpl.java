@@ -1,6 +1,5 @@
 package za.co.watchdog.features.authManagement.data.local.dataSource;
 
-import org.hibernate.boot.model.relational.Database;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
 import za.co.watchdog.common.data.local.database.dao.DeviceDao;
@@ -44,6 +43,17 @@ public class AuthManagementLocalDataSourceImpl implements AuthManagementLocalDat
     public DatabaseResponse<DeviceEntity> fetchDeviceByDeviceFingerprint(String deviceFingerprint) {
         try {
             return deviceDao.findByDeviceFingerprint(deviceFingerprint)
+                    .map(DatabaseResponse::success)
+                    .orElseGet(() -> DatabaseResponse.error("Device does not exist."));
+        } catch (Exception e) {
+            return new DatabaseResponse.Error<>(e.getMessage());
+        }
+    }
+
+    @Override
+    public DatabaseResponse<DeviceEntity> fetchDeviceByUserId(Long userId) {
+        try {
+            return deviceDao.findByUserEntity(userId)
                     .map(DatabaseResponse::success)
                     .orElseGet(() -> DatabaseResponse.error("Device does not exist."));
         } catch (Exception e) {

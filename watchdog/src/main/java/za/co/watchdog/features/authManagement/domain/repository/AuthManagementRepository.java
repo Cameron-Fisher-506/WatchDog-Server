@@ -8,8 +8,9 @@ import java.util.Optional;
 public interface AuthManagementRepository {
     public Optional<User> fetchUserByEmailAddress(String emailAddress);
     public Optional<Device> fetchDeviceByDeviceFingerprint(String deviceFingerprint);
+    public Optional<Device> fetchDeviceByUserId(Long userId);
     public Optional<User> fetchUserById(Long userId);
-    public Optional<User> register(User user);
+    public Optional<User> saveUser(User user);
     public Optional<Boolean> sendOtp(User user);
-    public Optional<Device> saveUserDevice(Device device);
+    public Optional<Device> saveDevice(Device device);
 }

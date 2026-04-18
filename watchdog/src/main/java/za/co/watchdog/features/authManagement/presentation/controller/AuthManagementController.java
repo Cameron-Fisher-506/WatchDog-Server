@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import za.co.watchdog.common.domain.model.AccountStatus;
 import za.co.watchdog.common.domain.model.Device;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.presentation.common.ApiSuccessResponse;
@@ -30,6 +31,7 @@ public class AuthManagementController {
     private final ValidateDeviceFingerprintUseCase validateDeviceFingerprintUseCase;
     private final ValidateOneTimePinUseCase validateOneTimePinUseCase;
     private final SaveUserDeviceUseCase saveUserDeviceUseCase;
+    private final SaveUserUseCase saveUserUseCase;
     private final AuthPresenterMapper authPresenterMapper;
 
     public AuthManagementController(
@@ -40,6 +42,7 @@ public class AuthManagementController {
             ValidateDeviceFingerprintUseCase validateDeviceFingerprintUseCase,
             ValidateOneTimePinUseCase validateOneTimePinUseCase,
             SaveUserDeviceUseCase saveUserDeviceUseCase,
+            SaveUserUseCase saveUserUseCase,
             AuthPresenterMapper authPresenterMapper
     ) {
         this.registerUserUseCase = registerUserUseCase;
@@ -49,6 +52,7 @@ public class AuthManagementController {
         this.validateDeviceFingerprintUseCase = validateDeviceFingerprintUseCase;
         this.validateOneTimePinUseCase = validateOneTimePinUseCase;
         this.saveUserDeviceUseCase = saveUserDeviceUseCase;
+        this.saveUserUseCase = saveUserUseCase;
         this.authPresenterMapper = authPresenterMapper;
     }
 
@@ -62,7 +66,7 @@ public class AuthManagementController {
     @PostMapping("/register")
     public ResponseEntity<ApiSuccessResponse<RegisterResponseDto>> register(@RequestBody RegisterRequestDto registerRequestDto) {
         User user = this.registerUserUseCase.execute(authPresenterMapper.mapToUser(registerRequestDto));
-        Device device = this.saveUserDeviceUseCase.execute(authPresenterMapper.mapToDevice(registerRequestDto.getDeviceDto(), user.getUserId()));
+        Device device = this.saveUserDeviceUseCase.execute(authPresenterMapper.mapToDevice(registerRequestDto.getDeviceDto(), user.getUserId(), true));
         Boolean isOtpSent = generateOneTimePinUseCase.execute(user);
         return new ResponseEntity<>(ApiSuccessResponse.ok(authPresenterMapper.mapToRegisterResponseDto(user, device, isOtpSent)), HttpStatus.OK);
     }

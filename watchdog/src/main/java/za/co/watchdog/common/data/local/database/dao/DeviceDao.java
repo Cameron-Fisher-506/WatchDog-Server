@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface DeviceDao extends JpaRepository<DeviceEntity, Long> {
     Optional<DeviceEntity> findByDeviceFingerprint(String deviceFingerprint);
+    Optional<DeviceEntity> findByUserEntity(Long userId);
 }
