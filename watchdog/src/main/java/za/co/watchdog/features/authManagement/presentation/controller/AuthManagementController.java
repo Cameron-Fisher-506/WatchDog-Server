@@ -31,7 +31,7 @@ public class AuthManagementController {
     private final ValidateDeviceFingerprintUseCase validateDeviceFingerprintUseCase;
     private final ValidateOneTimePinUseCase validateOneTimePinUseCase;
     private final SaveUserDeviceUseCase saveUserDeviceUseCase;
-    private final SaveUserUseCase saveUserUseCase;
+    private final FetchDeviceByUserIdUseCase fetchDeviceByUserIdUseCase;
     private final AuthPresenterMapper authPresenterMapper;
 
     public AuthManagementController(
@@ -42,7 +42,7 @@ public class AuthManagementController {
             ValidateDeviceFingerprintUseCase validateDeviceFingerprintUseCase,
             ValidateOneTimePinUseCase validateOneTimePinUseCase,
             SaveUserDeviceUseCase saveUserDeviceUseCase,
-            SaveUserUseCase saveUserUseCase,
+            FetchDeviceByUserIdUseCase fetchDeviceByUserIdUseCase,
             AuthPresenterMapper authPresenterMapper
     ) {
         this.registerUserUseCase = registerUserUseCase;
@@ -52,7 +52,7 @@ public class AuthManagementController {
         this.validateDeviceFingerprintUseCase = validateDeviceFingerprintUseCase;
         this.validateOneTimePinUseCase = validateOneTimePinUseCase;
         this.saveUserDeviceUseCase = saveUserDeviceUseCase;
-        this.saveUserUseCase = saveUserUseCase;
+        this.fetchDeviceByUserIdUseCase = fetchDeviceByUserIdUseCase;
         this.authPresenterMapper = authPresenterMapper;
     }
 
@@ -66,7 +66,7 @@ public class AuthManagementController {
     @PostMapping("/register")
     public ResponseEntity<ApiSuccessResponse<RegisterResponseDto>> register(@RequestBody RegisterRequestDto registerRequestDto) {
         User user = this.registerUserUseCase.execute(authPresenterMapper.mapToUser(registerRequestDto));
-        Device device = this.saveUserDeviceUseCase.execute(authPresenterMapper.mapToDevice(registerRequestDto.getDeviceDto(), user.getUserId(), true));
+        Device device = this.saveUserDeviceUseCase.execute(authPresenterMapper.mapToDevice(registerRequestDto.getDeviceDto(), user.getUserId()));
         Boolean isOtpSent = generateOneTimePinUseCase.execute(user);
         return new ResponseEntity<>(ApiSuccessResponse.ok(authPresenterMapper.mapToRegisterResponseDto(user, device, isOtpSent)), HttpStatus.OK);
     }
@@ -81,6 +81,11 @@ public class AuthManagementController {
     @PostMapping("/validate/otp")
     public ResponseEntity<ApiSuccessResponse<ValidateOneTimePinResponseDto>> validateOtp(@RequestBody ValidateOneTimePinRequestDto validateOneTimePinRequestDto) {
         Boolean isOtpValid = this.validateOneTimePinUseCase.execute(authPresenterMapper.mapToValidateOneTimePin(validateOneTimePinRequestDto));
+        if (isOtpValid) {
+            Device device = this.fetchDeviceByUserIdUseCase.execute(validateOneTimePinRequestDto.getUserId());
+            device.setIsTrusted(true);
+            saveUserDeviceUseCase.execute(device);
+        }
         return new ResponseEntity<>(ApiSuccessResponse.ok(authPresenterMapper.mapToValidateOneTimePinResponseDto(isOtpValid)), HttpStatus.OK);
     }
 }

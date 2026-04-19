@@ -20,8 +20,10 @@ public class UserEntity {
     private String passwordHash;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+    @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
     private Instant createdAt;
+    @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
     private String verificationCode;
     private Instant verificationCodeExpiresAt;

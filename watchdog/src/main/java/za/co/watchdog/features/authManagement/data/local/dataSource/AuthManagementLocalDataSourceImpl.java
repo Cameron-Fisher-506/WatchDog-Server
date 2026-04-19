@@ -53,7 +53,7 @@ public class AuthManagementLocalDataSourceImpl implements AuthManagementLocalDat
     @Override
     public DatabaseResponse<DeviceEntity> fetchDeviceByUserId(Long userId) {
         try {
-            return deviceDao.findByUserEntity(userId)
+            return deviceDao.findByUserId(userId)
                     .map(DatabaseResponse::success)
                     .orElseGet(() -> DatabaseResponse.error("Device does not exist."));
         } catch (Exception e) {
