@@ -5,6 +5,7 @@ import za.co.watchdog.common.domain.exception.ResourceNotFoundException;
 import za.co.watchdog.common.domain.manager.SecurityManager;
 import za.co.watchdog.common.domain.model.AccountStatus;
 import za.co.watchdog.common.domain.model.User;
+import za.co.watchdog.common.domain.model.UserStatus;
 import za.co.watchdog.common.domain.usecase.UseCase;
 import za.co.watchdog.features.authManagement.domain.repository.AuthManagementRepository;
 
@@ -26,6 +27,7 @@ public class RegisterUserUseCase implements UseCase<User, User> {
         Optional<User> optionalUser = this.authManagementRepository.fetchUserByEmailAddress(input.getEmailAddress());
         if (optionalUser.isEmpty()) {
             input.setPassword(securityManager.encode(input.getPassword()));
+            input.setUserStatus(UserStatus.PENDING_VERIFICATION);
             input.setAccountStatus(AccountStatus.PENDING_VERIFICATION);
             input.setCreatedAt(Instant.now());
             return this.authManagementRepository.saveUser(input).orElseThrow(() -> new ResourceNotFoundException("RegisterUser", "userId", input.getUserId()));

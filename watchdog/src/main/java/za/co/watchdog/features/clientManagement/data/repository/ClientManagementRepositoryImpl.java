@@ -52,4 +52,18 @@ public class ClientManagementRepositoryImpl implements ClientManagementRepositor
             }
         }
     }
+
+    @Override
+    public Optional<User> saveUser(User user) {
+        DatabaseResponse<UserEntity> databaseResponse = clientManagementLocalDataSource.saveUserEntity(userMapper.mapToUserEntity(user));
+        switch (databaseResponse) {
+            case DatabaseResponse.Success<UserEntity> success -> {
+                return Optional.of(userMapper.mapToUser(success.data()));
+            }
+
+            case DatabaseResponse.Error<UserEntity> error -> {
+                return Optional.empty();
+            }
+        }
+    }
 }

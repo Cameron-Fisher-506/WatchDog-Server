@@ -47,7 +47,6 @@ public class AuthPresenterMapper {
                 .userId(registerRequestDto.getUserId())
                 .emailAddress(registerRequestDto.getEmailAddress())
                 .password(registerRequestDto.getPassword())
-                .userStatus(mapToUserStatus(registerRequestDto.getUserStatus()))
                 .createdAt(registerRequestDto.getCreatedAt())
                 .userRole(mapToUserRole(registerRequestDto.getUserRole()))
                 .build();

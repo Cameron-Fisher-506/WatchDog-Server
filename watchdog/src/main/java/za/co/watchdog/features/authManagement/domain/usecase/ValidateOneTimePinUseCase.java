@@ -3,6 +3,7 @@ package za.co.watchdog.features.authManagement.domain.usecase;
 import org.springframework.stereotype.Service;
 import za.co.watchdog.common.domain.model.AccountStatus;
 import za.co.watchdog.common.domain.model.User;
+import za.co.watchdog.common.domain.model.UserStatus;
 import za.co.watchdog.common.domain.model.oneTimePin.ValidateOneTimePin;
 import za.co.watchdog.common.domain.usecase.UseCase;
 import za.co.watchdog.common.domain.exception.ResourceNotFoundException;
@@ -24,6 +25,7 @@ public class ValidateOneTimePinUseCase implements UseCase<ValidateOneTimePin, Bo
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (user.getVerificationCode() != null && user.getVerificationCodeExpiresAt() != null && user.getVerificationCode().equals(validateOneTimePin.getOneTimePin()) && Instant.now().isBefore(user.getVerificationCodeExpiresAt())) {
+                user.setUserStatus(UserStatus.ACTIVE);
                 user.setAccountStatus(AccountStatus.VERIFIED_PENDING_ONBOARDING);
                 authManagementRepository.saveUser(user);
                 return true;

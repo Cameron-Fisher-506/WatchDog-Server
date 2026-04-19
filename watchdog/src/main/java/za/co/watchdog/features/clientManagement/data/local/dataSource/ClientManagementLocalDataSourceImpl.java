@@ -37,4 +37,13 @@ public class ClientManagementLocalDataSourceImpl implements ClientManagementLoca
             return new DatabaseResponse.Error<>(e.getMessage());
         }
     }
+
+    @Override
+    public DatabaseResponse<UserEntity> saveUserEntity(UserEntity userEntity) {
+        try {
+            return DatabaseResponse.success(userDao.save(userEntity));
+        } catch(Exception e) {
+            return new DatabaseResponse.Error<>(e.getMessage());
+        }
+    }
 }

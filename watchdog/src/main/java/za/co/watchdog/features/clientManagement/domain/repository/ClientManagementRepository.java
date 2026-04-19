@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface ClientManagementRepository {
     public Optional<User> fetchUserById(Long userId);
+    public Optional<User> saveUser(User user);
     public Optional<Client> onboard(Client client);
 }

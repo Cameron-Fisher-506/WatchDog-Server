@@ -16,7 +16,6 @@ public class UserDto {
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    private UserStatus userStatus;
     private Boolean isActive;
     private Instant createdAt;
 }
