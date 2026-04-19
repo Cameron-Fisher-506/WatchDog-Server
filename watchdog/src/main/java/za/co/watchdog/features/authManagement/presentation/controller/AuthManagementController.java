@@ -75,7 +75,8 @@ public class AuthManagementController {
     public ResponseEntity<ApiSuccessResponse<LoginResponseDto>> login(@RequestBody LoginRequestDto loginRequestDto) {
         User user = this.loginUserUseCase.execute(authPresenterMapper.mapToUser(loginRequestDto));
         Device device = this.validateDeviceFingerprintUseCase.execute(loginRequestDto.deviceFingerprint);
-        return new ResponseEntity<>(ApiSuccessResponse.ok(authPresenterMapper.mapToLoginResponseDto(user, !device.getIsTrusted())), HttpStatus.OK);
+        Boolean isOtpRequired = !(device.getIsTrusted() != null && device.getIsTrusted());
+        return new ResponseEntity<>(ApiSuccessResponse.ok(authPresenterMapper.mapToLoginResponseDto(user, isOtpRequired)), HttpStatus.OK);
     }
 
     @PostMapping("/validate/otp")
