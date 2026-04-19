@@ -1,3 +1,50 @@
 spring:
   application:
     name: watchdog
+
+    profiles:
+      active: dev
+
+    config:
+      activate:
+        on-profile: dev
+
+  sql:
+    init:
+      mode: always
+
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/watchdog
+    username: postgres
+    password: Rolojojo_506
+    driver-class-name: org.postgresql.Driver
+
+    Hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+
+#api:
+#  external-auth:
+#    base-url: http://localhost:8080
+#    username: fishercameron@gmail.com
+#    password: password
+#    timeout-millis: 5000
+#    auth:
+#      token: /token
+security:
+    jwt:
+        secret-key: RiR7Es0oRSt/wO47nfSyQPqdTfcIhq+Sg5Ad1RmrHmk= #TODO: Randomize this and keep it secret in production
+        expiration-time: 3600000
