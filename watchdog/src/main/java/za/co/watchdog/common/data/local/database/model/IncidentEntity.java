@@ -35,6 +35,9 @@ public class IncidentEntity {
     @JoinColumn(name = "locationId")
     private LocationEntity locationEntity;
 
-    private String Status;
+    @Enumerated(EnumType.STRING)
+    private IncidentStatus incidentStatus;
+    @Enumerated(EnumType.STRING)
+    private TriggerSource triggerSource;
     private Instant createdAt;
 }

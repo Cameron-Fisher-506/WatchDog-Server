@@ -20,6 +20,7 @@ public class VehicleEntity {
 
     private String plateNumber;
     private String model;
+    private String make;
     private String callSign;
     @Enumerated(EnumType.STRING)
     private VehicleStatus vehicleStatus;

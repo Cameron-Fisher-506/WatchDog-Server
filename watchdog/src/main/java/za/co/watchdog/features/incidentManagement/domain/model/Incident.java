@@ -13,6 +13,6 @@ public class Incident {
     private Long securityCompanyId;
     private Long patrolId;
     private Long locationId;
-    private String Status;
+    private IncidentStatus incidentStatus;
     private Instant createdAt;
 }

@@ -8,7 +8,7 @@ import za.co.watchdog.common.domain.model.*;
 
 @Component
 public class ClientMapper {
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     ClientMapper(EntityManager entityManager) {
         this.entityManager = entityManager;
