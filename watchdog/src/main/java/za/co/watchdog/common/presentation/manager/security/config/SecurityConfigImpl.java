@@ -1,4 +1,4 @@
-package za.co.watchdog.common.data.manager.security.config;
+package za.co.watchdog.common.presentation.manager.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,11 +7,13 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import za.co.watchdog.common.data.manager.security.filter.JwtAuthenticationFilter;
+import za.co.watchdog.common.presentation.manager.security.filter.JwtAuthenticationFilter;
 import za.co.watchdog.common.domain.manager.SecurityManager;
 
 @Configuration
@@ -56,6 +58,12 @@ public class SecurityConfigImpl implements SecurityManager {
     @Override
     public String encode(String rawPassword) {
         return passwordEncoder().encode(rawPassword);
+    }
+
+    @Override
+    public String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null ? authentication.getName() : null;
     }
 
 }

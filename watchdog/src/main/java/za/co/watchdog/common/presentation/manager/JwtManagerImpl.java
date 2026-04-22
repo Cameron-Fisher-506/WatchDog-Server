@@ -1,4 +1,4 @@
-package za.co.watchdog.common.data.manager;
+package za.co.watchdog.common.presentation.manager;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,4 +1,4 @@
-package za.co.watchdog.common.data.manager;
+package za.co.watchdog.common.presentation.manager;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.domain.manager.UniqueIdentifierGenerator;
