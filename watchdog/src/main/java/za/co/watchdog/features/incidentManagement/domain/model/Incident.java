@@ -2,6 +2,7 @@ package za.co.watchdog.features.incidentManagement.domain.model;
 
 import lombok.Builder;
 import lombok.Data;
+import za.co.watchdog.common.domain.model.IncidentStatus;
 
 import java.time.Instant;
 

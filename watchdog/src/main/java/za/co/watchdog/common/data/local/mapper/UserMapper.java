@@ -12,11 +12,11 @@ public class UserMapper {
         return User.builder()
                 .userId(userEntity.getUserId())
                 .emailAddress(userEntity.getEmailAddress())
-                .accountStatus(mapToAccountStatus(userEntity.getAccountStatus()))
+                .accountStatus(userEntity.getAccountStatus())
                 .password(userEntity.getPasswordHash())
                 .createdAt(userEntity.getCreatedAt())
-                .userStatus(mapToUserStatus(userEntity.getUserStatus()))
-                .userRole(mapToUserRole(userEntity.getUserRole()))
+                .userStatus(userEntity.getUserStatus())
+                .userRole(userEntity.getUserRole())
                 .verificationCode(userEntity.getVerificationCode())
                 .verificationCodeExpiresAt(userEntity.getVerificationCodeExpiresAt())
                 .build();
@@ -25,38 +25,14 @@ public class UserMapper {
     public UserEntity mapToUserEntity(User user) {
         return UserEntity.builder()
                 .userId(user.getUserId())
-                .accountStatus(mapToAccountStatus(user.getAccountStatus()))
+                .accountStatus(user.getAccountStatus())
                 .emailAddress(user.getEmailAddress())
                 .passwordHash(user.getPassword())
-                .userStatus(mapToUserStatus(user.getUserStatus()))
+                .userStatus(user.getUserStatus())
                 .createdAt(user.getCreatedAt())
-                .userRole(mapToUserRole(user.getUserRole() != null ? user.getUserRole() : za.co.watchdog.common.domain.model.UserRole.UNKNOWN))
+                .userRole(user.getUserRole())
                 .verificationCode(user.getVerificationCode())
                 .verificationCodeExpiresAt(user.getVerificationCodeExpiresAt())
                 .build();
-    }
-
-    private UserRole mapToUserRole(za.co.watchdog.common.domain.model.UserRole userRole) {
-        return za.co.watchdog.common.data.local.database.model.UserRole.valueOf(userRole.name());
-    }
-
-    private za.co.watchdog.common.domain.model.UserRole mapToUserRole(UserRole userRole) {
-        return za.co.watchdog.common.domain.model.UserRole.valueOf(userRole.name());
-    }
-
-    private UserStatus mapToUserStatus(za.co.watchdog.common.domain.model.UserStatus userStatus) {
-        return UserStatus.valueOf(userStatus.name());
-    }
-
-    private za.co.watchdog.common.domain.model.UserStatus mapToUserStatus(UserStatus userStatus) {
-        return za.co.watchdog.common.domain.model.UserStatus.valueOf(userStatus.name());
-    }
-
-    private AccountStatus mapToAccountStatus(za.co.watchdog.common.domain.model.AccountStatus accountStatus) {
-        return AccountStatus.valueOf(accountStatus.name());
-    }
-
-    private za.co.watchdog.common.domain.model.AccountStatus mapToAccountStatus(AccountStatus accountStatus) {
-        return za.co.watchdog.common.domain.model.AccountStatus.valueOf(accountStatus.name());
     }
 }

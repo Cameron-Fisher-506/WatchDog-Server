@@ -1,12 +1,10 @@
 package za.co.watchdog.features.incidentManagement.presentation.model.incident;
 
-import za.co.watchdog.common.presentation.model.LocationDto;
-import za.co.watchdog.features.incidentManagement.presentation.model.incident.dto.TriggerSource;
+import lombok.Builder;
+import lombok.Data;
 
-import java.time.Instant;
-
+@Builder
+@Data
 public class IncidentRequestDto {
-    private Long clientId;
-    private LocationDto locationDto;
-
+    private Long locationId;
 }

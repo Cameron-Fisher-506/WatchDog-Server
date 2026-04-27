@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.watchdog.common.domain.model.AccountStatus;
-import za.co.watchdog.common.domain.model.Client;
+import za.co.watchdog.common.domain.usecase.FetchCurrentUserByUsernameUseCase;
+import za.co.watchdog.features.incidentManagement.domain.model.Client;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.presentation.common.ApiSuccessResponse;
 import za.co.watchdog.features.authManagement.domain.usecase.FetchUserByIdUseCase;
@@ -21,13 +22,13 @@ import za.co.watchdog.features.clientManagement.presentation.model.clientOnboard
 @RequestMapping("api/v1/clientmanagement")
 public class ClientManagementController {
     private final ClientOnboardingUseCase clientOnboardingUseCase;
-    private final FetchUserByIdUseCase fetchUserByIdUseCase;
+    private final FetchCurrentUserByUsernameUseCase fetchCurrentUserByUsernameUseCase;
     private final SaveUserUseCase saveUserUseCase;
     private final ClientPresenterMapper clientPresenterMapper;
 
-    public ClientManagementController(ClientOnboardingUseCase clientOnboardingUseCase, FetchUserByIdUseCase fetchUserByIdUseCase, SaveUserUseCase saveUserUseCase, ClientPresenterMapper clientPresenterMapper) {
+    public ClientManagementController(ClientOnboardingUseCase clientOnboardingUseCase, FetchCurrentUserByUsernameUseCase fetchCurrentUserByUsernameUseCase, SaveUserUseCase saveUserUseCase, ClientPresenterMapper clientPresenterMapper) {
         this.clientOnboardingUseCase = clientOnboardingUseCase;
-        this.fetchUserByIdUseCase = fetchUserByIdUseCase;
+        this.fetchCurrentUserByUsernameUseCase = fetchCurrentUserByUsernameUseCase;
         this.saveUserUseCase = saveUserUseCase;
         this.clientPresenterMapper = clientPresenterMapper;
     }
@@ -35,7 +36,7 @@ public class ClientManagementController {
     @PostMapping("/onboarding")
     public ResponseEntity<ApiSuccessResponse<ClientOnboardingResponseDto>> register(@RequestBody ClientOnboardingRequestDto clientOnboardingRequestDto) {
         Client client = this.clientOnboardingUseCase.execute(clientPresenterMapper.mapToClient(clientOnboardingRequestDto));
-        User user = this.fetchUserByIdUseCase.execute(client.getUserId());
+        User user = this.fetchCurrentUserByUsernameUseCase.execute(null);
         user.setAccountStatus(AccountStatus.ACTIVE);
         this.saveUserUseCase.execute(user);
         return new ResponseEntity<>(

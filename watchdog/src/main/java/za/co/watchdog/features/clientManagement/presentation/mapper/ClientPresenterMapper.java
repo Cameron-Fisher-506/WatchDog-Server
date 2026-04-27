@@ -3,8 +3,10 @@ package za.co.watchdog.features.clientManagement.presentation.mapper;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.domain.model.*;
 import za.co.watchdog.common.presentation.model.*;
-import za.co.watchdog.common.presentation.model.UserRole;
+import za.co.watchdog.features.clientManagement.domain.model.Address;
+import za.co.watchdog.features.clientManagement.domain.model.Location;
 import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.ClientOnboardingRequestDto;
+import za.co.watchdog.features.incidentManagement.domain.model.Client;
 
 @Component
 public class ClientPresenterMapper {
@@ -13,7 +15,7 @@ public class ClientPresenterMapper {
                 .contactNumber(clientOnboardingRequestDto.getContactNumber())
                 .name(clientOnboardingRequestDto.getName())
                 .surname(clientOnboardingRequestDto.getSurname())
-                .userId(clientOnboardingRequestDto.getUserId())
+                .userId(clientOnboardingRequestDto.getUserDto().getUserId())
                 .build();
     }
 
@@ -46,15 +48,7 @@ public class ClientPresenterMapper {
                 .userId(userDto.getUserId())
                 .emailAddress(userDto.getEmailAddress())
                 .createdAt(userDto.getCreatedAt())
-                .userRole(mapToUserRole(userDto.getUserRole() != null ? userDto.getUserRole() : UserRole.UNKNOWN))
+                .userRole(userDto.getUserRole())
                 .build();
-    }
-
-    private UserRole mapToUserRole(za.co.watchdog.common.domain.model.UserRole userRole) {
-        return UserRole.valueOf(userRole.name());
-    }
-
-    private za.co.watchdog.common.domain.model.UserRole mapToUserRole(UserRole userRole) {
-        return za.co.watchdog.common.domain.model.UserRole.valueOf(userRole.name());
     }
 }

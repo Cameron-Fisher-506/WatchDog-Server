@@ -1,9 +1,8 @@
-package za.co.watchdog.common.domain.model;
+package za.co.watchdog.features.incidentManagement.domain.model;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-import lombok.experimental.SuperBuilder;
 
 @Data
 @Getter
@@ -14,6 +13,7 @@ public class Client {
     private String surname;
     private String contactNumber;
     private Long userId;
+    private Long securityCompanyId;
 
     public Client copyWith(Long userId) {
         return Client.builder()
@@ -22,6 +22,7 @@ public class Client {
                 .name(getName())
                 .surname(getSurname())
                 .contactNumber(getContactNumber())
+                .securityCompanyId(getSecurityCompanyId())
                 .build();
     }
 }

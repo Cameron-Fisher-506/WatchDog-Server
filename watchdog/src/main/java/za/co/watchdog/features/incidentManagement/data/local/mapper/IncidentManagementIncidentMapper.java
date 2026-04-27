@@ -6,10 +6,10 @@ import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.features.incidentManagement.domain.model.Incident;
 
 @Component
-public class IncidentMapper {
+public class IncidentManagementIncidentMapper {
     private final EntityManager entityManager;
 
-    IncidentMapper(EntityManager entityManager) {
+    IncidentManagementIncidentMapper(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -17,7 +17,7 @@ public class IncidentMapper {
         return Incident.builder()
                 .incidentId(incidentEntity.getIncidentId())
                 .clientId(incidentEntity.getClientEntity().getClientId())
-                .status(incidentEntity.getStatus())
+                .incidentStatus(incidentEntity.getIncidentStatus())
                 .createdAt(incidentEntity.getCreatedAt())
                 .patrolId(incidentEntity.getPatrolEntity().getPatrolId())
                 .locationId(incidentEntity.getLocationEntity().getLocationId())
@@ -29,7 +29,7 @@ public class IncidentMapper {
         return IncidentEntity.builder()
                 .incidentId(incident.getIncidentId())
                 .clientEntity(entityManager.getReference(ClientEntity.class, incident.getClientId()))
-                .status(incident.getStatus())
+                .incidentStatus(incident.getIncidentStatus())
                 .createdAt(incident.getCreatedAt())
                 .patrolEntity(entityManager.getReference(PatrolEntity.class, incident.getPatrolId()))
                 .locationEntity(entityManager.getReference(LocationEntity.class, incident.getLocationId()))

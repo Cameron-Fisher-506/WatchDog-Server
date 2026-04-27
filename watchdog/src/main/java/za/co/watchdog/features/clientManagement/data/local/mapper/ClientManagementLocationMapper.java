@@ -1,4 +1,4 @@
-package za.co.watchdog.features.incidentManagement.data.local.mapper;
+package za.co.watchdog.features.clientManagement.data.local.mapper;
 
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
@@ -7,10 +7,10 @@ import za.co.watchdog.features.incidentManagement.domain.model.Address;
 import za.co.watchdog.features.incidentManagement.domain.model.Location;
 
 @Component
-public class LocationMapper {
+public class ClientManagementLocationMapper {
     private final EntityManager entityManager;
 
-    LocationMapper(EntityManager entityManager) {
+    ClientManagementLocationMapper(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

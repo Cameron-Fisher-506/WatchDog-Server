@@ -2,7 +2,9 @@ package za.co.watchdog.common.data.local.database.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+import za.co.watchdog.common.domain.model.AccountStatus;
+import za.co.watchdog.common.domain.model.UserRole;
+import za.co.watchdog.common.domain.model.UserStatus;
 
 import java.time.Instant;
 

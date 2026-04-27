@@ -8,22 +8,22 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
 @Entity
-@Table(name = "patrol_vehicle")
-public class PatrolVehicleEntity {
+@Table(name = "incident_tracking")
+public class IncidentTrackingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long patrolVehicleId;
+    private Long incidentTrackingId;
+
     @ManyToOne
-    @JoinColumn(name = "patrolId")
-    private PatrolEntity patrolEntity;
-    @ManyToOne
-    @JoinColumn(name = "vehicleId")
-    private VehicleEntity vehicleEntity;
-    private Instant assignedAt;
-    private Boolean isActive;
+    @JoinColumn(name = "incidentId")
+    private IncidentEntity incidentEntity;
+
+    private String latitude;
+    private String longitude;
+    private Instant capturedAt;
 }

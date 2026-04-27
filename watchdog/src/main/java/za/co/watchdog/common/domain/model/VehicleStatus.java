@@ -1,4 +1,4 @@
-package za.co.watchdog.common.data.local.database.model;
+package za.co.watchdog.common.domain.model;
 
 public enum VehicleStatus {
     AVAILABLE,

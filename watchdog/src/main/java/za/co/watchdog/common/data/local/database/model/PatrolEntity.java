@@ -28,4 +28,8 @@ public class PatrolEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "securityCompanyId")
     private SecurityCompanyEntity securityCompanyEntity;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "zoneId")
+    private ZoneEntity zoneEntity;
 }

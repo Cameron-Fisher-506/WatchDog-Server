@@ -1,4 +1,4 @@
-package za.co.watchdog.features.incidentManagement.domain.model;
+package za.co.watchdog.common.domain.model;
 
 public enum IncidentStatus {
     TRIGGERED,

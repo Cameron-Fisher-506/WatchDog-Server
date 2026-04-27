@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import za.co.watchdog.common.domain.model.IncidentStatus;
+import za.co.watchdog.common.domain.model.TriggerSource;
 
 import java.time.Instant;
 

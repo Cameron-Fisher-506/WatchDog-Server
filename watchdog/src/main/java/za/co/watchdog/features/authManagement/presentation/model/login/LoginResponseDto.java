@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import za.co.watchdog.common.presentation.model.UserStatus;
+import za.co.watchdog.common.domain.model.UserStatus;
 
 @NoArgsConstructor
 @AllArgsConstructor

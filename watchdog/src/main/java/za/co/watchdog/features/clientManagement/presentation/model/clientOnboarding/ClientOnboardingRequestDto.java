@@ -16,5 +16,5 @@ public class ClientOnboardingRequestDto {
     String surname;
     String contactNumber;
     LocationDto locationDto;
-    Long userId;
+    UserDto userDto;
 }

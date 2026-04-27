@@ -2,7 +2,6 @@ package za.co.watchdog.features.authManagement.data.repository;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
-import za.co.watchdog.common.data.local.database.model.AccountStatus;
 import za.co.watchdog.common.data.local.database.model.DeviceEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
 import za.co.watchdog.common.data.local.mapper.DeviceMapper;
@@ -12,7 +11,6 @@ import za.co.watchdog.features.authManagement.data.local.dataSource.AuthManageme
 import za.co.watchdog.common.data.local.mapper.UserMapper;
 import za.co.watchdog.features.authManagement.domain.repository.AuthManagementRepository;
 
-import javax.xml.crypto.Data;
 import java.util.Optional;
 
 @Component
