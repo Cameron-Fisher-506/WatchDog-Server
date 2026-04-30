@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.watchdog.common.domain.model.AccountStatus;
 import za.co.watchdog.common.domain.usecase.FetchCurrentUserByUsernameUseCase;
-import za.co.watchdog.features.incidentManagement.domain.model.Client;
+import za.co.watchdog.features.clientManagement.domain.model.Client;
+import za.co.watchdog.features.clientManagement.domain.model.Location;
+import za.co.watchdog.features.clientManagement.domain.usecase.SaveClientPropertyLocationUseCase;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.presentation.common.ApiSuccessResponse;
 import za.co.watchdog.features.authManagement.domain.usecase.FetchUserByIdUseCase;
@@ -24,21 +26,34 @@ public class ClientManagementController {
     private final ClientOnboardingUseCase clientOnboardingUseCase;
     private final FetchCurrentUserByUsernameUseCase fetchCurrentUserByUsernameUseCase;
     private final SaveUserUseCase saveUserUseCase;
+    private final SaveClientPropertyLocationUseCase saveClientPropertyLocationUseCase;
     private final ClientPresenterMapper clientPresenterMapper;
 
-    public ClientManagementController(ClientOnboardingUseCase clientOnboardingUseCase, FetchCurrentUserByUsernameUseCase fetchCurrentUserByUsernameUseCase, SaveUserUseCase saveUserUseCase, ClientPresenterMapper clientPresenterMapper) {
+    public ClientManagementController(
+            ClientOnboardingUseCase clientOnboardingUseCase,
+            FetchCurrentUserByUsernameUseCase fetchCurrentUserByUsernameUseCase,
+            SaveUserUseCase saveUserUseCase,
+            SaveClientPropertyLocationUseCase saveClientPropertyLocationUseCase,
+            ClientPresenterMapper clientPresenterMapper
+    ) {
         this.clientOnboardingUseCase = clientOnboardingUseCase;
         this.fetchCurrentUserByUsernameUseCase = fetchCurrentUserByUsernameUseCase;
         this.saveUserUseCase = saveUserUseCase;
+        this.saveClientPropertyLocationUseCase = saveClientPropertyLocationUseCase;
         this.clientPresenterMapper = clientPresenterMapper;
     }
 
     @PostMapping("/onboarding")
     public ResponseEntity<ApiSuccessResponse<ClientOnboardingResponseDto>> register(@RequestBody ClientOnboardingRequestDto clientOnboardingRequestDto) {
-        Client client = this.clientOnboardingUseCase.execute(clientPresenterMapper.mapToClient(clientOnboardingRequestDto));
         User user = this.fetchCurrentUserByUsernameUseCase.execute(null);
+        Client client = this.clientOnboardingUseCase.execute(clientPresenterMapper.mapToClient(clientOnboardingRequestDto, user.getUserId()));
+        //TODO: Frontend to select a zone linked to.
+        //TODO use the zoneId to find the current vehicle linked to the zone or null if nothing.
+        this.saveClientPropertyLocationUseCase.execute(clientPresenterMapper.mapToLocation(clientOnboardingRequestDto.getLocationDto(), client.getClientId(), 1L, null));
+
         user.setAccountStatus(AccountStatus.ACTIVE);
         this.saveUserUseCase.execute(user);
+
         return new ResponseEntity<>(
                 ApiSuccessResponse.ok(
                         ClientOnboardingResponseDto.builder()

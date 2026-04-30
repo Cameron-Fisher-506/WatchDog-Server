@@ -22,7 +22,7 @@ public class ClientEntity {
     @JoinColumn(name = "userId")
     private UserEntity userEntity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "securityCompanyId")
     private SecurityCompanyEntity securityCompanyEntity;
 }

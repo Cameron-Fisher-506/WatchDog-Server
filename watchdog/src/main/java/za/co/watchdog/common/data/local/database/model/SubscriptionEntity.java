@@ -19,11 +19,11 @@ public class SubscriptionEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long subscriptionId;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clientId")
     private ClientEntity clientEntity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "planId")
     private PlanEntity planEntity;
 

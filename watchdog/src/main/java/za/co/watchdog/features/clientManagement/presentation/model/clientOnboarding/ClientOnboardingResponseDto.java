@@ -3,7 +3,7 @@ package za.co.watchdog.features.clientManagement.presentation.model.clientOnboar
 import lombok.experimental.SuperBuilder;
 import za.co.watchdog.common.presentation.model.ResponseDto;
 
-
 @SuperBuilder
 public class ClientOnboardingResponseDto extends ResponseDto {
+
 }

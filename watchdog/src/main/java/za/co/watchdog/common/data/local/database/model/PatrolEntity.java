@@ -25,11 +25,11 @@ public class PatrolEntity {
     @JoinColumn(name = "userId")
     private UserEntity userEntity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "securityCompanyId")
     private SecurityCompanyEntity securityCompanyEntity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "zoneId")
     private ZoneEntity zoneEntity;
 }

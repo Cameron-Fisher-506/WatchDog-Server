@@ -6,16 +6,16 @@ import za.co.watchdog.common.presentation.model.*;
 import za.co.watchdog.features.clientManagement.domain.model.Address;
 import za.co.watchdog.features.clientManagement.domain.model.Location;
 import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.ClientOnboardingRequestDto;
-import za.co.watchdog.features.incidentManagement.domain.model.Client;
+import za.co.watchdog.features.clientManagement.domain.model.Client;
 
 @Component
 public class ClientPresenterMapper {
-    public Client mapToClient(ClientOnboardingRequestDto clientOnboardingRequestDto) {
+    public Client mapToClient(ClientOnboardingRequestDto clientOnboardingRequestDto, Long userId) {
         return Client.builder()
                 .contactNumber(clientOnboardingRequestDto.getContactNumber())
                 .name(clientOnboardingRequestDto.getName())
                 .surname(clientOnboardingRequestDto.getSurname())
-                .userId(clientOnboardingRequestDto.getUserDto().getUserId())
+                .userId(userId)
                 .build();
     }
 
@@ -28,11 +28,14 @@ public class ClientPresenterMapper {
                 .build();
     }
 
-    private Location mapToLocation(LocationDto locationDto) {
+    public Location mapToLocation(LocationDto locationDto, Long clientId, Long zoneId, Long vehicleId) {
         return Location.builder()
                 .longitude(locationDto.longitude())
                 .latitude(locationDto.latitude())
                 .address(mapToAddress(locationDto.addressDto()))
+                .clientId(clientId)
+                .zoneId(zoneId)
+                .vehicleId(vehicleId)
                 .build();
     }
 
@@ -40,15 +43,6 @@ public class ClientPresenterMapper {
         return Sensor.builder()
                 .zoneName(sensorDto.zoneName())
                 .type(sensorDto.type())
-                .build();
-    }
-
-    private User mapToUser(UserDto userDto) {
-        return User.builder()
-                .userId(userDto.getUserId())
-                .emailAddress(userDto.getEmailAddress())
-                .createdAt(userDto.getCreatedAt())
-                .userRole(userDto.getUserRole())
                 .build();
     }
 }

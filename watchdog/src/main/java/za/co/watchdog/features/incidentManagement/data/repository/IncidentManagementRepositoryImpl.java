@@ -10,7 +10,7 @@ import za.co.watchdog.common.domain.model.VehicleStatus;
 import za.co.watchdog.features.incidentManagement.data.local.dataSource.IncidentManagementLocalDataSource;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementClientMapper;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementIncidentMapper;
-import za.co.watchdog.features.clientManagement.data.local.mapper.ClientManagementLocationMapper;
+import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementLocationMapper;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementPatrolVehicleMapper;
 import za.co.watchdog.features.incidentManagement.domain.model.Client;
 import za.co.watchdog.features.incidentManagement.domain.model.Incident;
@@ -24,20 +24,20 @@ import java.util.Optional;
 public class IncidentManagementRepositoryImpl implements IncidentManagementRepository {
     private final IncidentManagementLocalDataSource incidentManagementLocalDataSource;
     private final IncidentManagementIncidentMapper incidentManagementIncidentMapper;
-    private final ClientManagementLocationMapper clientManagementLocationMapper;
+    private final IncidentManagementLocationMapper incidentManagementLocationMapper;
     private final IncidentManagementClientMapper incidentManagementClientMapper;
     private final IncidentManagementPatrolVehicleMapper incidentManagementPatrolVehicleMapper;
 
     IncidentManagementRepositoryImpl(
             IncidentManagementLocalDataSource incidentManagementLocalDataSource,
             IncidentManagementIncidentMapper incidentManagementIncidentMapper,
-            ClientManagementLocationMapper clientManagementLocationMapper,
+            IncidentManagementLocationMapper incidentManagementLocationMapper,
             IncidentManagementClientMapper incidentManagementClientMapper,
             IncidentManagementPatrolVehicleMapper incidentManagementPatrolVehicleMapper
     ) {
         this.incidentManagementLocalDataSource = incidentManagementLocalDataSource;
         this.incidentManagementIncidentMapper = incidentManagementIncidentMapper;
-        this.clientManagementLocationMapper = clientManagementLocationMapper;
+        this.incidentManagementLocationMapper = incidentManagementLocationMapper;
         this.incidentManagementClientMapper = incidentManagementClientMapper;
         this.incidentManagementPatrolVehicleMapper = incidentManagementPatrolVehicleMapper;
     }
@@ -79,6 +79,6 @@ public class IncidentManagementRepositoryImpl implements IncidentManagementRepos
     @Override
     public Optional<Location> fetchLocationById(Long locationId) {
         Optional<LocationEntity> optional = incidentManagementLocalDataSource.fetchLocationById(locationId);
-        return optional.map(clientManagementLocationMapper::mapToLocation);
+        return optional.map(incidentManagementLocationMapper::mapToLocation);
     }
 }

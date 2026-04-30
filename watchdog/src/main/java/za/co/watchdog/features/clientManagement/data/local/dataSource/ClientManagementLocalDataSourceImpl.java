@@ -8,7 +8,6 @@ import za.co.watchdog.common.data.local.database.dao.UserDao;
 import za.co.watchdog.common.data.local.database.model.ClientEntity;
 import za.co.watchdog.common.data.local.database.model.LocationEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
-import za.co.watchdog.common.data.local.mapper.UserMapper;
 
 @Component
 public class ClientManagementLocalDataSourceImpl implements ClientManagementLocalDataSource {
@@ -46,15 +45,6 @@ public class ClientManagementLocalDataSourceImpl implements ClientManagementLoca
             return userDao.findById(userId)
                     .map(DatabaseResponse::success)
                     .orElseGet(() -> DatabaseResponse.error("Account does not exists."));
-        } catch(Exception e) {
-            return new DatabaseResponse.Error<>(e.getMessage());
-        }
-    }
-
-    @Override
-    public DatabaseResponse<UserEntity> saveUserEntity(UserEntity userEntity) {
-        try {
-            return DatabaseResponse.success(userDao.save(userEntity));
         } catch(Exception e) {
             return new DatabaseResponse.Error<>(e.getMessage());
         }

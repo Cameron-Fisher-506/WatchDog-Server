@@ -1,16 +1,16 @@
-package za.co.watchdog.features.clientManagement.data.local.mapper;
+package za.co.watchdog.features.incidentManagement.data.local.mapper;
 
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.database.model.*;
-import za.co.watchdog.features.clientManagement.domain.model.Address;
-import za.co.watchdog.features.clientManagement.domain.model.Location;
+import za.co.watchdog.features.incidentManagement.domain.model.Address;
+import za.co.watchdog.features.incidentManagement.domain.model.Location;
 
 @Component
-public class ClientManagementLocationMapper {
+public class IncidentManagementLocationMapper {
     private final EntityManager entityManager;
 
-    ClientManagementLocationMapper(EntityManager entityManager) {
+    IncidentManagementLocationMapper(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -21,7 +21,7 @@ public class ClientManagementLocationMapper {
                 .longitude(locationEntity.getLongitude())
                 .latitude(locationEntity.getLatitude())
                 .clientId(locationEntity.getClientEntity().getClientId())
-                .vehicleId(locationEntity.getVehicleEntity() != null ? locationEntity.getVehicleEntity().getVehicleId() : null)
+                .vehicleId(locationEntity.getVehicleEntity().getVehicleId())
                 .zoneId(locationEntity.getZoneEntity().getZoneId())
                 .build();
     }
@@ -42,7 +42,7 @@ public class ClientManagementLocationMapper {
                 .longitude(location.getLongitude())
                 .latitude(location.getLatitude())
                 .clientEntity(entityManager.getReference(ClientEntity.class, location.getClientId()))
-                .vehicleEntity(location.getVehicleId() != null ? entityManager.getReference(VehicleEntity.class, location.getVehicleId()) : null)
+                .vehicleEntity(entityManager.getReference(VehicleEntity.class, location.getVehicleId()))
                 .zoneEntity(entityManager.getReference(ZoneEntity.class, location.getZoneId()))
                 .build();
     }

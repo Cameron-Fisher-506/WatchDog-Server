@@ -6,13 +6,13 @@ import za.co.watchdog.common.data.local.database.model.ClientEntity;
 import za.co.watchdog.common.data.local.database.model.LocationEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
 import za.co.watchdog.common.data.local.mapper.UserMapper;
-import za.co.watchdog.features.clientManagement.data.local.mapper.ClientManagementLocationMapper;
-import za.co.watchdog.features.incidentManagement.domain.model.Client;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.features.clientManagement.data.local.dataSource.ClientManagementLocalDataSource;
+import za.co.watchdog.features.clientManagement.data.local.mapper.ClientManagementLocationMapper;
 import za.co.watchdog.features.clientManagement.data.local.mapper.ClientMapper;
+import za.co.watchdog.features.clientManagement.domain.model.Client;
+import za.co.watchdog.features.clientManagement.domain.model.Location;
 import za.co.watchdog.features.clientManagement.domain.repository.ClientManagementRepository;
-import za.co.watchdog.features.incidentManagement.domain.model.Location;
 
 import java.util.Optional;
 
@@ -67,20 +67,6 @@ public class ClientManagementRepositoryImpl implements ClientManagementRepositor
             }
 
             case DatabaseResponse.Error<LocationEntity> error -> {
-                return Optional.empty();
-            }
-        }
-    }
-
-    @Override
-    public Optional<User> saveUser(User user) {
-        DatabaseResponse<UserEntity> databaseResponse = clientManagementLocalDataSource.saveUserEntity(userMapper.mapToUserEntity(user));
-        switch (databaseResponse) {
-            case DatabaseResponse.Success<UserEntity> success -> {
-                return Optional.of(userMapper.mapToUser(success.data()));
-            }
-
-            case DatabaseResponse.Error<UserEntity> error -> {
                 return Optional.empty();
             }
         }

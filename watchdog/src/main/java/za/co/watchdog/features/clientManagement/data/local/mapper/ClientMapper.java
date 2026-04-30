@@ -6,7 +6,7 @@ import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.common.domain.model.*;
 import za.co.watchdog.features.clientManagement.domain.model.Address;
 import za.co.watchdog.features.clientManagement.domain.model.Location;
-import za.co.watchdog.features.incidentManagement.domain.model.Client;
+import za.co.watchdog.features.clientManagement.domain.model.Client;
 
 @Component
 public class ClientMapper {

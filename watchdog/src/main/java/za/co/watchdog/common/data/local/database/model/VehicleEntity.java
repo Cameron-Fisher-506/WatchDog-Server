@@ -30,11 +30,11 @@ public class VehicleEntity {
     private Long lastServiceMileage;
     private Instant createdAt;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "securityCompanyId")
     private SecurityCompanyEntity securityCompanyEntity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "zoneId")
     private ZoneEntity zoneEntity;
 }

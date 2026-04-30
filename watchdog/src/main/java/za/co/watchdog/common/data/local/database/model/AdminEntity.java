@@ -9,7 +9,7 @@ public class AdminEntity {
     private String employeeId;
     private String department;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private UserEntity userEntity;
 
