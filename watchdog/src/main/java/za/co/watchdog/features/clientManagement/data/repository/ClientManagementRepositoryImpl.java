@@ -5,6 +5,7 @@ import za.co.watchdog.common.data.local.common.DatabaseResponse;
 import za.co.watchdog.common.data.local.database.model.ClientEntity;
 import za.co.watchdog.common.data.local.database.model.LocationEntity;
 import za.co.watchdog.common.data.local.database.model.UserEntity;
+import za.co.watchdog.common.data.local.database.model.VehicleEntity;
 import za.co.watchdog.common.data.local.mapper.UserMapper;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.features.clientManagement.data.local.dataSource.ClientManagementLocalDataSource;
@@ -12,8 +13,10 @@ import za.co.watchdog.features.clientManagement.data.local.mapper.ClientManageme
 import za.co.watchdog.features.clientManagement.data.local.mapper.ClientMapper;
 import za.co.watchdog.features.clientManagement.domain.model.Client;
 import za.co.watchdog.features.clientManagement.domain.model.Location;
+import za.co.watchdog.features.clientManagement.domain.model.Vehicle;
 import za.co.watchdog.features.clientManagement.domain.repository.ClientManagementRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -42,6 +45,12 @@ public class ClientManagementRepositoryImpl implements ClientManagementRepositor
                 return Optional.empty();
             }
         }
+    }
+
+    @Override
+    public Optional<Vehicle> fetchVehicleByZoneId(Long zoneId) {
+        Optional<VehicleEntity> optional = clientManagementLocalDataSource.fetchVehicleByZoneId(zoneId);
+        return optional.map(clientManagementLocationMapper::mapToVehicle);
     }
 
     @Override

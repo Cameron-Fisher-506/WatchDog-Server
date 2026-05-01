@@ -28,13 +28,13 @@ public class ClientPresenterMapper {
                 .build();
     }
 
-    public Location mapToLocation(LocationDto locationDto, Long clientId, Long zoneId, Long vehicleId) {
+    public Location mapToLocation(LocationDto locationDto, Long clientId, Long vehicleId) {
         return Location.builder()
                 .longitude(locationDto.longitude())
                 .latitude(locationDto.latitude())
                 .address(mapToAddress(locationDto.addressDto()))
                 .clientId(clientId)
-                .zoneId(zoneId)
+                .zoneId(locationDto.zoneId())
                 .vehicleId(vehicleId)
                 .build();
     }

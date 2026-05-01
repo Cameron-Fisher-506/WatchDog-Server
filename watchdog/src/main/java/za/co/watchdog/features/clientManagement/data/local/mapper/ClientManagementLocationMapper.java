@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.features.clientManagement.domain.model.Address;
 import za.co.watchdog.features.clientManagement.domain.model.Location;
+import za.co.watchdog.features.clientManagement.domain.model.Vehicle;
+
+import java.util.List;
 
 @Component
 public class ClientManagementLocationMapper {
@@ -17,12 +20,10 @@ public class ClientManagementLocationMapper {
     public Location mapToLocation(LocationEntity locationEntity) {
         return Location.builder()
                 .locationId(locationEntity.getLocationId())
-                .address(mapToAddress(locationEntity.getAddressEntity()))
                 .longitude(locationEntity.getLongitude())
                 .latitude(locationEntity.getLatitude())
                 .clientId(locationEntity.getClientEntity().getClientId())
-                .vehicleId(locationEntity.getVehicleEntity() != null ? locationEntity.getVehicleEntity().getVehicleId() : null)
-                .zoneId(locationEntity.getZoneEntity().getZoneId())
+                .vehicleId(locationEntity.getVehicleEntity().getVehicleId())
                 .build();
     }
 
@@ -38,12 +39,10 @@ public class ClientManagementLocationMapper {
     public LocationEntity mapToLocationEntity(Location location) {
         return LocationEntity.builder()
                 .locationId(location.getLocationId())
-                .addressEntity(mapToAddressEntity(location.getAddress()))
                 .longitude(location.getLongitude())
                 .latitude(location.getLatitude())
                 .clientEntity(entityManager.getReference(ClientEntity.class, location.getClientId()))
-                .vehicleEntity(location.getVehicleId() != null ? entityManager.getReference(VehicleEntity.class, location.getVehicleId()) : null)
-                .zoneEntity(entityManager.getReference(ZoneEntity.class, location.getZoneId()))
+                .vehicleEntity(entityManager.getReference(VehicleEntity.class, location.getVehicleId()))
                 .build();
     }
 
@@ -53,6 +52,21 @@ public class ClientManagementLocationMapper {
                 .addressLineTwo(address.addressLineTwo())
                 .suburb(address.suburb())
                 .postalCode(address.postalCode())
+                .build();
+    }
+
+    public Vehicle mapToVehicle(VehicleEntity vehicleEntity) {
+        return Vehicle.builder()
+                .vehicleId(vehicleEntity.getVehicleId())
+                .make(vehicleEntity.getMake())
+                .createdAt(vehicleEntity.getCreatedAt())
+                .vehicleStatus(vehicleEntity.getVehicleStatus())
+                .lastServiceMileage(vehicleEntity.getLastServiceMileage())
+                .plateNumber(vehicleEntity.getPlateNumber())
+                .model(vehicleEntity.getModel())
+                .callSign(vehicleEntity.getCallSign())
+                .securityCompanyId(vehicleEntity.getSecurityCompanyEntity().getSecurityCompanyId())
+                .zoneId(vehicleEntity.getZoneEntity().getZoneId())
                 .build();
     }
 }

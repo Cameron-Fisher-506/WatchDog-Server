@@ -19,8 +19,6 @@ public class LocationEntity {
     private String latitude;
     private String longitude;
 
-    @Embedded
-    private AddressEntity addressEntity;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clientId")
     private ClientEntity clientEntity;
@@ -28,8 +26,4 @@ public class LocationEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicleId")
     private VehicleEntity vehicleEntity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "zoneId")
-    private ZoneEntity zoneEntity;
 }
