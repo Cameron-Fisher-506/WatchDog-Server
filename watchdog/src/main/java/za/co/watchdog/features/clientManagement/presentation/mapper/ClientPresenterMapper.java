@@ -2,11 +2,12 @@ package za.co.watchdog.features.clientManagement.presentation.mapper;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.domain.model.*;
-import za.co.watchdog.common.presentation.model.*;
 import za.co.watchdog.features.clientManagement.domain.model.Address;
-import za.co.watchdog.features.clientManagement.domain.model.Location;
 import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.ClientOnboardingRequestDto;
 import za.co.watchdog.features.clientManagement.domain.model.Client;
+import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.AddressDto;
+import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.LocationDto;
+import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.SensorDto;
 
 @Component
 public class ClientPresenterMapper {
@@ -28,14 +29,16 @@ public class ClientPresenterMapper {
                 .build();
     }
 
-    public Location mapToLocation(LocationDto locationDto, Long clientId, Long vehicleId) {
-        return Location.builder()
-                .longitude(locationDto.longitude())
-                .latitude(locationDto.latitude())
-                .address(mapToAddress(locationDto.addressDto()))
+    public Address mapToAddress(AddressDto addressDto, Long clientId) {
+        return Address.builder()
+                .latitude(addressDto.latitude())
+                .longitude(addressDto.longitude())
+                .suburb(addressDto.suburb())
+                .addressLineTwo(addressDto.addressLineOne())
+                .addressLineTwo(addressDto.addressLineTwo())
+                .postalCode(addressDto.postalCode())
                 .clientId(clientId)
-                .zoneId(locationDto.zoneId())
-                .vehicleId(vehicleId)
+                .zoneId(addressDto.zoneId())
                 .build();
     }
 

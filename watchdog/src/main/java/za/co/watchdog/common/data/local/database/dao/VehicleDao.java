@@ -9,5 +9,8 @@ import java.util.List;
 
 @Repository
 public interface VehicleDao extends JpaRepository<VehicleEntity, Long> {
+    @Query("SELECT v" +
+            " FROM VehicleEntity v" +
+            " WHERE v.zoneEntity.zoneId = :zoneId")
     public VehicleEntity findByZoneId(Long zoneId);
 }

@@ -7,13 +7,11 @@ import za.co.watchdog.features.clientManagement.domain.model.Address;
 import za.co.watchdog.features.clientManagement.domain.model.Location;
 import za.co.watchdog.features.clientManagement.domain.model.Vehicle;
 
-import java.util.List;
-
 @Component
-public class ClientManagementLocationMapper {
+public class ClientManagementMapper {
     private final EntityManager entityManager;
 
-    ClientManagementLocationMapper(EntityManager entityManager) {
+    ClientManagementMapper(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -48,6 +46,8 @@ public class ClientManagementLocationMapper {
 
     public AddressEntity mapToAddressEntity(Address address) {
         return AddressEntity.builder()
+                .latitude(address.latitude())
+                .longitude(address.longitude())
                 .addressLineOne(address.addressLineOne())
                 .addressLineTwo(address.addressLineTwo())
                 .suburb(address.suburb())

@@ -1,9 +1,6 @@
-package za.co.watchdog.features.clientManagement.domain.model;
+package za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto;
 
-import lombok.Builder;
-
-@Builder
-public record Address(
+public record AddressDto(
         String latitude,
         String longitude,
         String addressLineOne,

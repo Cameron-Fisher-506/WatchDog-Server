@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.common.domain.model.*;
-import za.co.watchdog.features.clientManagement.domain.model.Address;
 import za.co.watchdog.features.clientManagement.domain.model.Location;
 import za.co.watchdog.features.clientManagement.domain.model.Client;
 
@@ -37,23 +36,12 @@ public class ClientMapper {
         );
     }
 
-    private Address mapToAddress(AddressEntity addressEntity) {
-        return new Address(
-                addressEntity.getAddressLineOne(),
-                addressEntity.getAddressLineTwo(),
-                addressEntity.getSuburb(),
-                addressEntity.getPostalCode()
-        );
-    }
-
     private Location mapToLocation(LocationEntity locationEntity) {
         return Location.builder()
                 .locationId(locationEntity.getLocationId())
                 .longitude(locationEntity.getLongitude())
                 .latitude(locationEntity.getLatitude())
-                .address(mapToAddress(locationEntity.getAddressEntity()))
                 .vehicleId(locationEntity.getVehicleEntity().getVehicleId())
-                .zoneId(locationEntity.getZoneEntity().getZoneId())
                 .clientId(locationEntity.getClientEntity().getClientId())
                 .build();
     }
@@ -99,26 +87,15 @@ public class ClientMapper {
         );
     }
 
-    private AddressEntity mapToAddressEntity(Address address) {
-        return new AddressEntity(
-                address.addressLineOne(),
-                address.addressLineTwo(),
-                address.suburb(),
-                address.postalCode()
-        );
-    }
-
     private LocationEntity mapToLocationEntity(Location location) {
         ClientEntity clientEntity = entityManager.getReference(ClientEntity.class, location.getClientId());
         VehicleEntity vehicleEntity = entityManager.getReference(VehicleEntity.class, location.getVehicleId());
-        ZoneEntity zoneEntity = entityManager.getReference(ZoneEntity.class, location.getZoneId());
         return LocationEntity.builder()
                 .locationId(location.getLocationId())
                 .latitude(location.getLatitude())
                 .longitude(location.getLongitude())
                 .vehicleEntity(vehicleEntity)
                 .clientEntity(clientEntity)
-                .zoneEntity(zoneEntity)
                 .build();
     }
 

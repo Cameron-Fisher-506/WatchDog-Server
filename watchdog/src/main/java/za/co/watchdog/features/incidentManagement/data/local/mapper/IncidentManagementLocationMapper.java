@@ -17,12 +17,10 @@ public class IncidentManagementLocationMapper {
     public Location mapToLocation(LocationEntity locationEntity) {
         return Location.builder()
                 .locationId(locationEntity.getLocationId())
-                .address(mapToAddress(locationEntity.getAddressEntity()))
                 .longitude(locationEntity.getLongitude())
                 .latitude(locationEntity.getLatitude())
                 .clientId(locationEntity.getClientEntity().getClientId())
                 .vehicleId(locationEntity.getVehicleEntity().getVehicleId())
-                .zoneId(locationEntity.getZoneEntity().getZoneId())
                 .build();
     }
 
@@ -38,12 +36,10 @@ public class IncidentManagementLocationMapper {
     public LocationEntity mapToLocationEntity(Location location) {
         return LocationEntity.builder()
                 .locationId(location.getLocationId())
-                .addressEntity(mapToAddressEntity(location.getAddress()))
                 .longitude(location.getLongitude())
                 .latitude(location.getLatitude())
                 .clientEntity(entityManager.getReference(ClientEntity.class, location.getClientId()))
                 .vehicleEntity(entityManager.getReference(VehicleEntity.class, location.getVehicleId()))
-                .zoneEntity(entityManager.getReference(ZoneEntity.class, location.getZoneId()))
                 .build();
     }
 

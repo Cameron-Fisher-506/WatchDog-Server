@@ -3,19 +3,19 @@ package za.co.watchdog.features.clientManagement.domain.usecase;
 import org.springframework.stereotype.Service;
 import za.co.watchdog.common.domain.exception.ResourceNotFoundException;
 import za.co.watchdog.common.domain.usecase.UseCase;
+import za.co.watchdog.features.clientManagement.domain.model.Address;
 import za.co.watchdog.features.clientManagement.domain.repository.ClientManagementRepository;
-import za.co.watchdog.features.clientManagement.domain.model.Location;
 
 @Service
-public class SaveClientPropertyLocationUseCase implements UseCase<Location, Location> {
+public class SaveAddressUseCase implements UseCase<Address, Address> {
     private final ClientManagementRepository clientManagementRepository;
 
-    SaveClientPropertyLocationUseCase(ClientManagementRepository clientManagementRepository) {
+    SaveAddressUseCase(ClientManagementRepository clientManagementRepository) {
         this.clientManagementRepository = clientManagementRepository;
     }
 
     @Override
-    public Location execute(Location input) {
-        return clientManagementRepository.saveLocation(input).orElseThrow(() -> new ResourceNotFoundException("SaveLocation", "location", input));
+    public Address execute(Address input) {
+        return clientManagementRepository.saveAddress(input).orElseThrow(() -> new ResourceNotFoundException("Address", "address", input));
     }
 }

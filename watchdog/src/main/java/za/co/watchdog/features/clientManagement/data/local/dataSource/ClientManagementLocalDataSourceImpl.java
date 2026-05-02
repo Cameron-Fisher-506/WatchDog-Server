@@ -2,14 +2,8 @@ package za.co.watchdog.features.clientManagement.data.local.dataSource;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
-import za.co.watchdog.common.data.local.database.dao.ClientDao;
-import za.co.watchdog.common.data.local.database.dao.LocationDao;
-import za.co.watchdog.common.data.local.database.dao.UserDao;
-import za.co.watchdog.common.data.local.database.dao.VehicleDao;
-import za.co.watchdog.common.data.local.database.model.ClientEntity;
-import za.co.watchdog.common.data.local.database.model.LocationEntity;
-import za.co.watchdog.common.data.local.database.model.UserEntity;
-import za.co.watchdog.common.data.local.database.model.VehicleEntity;
+import za.co.watchdog.common.data.local.database.dao.*;
+import za.co.watchdog.common.data.local.database.model.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,13 +12,13 @@ import java.util.Optional;
 public class ClientManagementLocalDataSourceImpl implements ClientManagementLocalDataSource {
     private final ClientDao clientDao;
     private final UserDao userDao;
-    private final LocationDao locationDao;
+    private final AddressDao addressDao;
     private final VehicleDao vehicleDao;
 
-    ClientManagementLocalDataSourceImpl(ClientDao clientDao, UserDao userDao, LocationDao locationDao, VehicleDao vehicleDao) {
+    ClientManagementLocalDataSourceImpl(ClientDao clientDao, UserDao userDao, AddressDao addressDao, VehicleDao vehicleDao) {
         this.clientDao = clientDao;
         this.userDao = userDao;
-        this.locationDao = locationDao;
+        this.addressDao = addressDao;
         this.vehicleDao = vehicleDao;
     }
 
@@ -38,11 +32,11 @@ public class ClientManagementLocalDataSourceImpl implements ClientManagementLoca
     }
 
     @Override
-    public DatabaseResponse<LocationEntity> saveLocationEntity(LocationEntity locationEntity) {
+    public Optional<AddressEntity> saveAddressEntity(AddressEntity addressEntity) {
         try {
-            return DatabaseResponse.success(locationDao.save(locationEntity));
+            return Optional.of(addressDao.save(addressEntity));
         } catch(Exception e) {
-            return DatabaseResponse.error(e.getMessage());
+            return Optional.empty();
         }
     }
 

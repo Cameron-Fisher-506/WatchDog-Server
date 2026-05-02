@@ -2,21 +2,17 @@ package za.co.watchdog.features.clientManagement.data.repository;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
-import za.co.watchdog.common.data.local.database.model.ClientEntity;
-import za.co.watchdog.common.data.local.database.model.LocationEntity;
-import za.co.watchdog.common.data.local.database.model.UserEntity;
-import za.co.watchdog.common.data.local.database.model.VehicleEntity;
+import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.common.data.local.mapper.UserMapper;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.features.clientManagement.data.local.dataSource.ClientManagementLocalDataSource;
-import za.co.watchdog.features.clientManagement.data.local.mapper.ClientManagementLocationMapper;
+import za.co.watchdog.features.clientManagement.data.local.mapper.ClientManagementMapper;
 import za.co.watchdog.features.clientManagement.data.local.mapper.ClientMapper;
+import za.co.watchdog.features.clientManagement.domain.model.Address;
 import za.co.watchdog.features.clientManagement.domain.model.Client;
-import za.co.watchdog.features.clientManagement.domain.model.Location;
 import za.co.watchdog.features.clientManagement.domain.model.Vehicle;
 import za.co.watchdog.features.clientManagement.domain.repository.ClientManagementRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -24,13 +20,13 @@ public class ClientManagementRepositoryImpl implements ClientManagementRepositor
     private final ClientManagementLocalDataSource clientManagementLocalDataSource;
     private final UserMapper userMapper;
     private final ClientMapper clientMapper;
-    private final ClientManagementLocationMapper clientManagementLocationMapper;
+    private final ClientManagementMapper clientManagementMapper;
 
-    ClientManagementRepositoryImpl(ClientManagementLocalDataSource clientManagementLocalDataSource, UserMapper userMapper, ClientMapper clientMapper, ClientManagementLocationMapper clientManagementLocationMapper) {
+    ClientManagementRepositoryImpl(ClientManagementLocalDataSource clientManagementLocalDataSource, UserMapper userMapper, ClientMapper clientMapper, ClientManagementMapper clientManagementMapper) {
         this.clientManagementLocalDataSource = clientManagementLocalDataSource;
         this.userMapper = userMapper;
         this.clientMapper = clientMapper;
-        this.clientManagementLocationMapper = clientManagementLocationMapper;
+        this.clientManagementMapper = clientManagementMapper;
     }
 
     @Override
@@ -50,7 +46,7 @@ public class ClientManagementRepositoryImpl implements ClientManagementRepositor
     @Override
     public Optional<Vehicle> fetchVehicleByZoneId(Long zoneId) {
         Optional<VehicleEntity> optional = clientManagementLocalDataSource.fetchVehicleByZoneId(zoneId);
-        return optional.map(clientManagementLocationMapper::mapToVehicle);
+        return optional.map(clientManagementMapper::mapToVehicle);
     }
 
     @Override
@@ -68,16 +64,8 @@ public class ClientManagementRepositoryImpl implements ClientManagementRepositor
     }
 
     @Override
-    public Optional<Location> saveLocation(Location location) {
-        DatabaseResponse<LocationEntity> databaseResponse = clientManagementLocalDataSource.saveLocationEntity(clientManagementLocationMapper.mapToLocationEntity(location));
-        switch (databaseResponse) {
-            case DatabaseResponse.Success<LocationEntity> success -> {
-                return Optional.of(clientManagementLocationMapper.mapToLocation(success.data()));
-            }
-
-            case DatabaseResponse.Error<LocationEntity> error -> {
-                return Optional.empty();
-            }
-        }
+    public Optional<Address> saveAddress(Address address) {
+        Optional<AddressEntity> optional = clientManagementLocalDataSource.saveAddressEntity(clientManagementMapper.mapToAddressEntity(address));
+        return optional.map(clientManagementMapper::mapToAddress);
     }
 }
