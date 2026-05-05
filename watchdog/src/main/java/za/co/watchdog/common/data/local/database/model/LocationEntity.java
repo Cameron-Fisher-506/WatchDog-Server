@@ -19,17 +19,11 @@ public class LocationEntity {
     private String latitude;
     private String longitude;
 
-    @Embedded
-    private AddressEntity addressEntity;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clientId")
     private ClientEntity clientEntity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicleId")
     private VehicleEntity vehicleEntity;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "zoneId")
-    private ZoneEntity zoneEntity;
 }

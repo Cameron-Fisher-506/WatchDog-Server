@@ -19,7 +19,4 @@ public class ZoneEntity {
     private String name;
     private String code;
     private Boolean isActive;
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "vehicleId")
-    private VehicleEntity vehicleEntity;
 }

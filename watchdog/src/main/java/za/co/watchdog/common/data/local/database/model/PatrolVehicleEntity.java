@@ -17,7 +17,7 @@ import java.time.Instant;
 public class PatrolVehicleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long patrolAssignmentId;
+    private Long patrolVehicleId;
     @ManyToOne
     @JoinColumn(name = "patrolId")
     private PatrolEntity patrolEntity;

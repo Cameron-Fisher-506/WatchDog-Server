@@ -18,7 +18,7 @@ public class SensorEntity {
     private Long sensorId;
     private String type;
     private String zoneName;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hubId")
     private HubEntity hubEntity;
 }

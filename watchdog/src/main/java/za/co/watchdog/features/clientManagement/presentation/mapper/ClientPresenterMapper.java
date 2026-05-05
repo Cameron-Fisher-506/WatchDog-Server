@@ -2,18 +2,21 @@ package za.co.watchdog.features.clientManagement.presentation.mapper;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.domain.model.*;
-import za.co.watchdog.common.presentation.model.*;
-import za.co.watchdog.common.presentation.model.UserRole;
+import za.co.watchdog.features.clientManagement.domain.model.Address;
 import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.ClientOnboardingRequestDto;
+import za.co.watchdog.features.clientManagement.domain.model.Client;
+import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.AddressDto;
+import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.LocationDto;
+import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.SensorDto;
 
 @Component
 public class ClientPresenterMapper {
-    public Client mapToClient(ClientOnboardingRequestDto clientOnboardingRequestDto) {
+    public Client mapToClient(ClientOnboardingRequestDto clientOnboardingRequestDto, Long userId) {
         return Client.builder()
                 .contactNumber(clientOnboardingRequestDto.getContactNumber())
                 .name(clientOnboardingRequestDto.getName())
                 .surname(clientOnboardingRequestDto.getSurname())
-                .userId(clientOnboardingRequestDto.getUserId())
+                .userId(userId)
                 .build();
     }
 
@@ -26,11 +29,16 @@ public class ClientPresenterMapper {
                 .build();
     }
 
-    private Location mapToLocation(LocationDto locationDto) {
-        return Location.builder()
-                .longitude(locationDto.longitude())
-                .latitude(locationDto.latitude())
-                .address(mapToAddress(locationDto.addressDto()))
+    public Address mapToAddress(AddressDto addressDto, Long clientId) {
+        return Address.builder()
+                .latitude(addressDto.latitude())
+                .longitude(addressDto.longitude())
+                .suburb(addressDto.suburb())
+                .addressLineTwo(addressDto.addressLineOne())
+                .addressLineTwo(addressDto.addressLineTwo())
+                .postalCode(addressDto.postalCode())
+                .clientId(clientId)
+                .zoneId(addressDto.zoneId())
                 .build();
     }
 
@@ -39,22 +47,5 @@ public class ClientPresenterMapper {
                 .zoneName(sensorDto.zoneName())
                 .type(sensorDto.type())
                 .build();
-    }
-
-    private User mapToUser(UserDto userDto) {
-        return User.builder()
-                .userId(userDto.getUserId())
-                .emailAddress(userDto.getEmailAddress())
-                .createdAt(userDto.getCreatedAt())
-                .userRole(mapToUserRole(userDto.getUserRole() != null ? userDto.getUserRole() : UserRole.UNKNOWN))
-                .build();
-    }
-
-    private UserRole mapToUserRole(za.co.watchdog.common.domain.model.UserRole userRole) {
-        return UserRole.valueOf(userRole.name());
-    }
-
-    private za.co.watchdog.common.domain.model.UserRole mapToUserRole(UserRole userRole) {
-        return za.co.watchdog.common.domain.model.UserRole.valueOf(userRole.name());
     }
 }

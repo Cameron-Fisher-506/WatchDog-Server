@@ -1,10 +1,13 @@
 package za.co.watchdog.common.data.local.database.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import za.co.watchdog.common.domain.model.VehicleStatus;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -20,12 +23,18 @@ public class VehicleEntity {
 
     private String plateNumber;
     private String model;
+    private String make;
     private String callSign;
     @Enumerated(EnumType.STRING)
     private VehicleStatus vehicleStatus;
     private Long lastServiceMileage;
     private Instant createdAt;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "securityCompanyId")
     private SecurityCompanyEntity securityCompanyEntity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "zoneId")
+    private ZoneEntity zoneEntity;
 }

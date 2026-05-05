@@ -3,6 +3,7 @@ package za.co.watchdog.common.presentation.model;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
+import za.co.watchdog.common.domain.model.UserRole;
 
 import java.time.Instant;
 

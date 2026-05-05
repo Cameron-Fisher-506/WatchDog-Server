@@ -3,12 +3,13 @@ package za.co.watchdog.features.clientManagement.data.local.mapper;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.database.model.*;
-import za.co.watchdog.common.data.local.database.model.UserRole;
 import za.co.watchdog.common.domain.model.*;
+import za.co.watchdog.features.clientManagement.domain.model.Location;
+import za.co.watchdog.features.clientManagement.domain.model.Client;
 
 @Component
 public class ClientMapper {
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     ClientMapper(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -35,25 +36,14 @@ public class ClientMapper {
         );
     }
 
-    private Address mapToAddress(AddressEntity addressEntity) {
-        return new Address(
-                addressEntity.getAddressLineOne(),
-                addressEntity.getAddressLineTwo(),
-                addressEntity.getSuburb(),
-                addressEntity.getPostalCode()
-        );
-    }
-
     private Location mapToLocation(LocationEntity locationEntity) {
-        return new Location(
-                locationEntity.getLocationId(),
-                locationEntity.getLatitude(),
-                locationEntity.getLongitude(),
-                mapToAddress(locationEntity.getAddressEntity()),
-                locationEntity.getClientEntity().getClientId(),
-                locationEntity.getVehicleEntity().getVehicleId(),
-                locationEntity.getZoneEntity().getZoneId()
-        );
+        return Location.builder()
+                .locationId(locationEntity.getLocationId())
+                .longitude(locationEntity.getLongitude())
+                .latitude(locationEntity.getLatitude())
+                .vehicleId(locationEntity.getVehicleEntity().getVehicleId())
+                .clientId(locationEntity.getClientEntity().getClientId())
+                .build();
     }
 
     private Sensor mapToSenor(SensorEntity sensorEntity) {
@@ -70,7 +60,7 @@ public class ClientMapper {
                 .userId(userEntity.getUserId())
                 .emailAddress(userEntity.getEmailAddress())
                 .createdAt(userEntity.getCreatedAt())
-                .userRole(mapToUserRole(userEntity.getUserRole()))
+                .userRole(userEntity.getUserRole())
                 .build();
     }
 
@@ -97,28 +87,16 @@ public class ClientMapper {
         );
     }
 
-    private AddressEntity mapToAddressEntity(Address address) {
-        return new AddressEntity(
-                address.addressLineOne(),
-                address.addressLineTwo(),
-                address.suburb(),
-                address.postalCode()
-        );
-    }
-
     private LocationEntity mapToLocationEntity(Location location) {
-        ClientEntity clientEntity = entityManager.getReference(ClientEntity.class, location.clientId());
-        VehicleEntity vehicleEntity = entityManager.getReference(VehicleEntity.class, location.vehicleId());
-        ZoneEntity zoneEntity = entityManager.getReference(ZoneEntity.class, location.zoneId());
-        return new LocationEntity(
-                location.locationId(),
-                location.latitude(),
-                location.longitude(),
-                mapToAddressEntity(location.address()),
-                clientEntity,
-                vehicleEntity,
-                zoneEntity
-        );
+        ClientEntity clientEntity = entityManager.getReference(ClientEntity.class, location.getClientId());
+        VehicleEntity vehicleEntity = entityManager.getReference(VehicleEntity.class, location.getVehicleId());
+        return LocationEntity.builder()
+                .locationId(location.getLocationId())
+                .latitude(location.getLatitude())
+                .longitude(location.getLongitude())
+                .vehicleEntity(vehicleEntity)
+                .clientEntity(clientEntity)
+                .build();
     }
 
     private SensorEntity mapToSenorEntity(Sensor sensor, Hub hub) {
@@ -135,15 +113,7 @@ public class ClientMapper {
                 .userId(user.getUserId())
                 .emailAddress(user.getEmailAddress())
                 .createdAt(user.getCreatedAt())
-                .userRole(mapToUserRole(user.getUserRole()))
+                .userRole(user.getUserRole())
                 .build();
-    }
-
-    private UserRole mapToUserRole(za.co.watchdog.common.domain.model.UserRole userRole) {
-        return UserRole.valueOf(userRole.name());
-    }
-
-    private za.co.watchdog.common.domain.model.UserRole mapToUserRole(UserRole userRole) {
-        return za.co.watchdog.common.domain.model.UserRole.valueOf(userRole.name());
     }
 }

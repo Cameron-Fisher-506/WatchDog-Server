@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import za.co.watchdog.common.domain.model.IncidentStatus;
+import za.co.watchdog.common.domain.model.TriggerSource;
 
 import java.time.Instant;
 
@@ -19,22 +21,25 @@ public class IncidentEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long incidentId;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clientId")
     private ClientEntity clientEntity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "securityCompanyId")
     private SecurityCompanyEntity securityCompanyEntity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patrolId")
     private PatrolEntity patrolEntity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locationId")
     private LocationEntity locationEntity;
 
-    private String Status;
+    @Enumerated(EnumType.STRING)
+    private IncidentStatus incidentStatus;
+    @Enumerated(EnumType.STRING)
+    private TriggerSource triggerSource;
     private Instant createdAt;
 }

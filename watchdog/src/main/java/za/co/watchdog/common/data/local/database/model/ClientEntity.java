@@ -8,7 +8,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@Entity(name = "Client")
+@Entity
+@Table(name = "Client")
 public class ClientEntity {
     @Id
     private Long clientId;
@@ -21,7 +22,7 @@ public class ClientEntity {
     @JoinColumn(name = "userId")
     private UserEntity userEntity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "securityCompanyId")
     private SecurityCompanyEntity securityCompanyEntity;
 }

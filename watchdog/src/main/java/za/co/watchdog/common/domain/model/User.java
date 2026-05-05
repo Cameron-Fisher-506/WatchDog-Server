@@ -5,7 +5,6 @@ import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-import za.co.watchdog.common.domain.model.AccountStatus;
 
 import java.time.Instant;
 

@@ -19,7 +19,7 @@ public class PaymentEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long paymentId;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoiceId")
     private InvoiceEntity invoiceEntity;
 
