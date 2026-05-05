@@ -3,6 +3,7 @@ package za.co.watchdog.features.clientManagement.domain.usecase;
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.domain.exception.ResourceNotFoundException;
 import za.co.watchdog.common.domain.model.AccountStatus;
+import za.co.watchdog.common.domain.model.UserStatus;
 import za.co.watchdog.features.clientManagement.domain.model.Client;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.domain.usecase.UseCase;
@@ -21,7 +22,7 @@ public class ClientOnboardingUseCase implements UseCase<Client, Client> {
     public Client execute(Client input) {
         User user = this.clientManagementRepository.fetchUserById(input.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("ClientOnboarding", "userId", input.getUserId()));
-        if (user.getAccountStatus() == AccountStatus.VERIFIED_PENDING_ONBOARDING) {
+        if (user.getAccountStatus() == AccountStatus.VERIFIED_PENDING_ONBOARDING && user.getUserStatus() == UserStatus.ACTIVE) {
             if (user.getUserId() != null) {
                 return this.clientManagementRepository.onboard(input).orElseThrow(() -> new ResourceNotFoundException("ClientOnboarding", "userId", user.getUserId()));
             } else {
