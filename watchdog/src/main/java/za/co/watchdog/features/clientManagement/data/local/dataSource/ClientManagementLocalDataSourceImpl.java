@@ -23,11 +23,11 @@ public class ClientManagementLocalDataSourceImpl implements ClientManagementLoca
     }
 
     @Override
-    public DatabaseResponse<ClientEntity> onboard(ClientEntity clientEntity) {
+    public Optional<ClientEntity> saveClientEntity(ClientEntity clientEntity) {
         try {
-            return DatabaseResponse.success(clientDao.save(clientEntity));
+            return Optional.of(clientDao.save(clientEntity));
         } catch(Exception e) {
-            return new DatabaseResponse.Error<>(e.getMessage());
+            return Optional.empty();
         }
     }
 

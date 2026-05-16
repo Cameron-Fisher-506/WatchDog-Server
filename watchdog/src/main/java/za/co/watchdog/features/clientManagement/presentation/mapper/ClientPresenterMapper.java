@@ -8,6 +8,7 @@ import za.co.watchdog.features.clientManagement.domain.model.Client;
 import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.AddressDto;
 import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.LocationDto;
 import za.co.watchdog.features.clientManagement.presentation.model.clientOnboarding.dto.SensorDto;
+import za.co.watchdog.features.clientManagement.presentation.model.updateProfileInformation.UpdateProfileInformationRequestDto;
 
 @Component
 public class ClientPresenterMapper {
@@ -16,6 +17,15 @@ public class ClientPresenterMapper {
                 .contactNumber(clientOnboardingRequestDto.getContactNumber())
                 .name(clientOnboardingRequestDto.getName())
                 .surname(clientOnboardingRequestDto.getSurname())
+                .userId(userId)
+                .build();
+    }
+
+    public Client mapToClient(UpdateProfileInformationRequestDto updateProfileInformationRequestDto, Long userId) {
+        return Client.builder()
+                .contactNumber(updateProfileInformationRequestDto.getContactNumber())
+                .name(updateProfileInformationRequestDto.getName())
+                .surname(updateProfileInformationRequestDto.getSurname())
                 .userId(userId)
                 .build();
     }
