@@ -24,7 +24,7 @@ public class ClientOnboardingUseCase implements UseCase<Client, Client> {
                 .orElseThrow(() -> new ResourceNotFoundException("ClientOnboarding", "userId", input.getUserId()));
         if (user.getAccountStatus() == AccountStatus.VERIFIED_PENDING_ONBOARDING && user.getUserStatus() == UserStatus.ACTIVE) {
             if (user.getUserId() != null) {
-                return this.clientManagementRepository.onboard(input).orElseThrow(() -> new ResourceNotFoundException("ClientOnboarding", "userId", user.getUserId()));
+                return this.clientManagementRepository.saveClient(input).orElseThrow(() -> new ResourceNotFoundException("ClientOnboarding", "userId", user.getUserId()));
             } else {
                 throw new ResourceNotFoundException("ClientOnboarding", "client", input);
             }

@@ -1,4 +1,4 @@
-package za.co.watchdog.common.util;
+package za.co.watchdog.common.domain.util;
 
 import java.util.List;
 import java.util.stream.Stream;

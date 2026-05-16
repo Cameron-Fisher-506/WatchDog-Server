@@ -7,7 +7,6 @@ import za.co.watchdog.common.data.local.mapper.UserMapper;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.features.clientManagement.data.local.dataSource.ClientManagementLocalDataSource;
 import za.co.watchdog.features.clientManagement.data.local.mapper.ClientManagementMapper;
-import za.co.watchdog.features.clientManagement.data.local.mapper.ClientMapper;
 import za.co.watchdog.features.clientManagement.domain.model.Address;
 import za.co.watchdog.features.clientManagement.domain.model.Client;
 import za.co.watchdog.features.clientManagement.domain.model.Vehicle;
@@ -19,28 +18,18 @@ import java.util.Optional;
 public class ClientManagementRepositoryImpl implements ClientManagementRepository {
     private final ClientManagementLocalDataSource clientManagementLocalDataSource;
     private final UserMapper userMapper;
-    private final ClientMapper clientMapper;
     private final ClientManagementMapper clientManagementMapper;
 
     ClientManagementRepositoryImpl(ClientManagementLocalDataSource clientManagementLocalDataSource, UserMapper userMapper, ClientMapper clientMapper, ClientManagementMapper clientManagementMapper) {
         this.clientManagementLocalDataSource = clientManagementLocalDataSource;
         this.userMapper = userMapper;
-        this.clientMapper = clientMapper;
         this.clientManagementMapper = clientManagementMapper;
     }
 
     @Override
-    public Optional<Client> onboard(Client client) {
-        DatabaseResponse<ClientEntity> databaseResponse = this.clientManagementLocalDataSource.onboard(clientMapper.mapToClientEntity(client));
-        switch (databaseResponse) {
-            case DatabaseResponse.Success<ClientEntity> success -> {
-                return Optional.of(clientMapper.mapToClient(success.data()));
-            }
-
-            case DatabaseResponse.Error<ClientEntity> error -> {
-                return Optional.empty();
-            }
-        }
+    public Optional<Client> saveClient(Client client) {
+        Optional<ClientEntity> optional = this.clientManagementLocalDataSource.saveClientEntity(clientMapper.mapToClientEntity(client));
+        return optional.map(clientManagementMapper::mapToClient);
     }
 
     @Override

@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface ClientManagementRepository {
     public Optional<User> fetchUserById(Long userId);
     public Optional<Address> saveAddress(Address address);
-    public Optional<Client> onboard(Client client);
+    public Optional<Client> saveClient(Client client);
     public Optional<Vehicle> fetchVehicleByZoneId(Long zoneId);
 }
