@@ -20,7 +20,7 @@ public class ClientManagementRepositoryImpl implements ClientManagementRepositor
     private final UserMapper userMapper;
     private final ClientManagementMapper clientManagementMapper;
 
-    ClientManagementRepositoryImpl(ClientManagementLocalDataSource clientManagementLocalDataSource, UserMapper userMapper, ClientMapper clientMapper, ClientManagementMapper clientManagementMapper) {
+    ClientManagementRepositoryImpl(ClientManagementLocalDataSource clientManagementLocalDataSource, UserMapper userMapper, ClientManagementMapper clientManagementMapper) {
         this.clientManagementLocalDataSource = clientManagementLocalDataSource;
         this.userMapper = userMapper;
         this.clientManagementMapper = clientManagementMapper;
@@ -28,7 +28,7 @@ public class ClientManagementRepositoryImpl implements ClientManagementRepositor
 
     @Override
     public Optional<Client> saveClient(Client client) {
-        Optional<ClientEntity> optional = this.clientManagementLocalDataSource.saveClientEntity(clientMapper.mapToClientEntity(client));
+        Optional<ClientEntity> optional = this.clientManagementLocalDataSource.saveClientEntity(clientManagementMapper.mapToClientEntity(client));
         return optional.map(clientManagementMapper::mapToClient);
     }
 
