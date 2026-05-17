@@ -12,11 +12,11 @@ import java.time.Instant;
 
 @Component
 public class IncidentPresentationMapper {
-    public Incident mapToIncident(Client client, Long locationId, Long patrolId) {
+    public Incident mapToIncident(Client client, Long addressId, Long patrolId) {
         return Incident.builder()
                 .incidentStatus(IncidentStatus.TRIGGERED)
                 .clientId(client.getClientId())
-                .locationId(locationId)
+                .addressId(addressId)
                 .createdAt(Instant.now())
                 .securityCompanyId(client.getSecurityCompanyId())
                 .patrolId(patrolId)

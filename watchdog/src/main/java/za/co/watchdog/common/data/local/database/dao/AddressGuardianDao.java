@@ -2,8 +2,8 @@ package za.co.watchdog.common.data.local.database.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import za.co.watchdog.common.data.local.database.model.LocationGuardianEntity;
+import za.co.watchdog.common.data.local.database.model.AddressGuardianEntity;
 
 @Repository
-public interface LocationGuardianDao extends JpaRepository<LocationGuardianEntity, Long> {
+public interface AddressGuardianDao extends JpaRepository<AddressGuardianEntity, Long> {
 }

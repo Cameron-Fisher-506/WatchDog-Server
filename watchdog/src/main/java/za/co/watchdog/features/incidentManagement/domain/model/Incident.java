@@ -13,7 +13,7 @@ public class Incident {
     private Long clientId;
     private Long securityCompanyId;
     private Long patrolId;
-    private Long locationId;
+    private Long addressId;
     private IncidentStatus incidentStatus;
     private Instant createdAt;
 }
