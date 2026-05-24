@@ -152,6 +152,8 @@ watchdog/
 │   │   │       │   └── presentation/
 │   │   │       │
 │   │   │       └── incidentManagement/            # Feature: Incident Management
+│   │   │           ├── config/                    # ← NEW: Spring bean configuration
+│   │   │           │   └── IncidentManagementUseCaseConfig.java
 │   │   │           ├── data/
 │   │   │           │   ├── repository/            # IncidentManagementRepositoryImpl
 │   │   │           │   │   └── data source calls
@@ -163,7 +165,7 @@ watchdog/
 │   │   │           │   ├── model/                 # Incident, Client, PatrolVehicle, etc.
 │   │   │           │   ├── repository/            # Repository interfaces
 │   │   │           │   │   └── IncidentManagementRepository
-│   │   │           │   └── usecase/               # Business logic
+│   │   │           │   └── usecase/               # Business logic (NO Spring annotations)
 │   │   │           │       ├── CreateIncidentUseCase
 │   │   │           │       ├── FetchClientByUserIdUseCase
 │   │   │           │       ├── mapper/            # Use case output mappers
@@ -482,13 +484,30 @@ public class IncidentEntity {
 }
 ```
 
-#### 3. Use Case Pattern
-Business logic lives in Use Cases, not Controllers:
+#### 3. Use Case Pattern & Framework Isolation
+Business logic lives in Use Cases, NOT in Controllers. **Critically**, Use Cases should be **framework-agnostic** (no Spring annotations) to maintain Clean Architecture principles:
 
 ```java
-// ✅ CORRECT: Business logic in Use Case
-@Service
+// ✅ CORRECT: Use Case has NO Spring annotations (Pure Domain Logic)
 public class CreateIncidentUseCase implements UseCase<CreateIncidentInput, CreateIncidentOutput> {
+    private final IncidentManagementRepository incidentManagementRepository;
+    private final UserManagementRepository userManagementRepository;
+    private final SecurityManager securityManager;
+    private final CreateIncidentMapper createIncidentMapper;
+
+    // Constructor injection - no Spring needed
+    public CreateIncidentUseCase(
+            IncidentManagementRepository incidentManagementRepository,
+            UserManagementRepository userManagementRepository,
+            CreateIncidentMapper createIncidentMapper,
+            SecurityManager securityManager
+    ) {
+        this.incidentManagementRepository = incidentManagementRepository;
+        this.userManagementRepository = userManagementRepository;
+        this.createIncidentMapper = createIncidentMapper;
+        this.securityManager = securityManager;
+    }
+
     @Override
     public CreateIncidentOutput execute(CreateIncidentInput input) {
         // All business logic here
@@ -507,6 +526,12 @@ public class CreateIncidentUseCase implements UseCase<CreateIncidentInput, Creat
     }
 }
 
+// ❌ WRONG: Use Case with @Service annotation (Framework Coupling)
+@Service  // ← Couples domain logic to Spring framework - AVOID THIS
+public class CreateIncidentUseCase implements UseCase<CreateIncidentInput, CreateIncidentOutput> {
+    // ...
+}
+
 // ❌ WRONG: Business logic in Controller
 @PostMapping("/incident")
 public ResponseEntity<IncidentResponseDto> createIncident(
@@ -518,76 +543,96 @@ public ResponseEntity<IncidentResponseDto> createIncident(
 }
 ```
 
-#### 4. Repository Pattern
-Use repository interfaces in domain layer:
+**Why NO @Service on UseCase?**
+- ✅ Domain layer remains framework-agnostic
+- ✅ Use Cases are testable without Spring context
+- ✅ Easy to migrate if switching frameworks
+- ✅ Respects Clean Architecture dependency rules
+
+#### 3b. Configuration Layer (Framework Wiring)
+The **Config Layer** bridges the Spring Framework with domain logic. It lives at the feature level and handles Spring bean wiring:
+
+**Location:** `features/incidentManagement/config/`
 
 ```java
-// Domain Layer - Interface
-public interface IncidentManagementRepository {
-    Optional<Incident> saveIncident(Incident incident);
-    Optional<Client> fetchClientByUserId(Long userId);
-    Optional<PatrolVehicle> fetchPatrolVehicleByZoneIdAndVehicleStatus(
-        Long zoneId, VehicleStatus vehicleStatus);
-}
+package za.co.watchdog.features.incidentManagement.config;
 
-// Data Layer - Implementation
-@Component
-public class IncidentManagementRepositoryImpl implements IncidentManagementRepository {
-    @Override
-    public Optional<Incident> saveIncident(Incident incident) {
-        IncidentEntity entity = mapper.toEntity(incident);
-        IncidentEntity saved = dao.save(entity);
-        return Optional.of(mapper.toDomain(saved));
-    }
-}
-```
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import za.co.watchdog.common.domain.manager.SecurityManager;
+import za.co.watchdog.common.domain.repository.UserManagementRepository;
+import za.co.watchdog.features.incidentManagement.domain.repository.IncidentManagementRepository;
+import za.co.watchdog.features.incidentManagement.domain.usecase.createIncident.CreateIncidentUseCase;
+import za.co.watchdog.features.incidentManagement.domain.usecase.createIncident.mapper.CreateIncidentMapper;
 
-#### 5. Mapper Pattern
-Keep mappers focused and reusable:
-
-```java
-// Presentation Mapper
-@Component
-public class IncidentPresentationMapper {
-    public Incident mapToIncident(Client client, Long addressId, Long patrolId) {
-        return Incident.builder()
-            .clientId(client.getClientId())
-            .securityCompanyId(client.getSecurityCompanyId())
-            .addressId(addressId)
-            .patrolId(patrolId)
-            .incidentStatus(IncidentStatus.TRIGGERED)
-            .createdAt(Instant.now())
-            .build();
+/**
+ * Configuration class for Incident Management Use Cases.
+ * 
+ * Responsibility: Spring bean configuration and dependency injection
+ * Bridges Spring framework with domain layer (keeps domain framework-agnostic)
+ * 
+ * Layer: config/ (feature-level infrastructure)
+ * Pattern: Spring configuration only - no business logic here
+ */
+@Configuration
+public class IncidentManagementUseCaseConfig {
+    
+    /**
+     * Bean for CreateIncidentUseCase
+     * Handles incident creation with intelligent patrol vehicle dispatch
+     */
+    @Bean
+    public CreateIncidentUseCase createIncidentUseCase(
+            IncidentManagementRepository incidentManagementRepository,
+            UserManagementRepository userManagementRepository,
+            CreateIncidentMapper createIncidentMapper,
+            SecurityManager securityManager
+    ) {
+        return new CreateIncidentUseCase(
+            incidentManagementRepository,
+            userManagementRepository,
+            createIncidentMapper,
+            securityManager
+        );
     }
     
-    public IncidentResponseDto mapToIncidentResponseDto(
-        Incident incident, PatrolVehicle patrolVehicle) {
-        return IncidentResponseDto.builder()
-            .incidentId(incident.getIncidentId())
-            .patrolDto(mapToPatrolDto(patrolVehicle.getPatrol()))
-            .vehicleDto(mapToVehicleDto(patrolVehicle.getVehicle()))
-            .incidentStatus(incident.getIncidentStatus())
-            .createdAt(incident.getCreatedAt())
-            .build();
-    }
+    // Wire additional use cases here as needed
 }
 ```
 
-#### 6. Exception Handling
-Create custom exceptions in domain layer:
+**Layer Architecture with Config:**
 
+```
+Presentation (Controllers) → Config (@Configuration) → Domain (UseCases - no Spring)
+                             Spring beans only           Pure business logic
+```
+
+**Benefits of Config Layer Pattern:**
+| Aspect | @Service on UseCase | Config Layer |
+|--------|-------------------|--------------|
+| Framework Coupling | ❌ Domain depends on Spring | ✅ Only config imports Spring |
+| Testability | ❌ Needs Spring context | ✅ Plain POJO instantiation |
+| Clean Architecture | ❌ Violates dependency rule | ✅ Respects dependency rule |
+| Layer Isolation | ❌ Spring code in domain | ✅ Framework in separate layer |
+| Framework Migration | ❌ Would break domain code | ✅ Only config needs changes |
+| Reusability | ❌ Tightly coupled to Spring | ✅ Use cases reusable anywhere |
+
+**Example Unit Test (Without Spring Context):**
 ```java
-// Domain Layer
-public class ResourceNotFoundException extends RuntimeException {
-    public ResourceNotFoundException(String resource, String field, Object value) {
-        super(String.format("%s not found with %s: %s", resource, field, value));
-    }
-}
-
-// Use in Use Case
-public CreateIncidentOutput execute(CreateIncidentInput input) {
-    Client client = repository.fetchClientByUserId(userId)
-        .orElseThrow(() -> new ResourceNotFoundException("Client", "userId", userId));
+@Test
+public void testCreateIncidentUseCase() {
+    // ✅ Can instantiate without Spring - Pure domain testing
+    CreateIncidentUseCase useCase = new CreateIncidentUseCase(
+        mockRepository,
+        mockUserRepository,
+        mockMapper,
+        mockSecurityManager
+    );
+    
+    CreateIncidentOutput output = useCase.execute(mockInput);
+    
+    assertNotNull(output);
+    assertEquals(expectedIncidentId, output.getIncidentId());
 }
 ```
 
