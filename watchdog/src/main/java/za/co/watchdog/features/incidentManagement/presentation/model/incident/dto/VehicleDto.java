@@ -4,7 +4,6 @@ import lombok.Builder;
 
 @Builder
 public record VehicleDto(
-        Long vehicleId,
         String plateNumber,
         String model
 ) {

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface IncidentManagementRepository {
     public Optional<Incident> saveIncident(Incident incident);
-    public Optional<Client> fetchClientBuUserId(Long userId);
+    public Optional<Client> fetchClientByUserId(Long userId);
     public Optional<PatrolVehicle> fetchPatrolVehicleByZoneIdAndVehicleStatus(Long zoneId, VehicleStatus vehicleStatus);
     public Optional<Address> fetchAddressById(Long addressId);
 }

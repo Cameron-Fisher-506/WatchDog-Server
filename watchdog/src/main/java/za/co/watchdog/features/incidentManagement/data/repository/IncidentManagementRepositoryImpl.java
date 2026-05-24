@@ -7,7 +7,6 @@ import za.co.watchdog.common.domain.model.VehicleStatus;
 import za.co.watchdog.features.incidentManagement.data.local.dataSource.IncidentManagementLocalDataSource;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementClientMapper;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementIncidentMapper;
-import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementLocationMapper;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementPatrolVehicleMapper;
 import za.co.watchdog.features.incidentManagement.domain.model.*;
 import za.co.watchdog.features.incidentManagement.domain.repository.IncidentManagementRepository;
@@ -48,7 +47,7 @@ public class IncidentManagementRepositoryImpl implements IncidentManagementRepos
     }
 
     @Override
-    public Optional<Client> fetchClientBuUserId(Long userId) {
+    public Optional<Client> fetchClientByUserId(Long userId) {
         DatabaseResponse<ClientEntity> databaseResponse = incidentManagementLocalDataSource.fetchClientByUserId(userId);
         switch (databaseResponse) {
             case DatabaseResponse.Success<ClientEntity> success -> {
@@ -68,8 +67,8 @@ public class IncidentManagementRepositoryImpl implements IncidentManagementRepos
     }
 
     @Override
-    public Optional<Address> fetchAddressById(Long locationId) {
-        Optional<AddressEntity> optional = incidentManagementLocalDataSource.fetchAddressById(locationId);
+    public Optional<Address> fetchAddressById(Long addressId) {
+        Optional<AddressEntity> optional = incidentManagementLocalDataSource.fetchAddressById(addressId);
         return optional.map(incidentManagementIncidentMapper::mapToAddress);
     }
 }

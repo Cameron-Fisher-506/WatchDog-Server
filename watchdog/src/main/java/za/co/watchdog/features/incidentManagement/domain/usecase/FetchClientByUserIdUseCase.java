@@ -16,6 +16,6 @@ public class FetchClientByUserIdUseCase implements UseCase<Long, Client> {
 
     @Override
     public Client execute(Long input) {
-        return incidentManagementRepository.fetchClientBuUserId(input).orElseThrow(() -> new ResourceNotFoundException("FetchClientByUserId", "userId", input));
+        return incidentManagementRepository.fetchClientByUserId(input).orElseThrow(() -> new ResourceNotFoundException("FetchClientByUserId", "userId", input));
     }
 }
