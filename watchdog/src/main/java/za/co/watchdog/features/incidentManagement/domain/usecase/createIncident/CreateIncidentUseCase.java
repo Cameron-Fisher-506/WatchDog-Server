@@ -1,7 +1,5 @@
 package za.co.watchdog.features.incidentManagement.domain.usecase.createIncident;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import za.co.watchdog.common.domain.exception.ResourceNotFoundException;
 import za.co.watchdog.common.domain.manager.SecurityManager;
@@ -10,7 +8,6 @@ import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.domain.model.VehicleStatus;
 import za.co.watchdog.common.domain.repository.UserManagementRepository;
 import za.co.watchdog.common.domain.usecase.UseCase;
-import za.co.watchdog.common.presentation.common.ApiSuccessResponse;
 import za.co.watchdog.features.incidentManagement.domain.model.Address;
 import za.co.watchdog.features.incidentManagement.domain.model.Client;
 import za.co.watchdog.features.incidentManagement.domain.model.Incident;
