@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import za.co.watchdog.common.domain.usecase.FetchCurrentUserByUsernameUseCase;
 import za.co.watchdog.common.presentation.common.ApiSuccessResponse;
-import za.co.watchdog.features.incidentManagement.domain.model.Incident;
 import za.co.watchdog.features.incidentManagement.domain.usecase.*;
 import za.co.watchdog.features.incidentManagement.domain.usecase.createIncident.CreateIncidentUseCase;
 import za.co.watchdog.features.incidentManagement.domain.usecase.createIncident.model.CreateIncidentInput;
@@ -16,6 +14,7 @@ import za.co.watchdog.features.incidentManagement.domain.usecase.createIncident.
 import za.co.watchdog.features.incidentManagement.presentation.mapper.IncidentPresentationMapper;
 import za.co.watchdog.features.incidentManagement.presentation.model.incident.IncidentRequestDto;
 import za.co.watchdog.features.incidentManagement.presentation.model.incident.IncidentResponseDto;
+import za.co.watchdog.features.incidentManagement.presentation.model.incidentUpdateLocation.IncidentUpdateLocationRequestDto;
 
 @RestController
 @RequestMapping("api/v1/incident-management")
@@ -38,6 +37,9 @@ public class IncidentManagementController {
         return new ResponseEntity<>(ApiSuccessResponse.ok(incidentPresentationMapper.mapToIncidentResponseDto(CreateIncidentOutput)), HttpStatus.OK);
     }
 
-    /*@PostMapping("/update-location")
-    ResponseEntity<ApiSuccessResponse<IncidentResponseDto>> updateLocation(@RequestBody )*/
+    @PostMapping("/update-location")
+    ResponseEntity<HttpStatus> updateLocation(@RequestBody IncidentUpdateLocationRequestDto incidentUpdateLocationRequestDto) {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

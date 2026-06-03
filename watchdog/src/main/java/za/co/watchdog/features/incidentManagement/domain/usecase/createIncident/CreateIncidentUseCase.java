@@ -17,6 +17,8 @@ import za.co.watchdog.features.incidentManagement.domain.usecase.createIncident.
 import za.co.watchdog.features.incidentManagement.domain.usecase.createIncident.model.CreateIncidentInput;
 import za.co.watchdog.features.incidentManagement.domain.usecase.createIncident.model.CreateIncidentOutput;
 
+import java.util.Optional;
+
 @Service
 public class CreateIncidentUseCase implements UseCase<CreateIncidentInput, CreateIncidentOutput> {
     private final IncidentManagementRepository incidentManagementRepository;
@@ -41,13 +43,25 @@ public class CreateIncidentUseCase implements UseCase<CreateIncidentInput, Creat
     public CreateIncidentOutput execute(CreateIncidentInput input) {
         User user = userManagementRepository.fetchUserByUsername(securityManager.getCurrentUsername()).orElseThrow(() -> new ResourceNotFoundException("User", "username", securityManager.getCurrentUsername()));
         Client client = incidentManagementRepository.fetchClientByUserId(user.getUserId()).orElseThrow(() -> new ResourceNotFoundException("Client", "userId", user.getUserId()));
+        // Notify the control room
+
         if (input.getTriggerSource() != TriggerSource.SMARTPHONE_GPS) {
-            Address address = incidentManagementRepository.fetchAddressById(input.getAddressId()).orElseThrow(() -> new ResourceNotFoundException("Address", "addressId", input.getAddressId()));
-            PatrolVehicle patrolVehicle = incidentManagementRepository.fetchPatrolVehicleByZoneIdAndVehicleStatus(address.zoneId(), VehicleStatus.AVAILABLE).orElseThrow(() -> new ResourceNotFoundException("PatrolVehicle", "zoneId", address.zoneId()));
-            Incident incident = incidentManagementRepository.saveIncident(createIncidentMapper.mapToIncident(client, input.getAddressId(), patrolVehicle.getPatrol().getPatrolId())).orElseThrow(() -> new ResourceNotFoundException("Incident", "clientId", client.getClientId()));
-            return createIncidentMapper.mapToCreateIncidentOutput(incident, patrolVehicle);
+            Optional<Address> address = incidentManagementRepository.fetchAddressById(input.getAddressId());
+            if (address.isPresent()) {
+                Optional<PatrolVehicle> patrolVehicle = incidentManagementRepository.fetchPatrolVehicleByZoneIdAndVehicleStatus(address.get().zoneId(), VehicleStatus.AVAILABLE);
+                if (patrolVehicle.isPresent()) {
+                    Incident incident = incidentManagementRepository.saveIncident(createIncidentMapper.mapToIncident(client, input.getAddressId(), patrolVehicle.get().getPatrol().getPatrolId())).orElseThrow(() -> new ResourceNotFoundException("Incident", "clientId", client.getClientId()));
+                    return createIncidentMapper.mapToCreateIncidentOutput(incident, patrolVehicle.get());
+                } else {
+                    Incident incident = incidentManagementRepository.saveIncident(createIncidentMapper.mapToIncident(client, input.getAddressId(), null)).orElseThrow(() -> new ResourceNotFoundException("Incident", "clientId", client.getClientId()));
+                    return createIncidentMapper.mapToCreateIncidentOutput(incident, null);
+                }
+            } else {
+                Incident incident = incidentManagementRepository.saveIncident(createIncidentMapper.mapToIncident(client, null, null)).orElseThrow(() -> new ResourceNotFoundException("Incident", "clientId", client.getClientId()));
+                return createIncidentMapper.mapToCreateIncidentOutput(incident, null);
+            }
         } else {
-            //Find patrol vehicle closet to client
+            //TODO: Find patrol vehicle closet to the user
             Incident incident = incidentManagementRepository.saveIncident(createIncidentMapper.mapToIncident(client, null, null)).orElseThrow(() -> new ResourceNotFoundException("Incident", "clientId", client.getClientId()));
             return createIncidentMapper.mapToCreateIncidentOutput(incident, null);
         }
