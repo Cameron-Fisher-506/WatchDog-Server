@@ -1,40 +1,35 @@
 package za.co.watchdog.features.incidentManagement.presentation.mapper;
 
 import org.springframework.stereotype.Component;
-import za.co.watchdog.common.domain.model.IncidentStatus;
 import za.co.watchdog.features.incidentManagement.domain.model.*;
+import za.co.watchdog.features.incidentManagement.domain.usecase.createIncident.model.CreateIncidentInput;
+import za.co.watchdog.features.incidentManagement.domain.usecase.createIncident.model.CreateIncidentOutput;
+import za.co.watchdog.features.incidentManagement.presentation.model.incident.IncidentRequestDto;
 import za.co.watchdog.features.incidentManagement.presentation.model.incident.IncidentResponseDto;
 import za.co.watchdog.features.incidentManagement.presentation.model.incident.dto.PatrolDto;
 import za.co.watchdog.features.incidentManagement.presentation.model.incident.dto.SecurityCompanyDto;
 import za.co.watchdog.features.incidentManagement.presentation.model.incident.dto.VehicleDto;
 
-import java.time.Instant;
-
 @Component
 public class IncidentPresentationMapper {
-    public Incident mapToIncident(Client client, Long locationId, Long patrolId) {
-        return Incident.builder()
-                .incidentStatus(IncidentStatus.TRIGGERED)
-                .clientId(client.getClientId())
-                .locationId(locationId)
-                .createdAt(Instant.now())
-                .securityCompanyId(client.getSecurityCompanyId())
-                .patrolId(patrolId)
+    public CreateIncidentInput mapToCreateIncidentInput(IncidentRequestDto incidentRequestDto) {
+        return CreateIncidentInput.builder()
+                .triggerSource(incidentRequestDto.getTriggerSource())
+                .addressId(incidentRequestDto.getAddressId())
                 .build();
     }
-
-    public IncidentResponseDto mapToIncidentResponseDto(Incident incident, PatrolVehicle patrolVehicle) {
+    public IncidentResponseDto mapToIncidentResponseDto(CreateIncidentOutput createIncidentOutput) {
         return IncidentResponseDto.builder()
-                .incidentId(incident.getIncidentId())
-                .patrolDto(mapToPatrolDto(patrolVehicle.getPatrol()))
-                .incidentStatus(incident.getIncidentStatus())
-                .vehicleDto(mapToVehicleDto(patrolVehicle.getVehicle()))
+                .incidentId(createIncidentOutput.getIncidentId())
+                .patrolDto(mapToPatrolDto(createIncidentOutput.getPatrolVehicle().getPatrol()))
+                .incidentStatus(createIncidentOutput.getIncidentStatus())
+                .vehicleDto(mapToVehicleDto(createIncidentOutput.getPatrolVehicle().getVehicle()))
+                .createdAt(createIncidentOutput.getCreatedAt())
                 .build();
     }
 
     private PatrolDto mapToPatrolDto(Patrol patrol) {
         return PatrolDto.builder()
-                .patrolId(patrol.getPatrolId())
                 .name(patrol.getName())
                 .surname(patrol.getSurname())
                 .officerCode(patrol.getOfficerCode())
@@ -44,7 +39,6 @@ public class IncidentPresentationMapper {
 
     private VehicleDto mapToVehicleDto(Vehicle vehicle) {
         return VehicleDto.builder()
-                .vehicleId(vehicle.getVehicleId())
                 .plateNumber(vehicle.getPlateNumber())
                 .model(vehicle.getModel())
                 .build();

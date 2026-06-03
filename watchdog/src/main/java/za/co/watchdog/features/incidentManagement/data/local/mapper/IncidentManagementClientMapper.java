@@ -12,6 +12,7 @@ public class IncidentManagementClientMapper {
                 .name(clientEntity.getName())
                 .contactNumber(clientEntity.getContactNumber())
                 .userId(clientEntity.getUserEntity().getUserId())
+                .securityCompanyId(clientEntity.getSecurityCompanyEntity().getSecurityCompanyId())
                 .build();
     }
 }

@@ -18,8 +18,8 @@ public class GuardianEntity {
     private Long guardianId;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
-    @JoinColumn(name = "userId")
-    private UserEntity userEntity;
+    @JoinColumn(name = "clientId")
+    private ClientEntity clientEntity;
     private String contactNumber;
     private Boolean isActive;
 }

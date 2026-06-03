@@ -2,20 +2,13 @@ package za.co.watchdog.features.incidentManagement.data.repository;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
-import za.co.watchdog.common.data.local.database.model.ClientEntity;
-import za.co.watchdog.common.data.local.database.model.IncidentEntity;
-import za.co.watchdog.common.data.local.database.model.LocationEntity;
-import za.co.watchdog.common.data.local.database.model.PatrolVehicleEntity;
+import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.common.domain.model.VehicleStatus;
 import za.co.watchdog.features.incidentManagement.data.local.dataSource.IncidentManagementLocalDataSource;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementClientMapper;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementIncidentMapper;
-import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementLocationMapper;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementPatrolVehicleMapper;
-import za.co.watchdog.features.incidentManagement.domain.model.Client;
-import za.co.watchdog.features.incidentManagement.domain.model.Incident;
-import za.co.watchdog.features.incidentManagement.domain.model.Location;
-import za.co.watchdog.features.incidentManagement.domain.model.PatrolVehicle;
+import za.co.watchdog.features.incidentManagement.domain.model.*;
 import za.co.watchdog.features.incidentManagement.domain.repository.IncidentManagementRepository;
 
 import java.util.Optional;
@@ -24,20 +17,17 @@ import java.util.Optional;
 public class IncidentManagementRepositoryImpl implements IncidentManagementRepository {
     private final IncidentManagementLocalDataSource incidentManagementLocalDataSource;
     private final IncidentManagementIncidentMapper incidentManagementIncidentMapper;
-    private final IncidentManagementLocationMapper incidentManagementLocationMapper;
     private final IncidentManagementClientMapper incidentManagementClientMapper;
     private final IncidentManagementPatrolVehicleMapper incidentManagementPatrolVehicleMapper;
 
     IncidentManagementRepositoryImpl(
             IncidentManagementLocalDataSource incidentManagementLocalDataSource,
             IncidentManagementIncidentMapper incidentManagementIncidentMapper,
-            IncidentManagementLocationMapper incidentManagementLocationMapper,
             IncidentManagementClientMapper incidentManagementClientMapper,
             IncidentManagementPatrolVehicleMapper incidentManagementPatrolVehicleMapper
     ) {
         this.incidentManagementLocalDataSource = incidentManagementLocalDataSource;
         this.incidentManagementIncidentMapper = incidentManagementIncidentMapper;
-        this.incidentManagementLocationMapper = incidentManagementLocationMapper;
         this.incidentManagementClientMapper = incidentManagementClientMapper;
         this.incidentManagementPatrolVehicleMapper = incidentManagementPatrolVehicleMapper;
     }
@@ -57,7 +47,7 @@ public class IncidentManagementRepositoryImpl implements IncidentManagementRepos
     }
 
     @Override
-    public Optional<Client> fetchClientBuUserId(Long userId) {
+    public Optional<Client> fetchClientByUserId(Long userId) {
         DatabaseResponse<ClientEntity> databaseResponse = incidentManagementLocalDataSource.fetchClientByUserId(userId);
         switch (databaseResponse) {
             case DatabaseResponse.Success<ClientEntity> success -> {
@@ -77,8 +67,8 @@ public class IncidentManagementRepositoryImpl implements IncidentManagementRepos
     }
 
     @Override
-    public Optional<Location> fetchLocationById(Long locationId) {
-        Optional<LocationEntity> optional = incidentManagementLocalDataSource.fetchLocationById(locationId);
-        return optional.map(incidentManagementLocationMapper::mapToLocation);
+    public Optional<Address> fetchAddressById(Long addressId) {
+        Optional<AddressEntity> optional = incidentManagementLocalDataSource.fetchAddressById(addressId);
+        return optional.map(incidentManagementIncidentMapper::mapToAddress);
     }
 }

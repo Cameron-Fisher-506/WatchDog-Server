@@ -34,8 +34,11 @@ public class IncidentEntity {
     private PatrolEntity patrolEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "locationId")
-    private LocationEntity locationEntity;
+    @JoinColumn(name = "addressId")
+    private AddressEntity addressEntity;
+
+    private String latitude;
+    private String longitude;
 
     @Enumerated(EnumType.STRING)
     private IncidentStatus incidentStatus;

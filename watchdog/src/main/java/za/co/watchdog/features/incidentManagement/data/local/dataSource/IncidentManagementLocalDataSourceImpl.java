@@ -2,10 +2,7 @@ package za.co.watchdog.features.incidentManagement.data.local.dataSource;
 
 import org.springframework.stereotype.Component;
 import za.co.watchdog.common.data.local.common.DatabaseResponse;
-import za.co.watchdog.common.data.local.database.dao.ClientDao;
-import za.co.watchdog.common.data.local.database.dao.IncidentDao;
-import za.co.watchdog.common.data.local.database.dao.LocationDao;
-import za.co.watchdog.common.data.local.database.dao.PatrolVehicleDao;
+import za.co.watchdog.common.data.local.database.dao.*;
 import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.common.domain.model.VehicleStatus;
 
@@ -14,13 +11,13 @@ import java.util.Optional;
 @Component
 public class IncidentManagementLocalDataSourceImpl implements IncidentManagementLocalDataSource {
     private final IncidentDao incidentDao;
-    private final LocationDao locationDao;
+    private final AddressDao addressDao;
     private final ClientDao clientDao;
     private final PatrolVehicleDao patrolVehicleDao;
 
-    IncidentManagementLocalDataSourceImpl(IncidentDao incidentDao, LocationDao locationDao, ClientDao clientDao, PatrolVehicleDao patrolVehicleDao) {
+    IncidentManagementLocalDataSourceImpl(IncidentDao incidentDao, AddressDao addressDao, ClientDao clientDao, PatrolVehicleDao patrolVehicleDao) {
         this.incidentDao = incidentDao;
-        this.locationDao = locationDao;
+        this.addressDao = addressDao;
         this.clientDao = clientDao;
         this.patrolVehicleDao = patrolVehicleDao;
     }
@@ -55,9 +52,9 @@ public class IncidentManagementLocalDataSourceImpl implements IncidentManagement
     }
 
     @Override
-    public Optional<LocationEntity> fetchLocationById(Long locationId) {
+    public Optional<AddressEntity> fetchAddressById(Long addressId) {
         try {
-            return locationDao.findById(locationId);
+            return addressDao.findById(addressId);
         } catch (Exception e) {
             return Optional.empty();
         }

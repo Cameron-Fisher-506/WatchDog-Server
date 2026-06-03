@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Entity
-@Table(name = "location_guardian")
-public class LocationGuardianEntity {
+@Table(name = "address_guardian")
+public class AddressGuardianEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long locationGuardianId;
 
     @ManyToOne
-    @JoinColumn(name = "locationId")
-    private LocationEntity locationEntity;
+    @JoinColumn(name = "addressId")
+    private AddressEntity addressEntity;
 
     @ManyToOne
     @JoinColumn(name = "guardianId")

@@ -43,12 +43,5 @@ public class IncidentManagementLocationMapper {
                 .build();
     }
 
-    public AddressEntity mapToAddressEntity(Address address) {
-        return AddressEntity.builder()
-                .addressLineOne(address.addressLineOne())
-                .addressLineTwo(address.addressLineTwo())
-                .suburb(address.suburb())
-                .postalCode(address.postalCode())
-                .build();
-    }
+
 }

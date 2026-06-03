@@ -4,7 +4,6 @@ import lombok.Builder;
 
 @Builder
 public record PatrolDto(
-        Long patrolId,
         String officerCode,
         String name,
         String surname,

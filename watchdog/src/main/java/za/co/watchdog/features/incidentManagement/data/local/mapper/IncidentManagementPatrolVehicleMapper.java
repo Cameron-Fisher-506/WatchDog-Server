@@ -30,6 +30,7 @@ public class IncidentManagementPatrolVehicleMapper {
                 .createdAt(vehicleEntity.getCreatedAt())
                 .callSign(vehicleEntity.getCallSign())
                 .make(vehicleEntity.getMake())
+                .model(vehicleEntity.getModel())
                 .plateNumber(vehicleEntity.getPlateNumber())
                 .build();
     }
