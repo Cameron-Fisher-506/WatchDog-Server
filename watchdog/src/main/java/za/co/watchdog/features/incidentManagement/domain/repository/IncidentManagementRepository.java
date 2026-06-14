@@ -3,6 +3,7 @@ package za.co.watchdog.features.incidentManagement.domain.repository;
 import za.co.watchdog.common.domain.model.VehicleStatus;
 import za.co.watchdog.features.incidentManagement.domain.model.*;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IncidentManagementRepository {
@@ -10,4 +11,5 @@ public interface IncidentManagementRepository {
     public Optional<Client> fetchClientByUserId(Long userId);
     public Optional<PatrolVehicle> fetchPatrolVehicleByZoneIdAndVehicleStatus(Long zoneId, VehicleStatus vehicleStatus);
     public Optional<Address> fetchAddressById(Long addressId);
+    public Optional<List<Incident>> fetchActiveIncidentsBySecurityCompanyId(Long securityCompanyId);
 }

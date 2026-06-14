@@ -11,6 +11,7 @@ import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentMana
 import za.co.watchdog.features.incidentManagement.domain.model.*;
 import za.co.watchdog.features.incidentManagement.domain.repository.IncidentManagementRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -70,5 +71,11 @@ public class IncidentManagementRepositoryImpl implements IncidentManagementRepos
     public Optional<Address> fetchAddressById(Long addressId) {
         Optional<AddressEntity> optional = incidentManagementLocalDataSource.fetchAddressById(addressId);
         return optional.map(incidentManagementIncidentMapper::mapToAddress);
+    }
+
+    @Override
+    public Optional<List<Incident>> fetchActiveIncidentsBySecurityCompanyId(Long securityCompanyId) {
+        Optional<List<IncidentEntity>> optional = incidentManagementLocalDataSource.fetchActiveIncidentsBySecurityCompanyId(securityCompanyId);
+        return optional.map(incidentManagementIncidentMapper::mapToIncidents);
     }
 }

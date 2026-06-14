@@ -6,6 +6,7 @@ import za.co.watchdog.common.data.local.database.dao.*;
 import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.common.domain.model.VehicleStatus;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -55,6 +56,15 @@ public class IncidentManagementLocalDataSourceImpl implements IncidentManagement
     public Optional<AddressEntity> fetchAddressById(Long addressId) {
         try {
             return addressDao.findById(addressId);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<List<IncidentEntity>> fetchActiveIncidentsBySecurityCompanyId(Long securityCompanyId) {
+        try {
+            return incidentDao.findAllBySecurityCompanyId(securityCompanyId);
         } catch (Exception e) {
             return Optional.empty();
         }
