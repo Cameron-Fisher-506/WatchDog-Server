@@ -15,5 +15,5 @@ public interface IncidentDao extends JpaRepository<IncidentEntity, Long> {
             " WHERE incidentEntity.securityCompanyEntity.securityCompanyId = :securityCompanyId AND " +
             "(incidentEntity.incidentStatus != za.co.watchdog.common.domain.model.IncidentStatus.CANCELLED AND " +
             "incidentEntity.incidentStatus != za.co.watchdog.common.domain.model.IncidentStatus.RESOLVED)")
-    Optional<List<IncidentEntity>> findAllBySecurityCompanyId(Long securityCompanyId);
+    Optional<List<IncidentEntity>> findActiveIncidentsBySecurityCompanyId(Long securityCompanyId);
 }

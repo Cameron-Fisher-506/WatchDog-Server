@@ -75,7 +75,7 @@ public class IncidentManagementLocalDataSourceImpl implements IncidentManagement
     @Override
     public Optional<List<IncidentEntity>> fetchActiveIncidentsBySecurityCompanyId(Long securityCompanyId) {
         try {
-            return incidentDao.findAllBySecurityCompanyId(securityCompanyId);
+            return incidentDao.findActiveIncidentsBySecurityCompanyId(securityCompanyId);
         } catch (Exception e) {
             return Optional.empty();
         }

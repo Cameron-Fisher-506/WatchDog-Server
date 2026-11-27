@@ -5,6 +5,7 @@ import za.co.watchdog.common.data.local.common.DatabaseResponse;
 import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.common.domain.model.VehicleStatus;
 import za.co.watchdog.features.incidentManagement.data.local.dataSource.IncidentManagementLocalDataSource;
+import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementAdminMapper;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementClientMapper;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementIncidentMapper;
 import za.co.watchdog.features.incidentManagement.data.local.mapper.IncidentManagementPatrolVehicleMapper;
@@ -20,17 +21,20 @@ public class IncidentManagementRepositoryImpl implements IncidentManagementRepos
     private final IncidentManagementIncidentMapper incidentManagementIncidentMapper;
     private final IncidentManagementClientMapper incidentManagementClientMapper;
     private final IncidentManagementPatrolVehicleMapper incidentManagementPatrolVehicleMapper;
+    private final IncidentManagementAdminMapper incidentManagementAdminMapper;
 
     IncidentManagementRepositoryImpl(
             IncidentManagementLocalDataSource incidentManagementLocalDataSource,
             IncidentManagementIncidentMapper incidentManagementIncidentMapper,
             IncidentManagementClientMapper incidentManagementClientMapper,
-            IncidentManagementPatrolVehicleMapper incidentManagementPatrolVehicleMapper
+            IncidentManagementPatrolVehicleMapper incidentManagementPatrolVehicleMapper,
+            IncidentManagementAdminMapper incidentManagementAdminMapper
     ) {
         this.incidentManagementLocalDataSource = incidentManagementLocalDataSource;
         this.incidentManagementIncidentMapper = incidentManagementIncidentMapper;
         this.incidentManagementClientMapper = incidentManagementClientMapper;
         this.incidentManagementPatrolVehicleMapper = incidentManagementPatrolVehicleMapper;
+        this.incidentManagementAdminMapper = incidentManagementAdminMapper;
     }
 
     @Override
@@ -64,7 +68,7 @@ public class IncidentManagementRepositoryImpl implements IncidentManagementRepos
     @Override
     public Optional<Admin> fetchAdminByUserId(Long userId) {
         Optional<AdminEntity> optional = incidentManagementLocalDataSource.fetchAdminByUserId(userId);
-        return optional.map(inci)
+        return optional.map(incidentManagementAdminMapper::mapToAdmin);
     }
 
     @Override
