@@ -6,6 +6,7 @@ import za.co.watchdog.common.data.local.database.dao.*;
 import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.common.domain.model.VehicleStatus;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -14,12 +15,14 @@ public class IncidentManagementLocalDataSourceImpl implements IncidentManagement
     private final AddressDao addressDao;
     private final ClientDao clientDao;
     private final PatrolVehicleDao patrolVehicleDao;
+    private final AdminDao adminDao;
 
-    IncidentManagementLocalDataSourceImpl(IncidentDao incidentDao, AddressDao addressDao, ClientDao clientDao, PatrolVehicleDao patrolVehicleDao) {
+    IncidentManagementLocalDataSourceImpl(IncidentDao incidentDao, AddressDao addressDao, ClientDao clientDao, PatrolVehicleDao patrolVehicleDao, AdminDao adminDao) {
         this.incidentDao = incidentDao;
         this.addressDao = addressDao;
         this.clientDao = clientDao;
         this.patrolVehicleDao = patrolVehicleDao;
+        this.adminDao = adminDao;
     }
 
     @Override
@@ -43,6 +46,15 @@ public class IncidentManagementLocalDataSourceImpl implements IncidentManagement
     }
 
     @Override
+    public Optional<AdminEntity> fetchAdminByUserId(Long userId) {
+        try {
+            return adminDao.findByUserId(userId);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Optional<PatrolVehicleEntity> fetchPatrolVehicleByZoneIdAndVehicleStatus(Long zoneId, VehicleStatus vehicleStatus) {
         try {
             return patrolVehicleDao.findPatrolVehicleByZoneIdAndVehicleStatus(zoneId, vehicleStatus);
@@ -55,6 +67,15 @@ public class IncidentManagementLocalDataSourceImpl implements IncidentManagement
     public Optional<AddressEntity> fetchAddressById(Long addressId) {
         try {
             return addressDao.findById(addressId);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<List<IncidentEntity>> fetchActiveIncidentsBySecurityCompanyId(Long securityCompanyId) {
+        try {
+            return incidentDao.findActiveIncidentsBySecurityCompanyId(securityCompanyId);
         } catch (Exception e) {
             return Optional.empty();
         }

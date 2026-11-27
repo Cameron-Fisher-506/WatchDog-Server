@@ -43,7 +43,6 @@ public class CreateIncidentUseCase implements UseCase<CreateIncidentInput, Creat
     public CreateIncidentOutput execute(CreateIncidentInput input) {
         User user = userManagementRepository.fetchUserByUsername(securityManager.getCurrentUsername()).orElseThrow(() -> new ResourceNotFoundException("User", "username", securityManager.getCurrentUsername()));
         Client client = incidentManagementRepository.fetchClientByUserId(user.getUserId()).orElseThrow(() -> new ResourceNotFoundException("Client", "userId", user.getUserId()));
-        // Notify the control room
 
         if (input.getTriggerSource() != TriggerSource.SMARTPHONE_GPS) {
             Optional<Address> address = incidentManagementRepository.fetchAddressById(input.getAddressId());
@@ -56,14 +55,10 @@ public class CreateIncidentUseCase implements UseCase<CreateIncidentInput, Creat
                     Incident incident = incidentManagementRepository.saveIncident(createIncidentMapper.mapToIncident(client, input.getAddressId(), null)).orElseThrow(() -> new ResourceNotFoundException("Incident", "clientId", client.getClientId()));
                     return createIncidentMapper.mapToCreateIncidentOutput(incident, null);
                 }
-            } else {
-                Incident incident = incidentManagementRepository.saveIncident(createIncidentMapper.mapToIncident(client, null, null)).orElseThrow(() -> new ResourceNotFoundException("Incident", "clientId", client.getClientId()));
-                return createIncidentMapper.mapToCreateIncidentOutput(incident, null);
             }
-        } else {
-            //TODO: Find patrol vehicle closet to the user
-            Incident incident = incidentManagementRepository.saveIncident(createIncidentMapper.mapToIncident(client, null, null)).orElseThrow(() -> new ResourceNotFoundException("Incident", "clientId", client.getClientId()));
-            return createIncidentMapper.mapToCreateIncidentOutput(incident, null);
         }
+
+        Incident incident = incidentManagementRepository.saveIncident(createIncidentMapper.mapToIncident(client, null, null)).orElseThrow(() -> new ResourceNotFoundException("Incident", "clientId", client.getClientId()));
+        return createIncidentMapper.mapToCreateIncidentOutput(incident, null);
     }
 }

@@ -6,6 +6,8 @@ import za.co.watchdog.common.data.local.database.model.*;
 import za.co.watchdog.features.incidentManagement.domain.model.Address;
 import za.co.watchdog.features.incidentManagement.domain.model.Incident;
 
+import java.util.List;
+
 @Component
 public class IncidentManagementIncidentMapper {
     private final EntityManager entityManager;
@@ -62,5 +64,12 @@ public class IncidentManagementIncidentMapper {
                 .clientId(addressEntity.getClientEntity().getClientId())
                 .zoneId(addressEntity.getZoneEntity().getZoneId())
                 .build();
+    }
+
+    public List<Incident> mapToIncidents(List<IncidentEntity> incidentEntities) {
+        return incidentEntities
+                .stream()
+                .map(this::mapToIncident)
+                .toList();
     }
 }
