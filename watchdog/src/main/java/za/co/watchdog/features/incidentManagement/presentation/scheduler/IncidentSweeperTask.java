@@ -2,21 +2,21 @@ package za.co.watchdog.features.incidentManagement.presentation.scheduler;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import za.co.watchdog.features.incidentManagement.domain.usecase.FetchAllActiveIncidentsUseCase;
+import za.co.watchdog.features.incidentManagement.domain.usecase.FetchActiveIncidentsUseCase;
 import za.co.watchdog.features.incidentManagement.presentation.controller.IncidentManagementController;
 
 @Component
 public class IncidentSweeperTask {
     private final IncidentManagementController incidentManagementController;
-    private final FetchAllActiveIncidentsUseCase fetchAllActiveIncidentsUseCase;
+    private final FetchActiveIncidentsUseCase fetchActiveIncidentsUseCase;
 
-    IncidentSweeperTask(IncidentManagementController incidentManagementController, FetchAllActiveIncidentsUseCase fetchAllActiveIncidentsUseCase) {
+    IncidentSweeperTask(IncidentManagementController incidentManagementController, FetchActiveIncidentsUseCase fetchActiveIncidentsUseCase) {
         this.incidentManagementController = incidentManagementController;
-        this.fetchAllActiveIncidentsUseCase = fetchAllActiveIncidentsUseCase;
+        this.fetchActiveIncidentsUseCase = fetchActiveIncidentsUseCase;
     }
 
     @Scheduled(fixedDelay = 10000)
     public void executeSweeper() {
-        incidentManagementController.broadcastIncidentsToControlRoom(fetchAllActiveIncidentsUseCase.execute());
+        incidentManagementController.broadcastIncidentsToControlRoom(fetchActiveIncidentsUseCase.execute(null));
     }
 }

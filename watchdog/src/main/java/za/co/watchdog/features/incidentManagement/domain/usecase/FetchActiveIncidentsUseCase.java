@@ -6,8 +6,8 @@ import za.co.watchdog.common.domain.manager.SecurityManager;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.domain.repository.UserManagementRepository;
 import za.co.watchdog.common.domain.usecase.UseCase;
+import za.co.watchdog.features.incidentManagement.domain.model.Admin;
 import za.co.watchdog.features.incidentManagement.domain.model.Incident;
-import za.co.watchdog.features.incidentManagement.domain.model.SecurityCompany;
 import za.co.watchdog.features.incidentManagement.domain.repository.IncidentManagementRepository;
 
 import java.util.Collections;
@@ -15,23 +15,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class FetchAllActiveIncidentsUseCase implements UseCase<Long, List<Incident>> {
+public class FetchActiveIncidentsUseCase implements UseCase<Void, List<Incident>> {
     private final UserManagementRepository userManagementRepository;
     private final IncidentManagementRepository incidentManagementRepository;
     private final SecurityManager securityManager;
 
-    FetchAllActiveIncidentsUseCase(UserManagementRepository userManagementRepository, IncidentManagementRepository incidentManagementRepository, SecurityManager securityManager) {
+    FetchActiveIncidentsUseCase(UserManagementRepository userManagementRepository, IncidentManagementRepository incidentManagementRepository, SecurityManager securityManager) {
         this.userManagementRepository = userManagementRepository;
         this.incidentManagementRepository = incidentManagementRepository;
         this.securityManager = securityManager;
     }
 
     @Override
-    public List<Incident> execute(Long securityCompanyId) {
+    public List<Incident> execute(Void input) {
         User user = userManagementRepository.fetchUserByUsername(securityManager.getCurrentUsername()).orElseThrow(() -> new ResourceNotFoundException("User", "username", securityManager.getCurrentUsername()));
-
-        if (securityCompanyId != null) {
-            Optional<List<Incident>> incidents = incidentManagementRepository.fetchActiveIncidentsBySecurityCompanyId(securityCompanyId);
+        Admin admin = incidentManagementRepository.fetchAdminByUserId(user.getUserId()).orElseThrow(() -> new ResourceNotFoundException("Admin", "userId", user.getUserId()));
+        if (admin.getSecurityCompanyId() != null) {
+            Optional<List<Incident>> incidents = incidentManagementRepository.fetchActiveIncidentsBySecurityCompanyId(admin.getSecurityCompanyId());
             return incidents.orElse(Collections.emptyList());
         } else {
             return Collections.emptyList();

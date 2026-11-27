@@ -5,6 +5,9 @@ import za.co.watchdog.common.domain.exception.ResourceNotFoundException;
 import za.co.watchdog.common.domain.model.User;
 import za.co.watchdog.common.domain.usecase.UseCase;
 import za.co.watchdog.features.authManagement.domain.repository.AuthManagementRepository;
+import za.co.watchdog.features.incidentManagement.domain.model.Incident;
+
+import java.util.List;
 
 @Service
 public class SaveUserUseCase implements UseCase<User, User> {
