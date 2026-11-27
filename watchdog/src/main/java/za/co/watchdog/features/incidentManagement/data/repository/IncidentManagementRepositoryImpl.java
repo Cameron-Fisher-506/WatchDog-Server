@@ -62,6 +62,12 @@ public class IncidentManagementRepositoryImpl implements IncidentManagementRepos
     }
 
     @Override
+    public Optional<Admin> fetchAdminByUserId(Long userId) {
+        Optional<AdminEntity> optional = incidentManagementLocalDataSource.fetchAdminByUserId(userId);
+        return optional.map(inci)
+    }
+
+    @Override
     public Optional<PatrolVehicle> fetchPatrolVehicleByZoneIdAndVehicleStatus(Long zoneId, VehicleStatus vehicleStatus) {
         Optional<PatrolVehicleEntity> optional = incidentManagementLocalDataSource.fetchPatrolVehicleByZoneIdAndVehicleStatus(zoneId, vehicleStatus);
         return optional.map(incidentManagementPatrolVehicleMapper::mapToPatrolVehicle);

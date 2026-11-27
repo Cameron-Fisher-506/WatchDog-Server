@@ -15,12 +15,14 @@ public class IncidentManagementLocalDataSourceImpl implements IncidentManagement
     private final AddressDao addressDao;
     private final ClientDao clientDao;
     private final PatrolVehicleDao patrolVehicleDao;
+    private final AdminDao adminDao;
 
-    IncidentManagementLocalDataSourceImpl(IncidentDao incidentDao, AddressDao addressDao, ClientDao clientDao, PatrolVehicleDao patrolVehicleDao) {
+    IncidentManagementLocalDataSourceImpl(IncidentDao incidentDao, AddressDao addressDao, ClientDao clientDao, PatrolVehicleDao patrolVehicleDao, AdminDao adminDao) {
         this.incidentDao = incidentDao;
         this.addressDao = addressDao;
         this.clientDao = clientDao;
         this.patrolVehicleDao = patrolVehicleDao;
+        this.adminDao = adminDao;
     }
 
     @Override
@@ -40,6 +42,15 @@ public class IncidentManagementLocalDataSourceImpl implements IncidentManagement
                     .orElseGet(() -> DatabaseResponse.error("Client not found."));
         } catch (Exception e) {
             return DatabaseResponse.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public Optional<AdminEntity> fetchAdminByUserId(Long userId) {
+        try {
+            return adminDao.findByUserId(userId);
+        } catch (Exception e) {
+            return Optional.empty();
         }
     }
 
